@@ -1,0 +1,15 @@
+.header, .content {
+    width: 100%;
+    text-align: center;
+    overflow-x: auto;
+    display: block;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.content {
+    overflow-y: auto;
+}

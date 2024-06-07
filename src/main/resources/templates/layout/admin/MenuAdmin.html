@@ -1,0 +1,104 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/mangostore/admin/home}">
+                <i class="bi bi-house menu-icon"></i>
+                <span class="menu-title">Home</span>
+            </a>
+        </li>
+        <li class="nav-item nav-category">Sales At The Counter</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
+               aria-controls="ui-basic">
+                <i class="menu-icon bi bi-shop"></i>
+                <span class="menu-title">Counter</span>
+                <i class="menu-arrow bi bi-arrow-right-short"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/sell}">Sell</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/order/list}">Orders Management</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/order/show}">Orders List</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item nav-category">Product Management</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
+               aria-controls="form-elements">
+                <i class="menu-icon bi bi-archive"></i>
+                <span class="menu-title">Product List</span>
+                <i class="menu-arrow bi bi-arrow-right-short"></i>
+            </a>
+            <div class="collapse" id="form-elements">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/product-detail}">Product Detail</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/product}">Product</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/color}">Color</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/origin}">Origin</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/size}">Size</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/material}">Material</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/category}">Category</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item nav-category">Voucher Management</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#form-voucher" aria-expanded="false"
+               aria-controls="form-voucher">
+                <i class="menu-icon bi bi-wallet2"></i>
+                <span class="menu-title">Voucher List</span>
+                <i class="menu-arrow bi bi-arrow-right-short"></i>
+            </a>
+            <div class="collapse" id="form-voucher">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/rank}">Rank</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/voucher}">Voucher</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{/mangostore/admin/voucher-client}">Voucher Client</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item nav-category">Account</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false"
+               aria-controls="auth">
+                <i class="menu-icon bi bi-person-circle"></i>
+                <span class="menu-title">Account Management</span>
+                <i class="menu-arrow bi bi-arrow-right-short"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <th:block th:if="${checkMenuAdmin == true}">
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/account}"> Account </a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/role}"> Role </a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/authentication}"> Authority </a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/address-client}"> Address Client </a></li>
+                    </th:block>
+                    <th:block th:if="${checkMenuAdmin == false}">
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/account}"> Account </a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/address-client}"> Address Client </a></li>
+                    </th:block>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</nav>

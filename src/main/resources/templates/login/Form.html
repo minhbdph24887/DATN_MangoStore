@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/login/IndexLogin :: dynamic(~{:: main})}">
+<body>
+<main>
+    <div class="row align-items-center">
+        <div class="header-text mb-4">
+            <h3>Hello, Mango Store</h3>
+            <p>Please log in to use the website.</p>
+        </div>
+        <form th:action="@{/mangostore/login/success}" method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control form-control-lg bg-light fs-6" name="email"
+                       placeholder="Email address">
+            </div>
+            <div class="input-group mb-1">
+                <input type="password" class="form-control form-control-lg bg-light fs-6" name="password"
+                       placeholder="Password">
+            </div>
+            <div class="input-group mb-5 d-flex justify-content-between">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="formCheck" name="remember">
+                    <label for="formCheck" class="form-check-label text-secondary"><small>Remember
+                        Me</small></label>
+                </div>
+                <div class="forgot">
+                    <small><a th:href="@{/mangostore/login/forgot}" style="text-decoration: none">Forgot
+                        Password?</a></small>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
+            </div>
+            <div class="input-group mb-3">
+                <a type="button" th:href="@{/oauth2/authorization/google}" class="btn btn-lg btn-light w-100 fs-6"><img
+                        th:src="@{|/images/layout/icon-google.png|}"
+                        style="width:20px"
+                        class="me-2" alt=""><small>Log In with
+                    Google</small>
+                </a>
+            </div>
+        </form>
+        <div class="row">
+            <small>Don't have account? <a th:href="@{/mangostore/login/signup}" style="text-decoration: none">Sign
+                In</a></small>
+        </div>
+    </div>
+</main>
+</body>
+</html>
