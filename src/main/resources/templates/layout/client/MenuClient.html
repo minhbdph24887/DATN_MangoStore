@@ -1,30 +1,32 @@
 <div class="checkCartPage" xmlns:th="http://www.w3.org/1999/xhtml" style="background: radial-gradient(#fff, #fff);">
-    <div style="max-width: 1300px;margin: auto;padding-left: 25px;padding-right: 25px;">
-        <div style=" display: flex;align-items: center;padding: 20px;max-height: 82px;">
+    <div style="max-width: 1300px; margin: auto; padding-left: 25px; padding-right: 25px;">
+        <div style="display: flex; align-items: center; padding: 20px; max-height: 82px;">
             <div class="logo">
                 <a th:href="@{/mangostore/home}"><img th:src="@{|/images/layout/logoMangoStore1.png|}" width="125px"
                                                       alt=""
-                                                      style="text-decoration: none;color: #555;"></a>
+                                                      style="text-decoration: none; color: #555;"></a>
             </div>
-            <nav style="flex: 1;margin-top: 16px;text-align: right;">
+            <nav style="flex: 1; margin-top: 16px; text-align: right;">
                 <ul id="MenuItems" style="list-style-type: none;">
-                    <li><a th:href="@{/mangostore/home}" style="text-decoration: none;color: #555;">Home</a></li>
-                    <li><a th:href="@{/mangostore/product}" style="text-decoration: none;color: #555;">Products</a></li>
+                    <li><a th:href="@{/mangostore/home}" style="text-decoration: none; color: #555;">Home</a></li>
+                    <li><a th:href="@{/mangostore/product}" style="text-decoration: none; color: #555;">Products</a>
+                    </li>
                     <th:block th:if="${checkAuthentication != null}">
-                        <li><a th:href="@{/mangostore/admin/home}" style="text-decoration: none;color: #555;">Product
+                        <li><a th:href="@{/mangostore/admin/home}" style="text-decoration: none; color: #555;">Product
                             Management</a></li>
                     </th:block>
-                    <li><a th:href="@{/mangostore/voucher/shop}" style="text-decoration: none;color: #555;">Voucher Shop</a>
+                    <li><a th:href="@{/mangostore/voucher/shop}" style="text-decoration: none; color: #555;">Voucher
+                        Shop</a>
                     </li>
                     <th:block th:unless="${profile != null}">
                         <li>
                             <a th:href="@{/mangostore/login/from}"
-                               style="display: inline-block;background: #2867b3;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s; text-decoration: none;">Login</a>
+                               style="display: inline-block; background: #2867b3; color: #fff; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s; text-decoration: none;">Login</a>
                         </li>
                     </th:block>
                     <th:block th:if="${profile != null}">
                         <li>
-                            <a th:href="@{/mangostore/profile}" style="text-decoration: none;color: #555;">
+                            <a th:href="@{/mangostore/profile}" style="text-decoration: none; color: #555;">
                                 <th:block th:if="${profile.getImages() != null}">
                                     <img th:src="@{|/images/profile/${profile.getImages()}|}" alt="Profile image"
                                          style="width: 36px; height: 36px; border-radius: 100%; margin-bottom: -3px;">
@@ -37,7 +39,7 @@
                         <li>
                             <a type="button" th:href="@{/mangostore/login/clear}"
                                th:text="LogOut"
-                               style="display: inline-block;background: #d72d2d;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s; text-decoration: none;"></a>
+                               style="display: inline-block; background: #d72d2d; color: #fff; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s; text-decoration: none;"></a>
                         </li>
                     </th:block>
                 </ul>
@@ -46,7 +48,7 @@
                    th:value="${profile != null ? 'profile' : 'null'}">
             <a onclick="checkCartIndex()">
                 <img th:src="@{|/images/layout/cart.png|}" width="30px" height="30px" alt=""
-                     style="text-decoration: none;color: #555;">
+                     style="text-decoration: none; color: #555;">
             </a>
         </div>
     </div>
