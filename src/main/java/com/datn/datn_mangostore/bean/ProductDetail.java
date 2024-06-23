@@ -39,6 +39,7 @@ public class ProductDetail {
     private LocalDateTime dateCreate;
     @DateTimeFormat(pattern = "yyyy-MM-dd : HH:mm:ss")
     private LocalDateTime dateUpdate;
+    private Integer productStatus;
     private Integer status;
 
     public ProductDetail(Long id,
@@ -56,6 +57,7 @@ public class ProductDetail {
                          String nameUserUpdate,
                          LocalDateTime dateCreate,
                          LocalDateTime dateUpdate,
+                         Integer productStatus,
                          Integer status) {
         this.id = id;
         this.product = product;
@@ -72,6 +74,7 @@ public class ProductDetail {
         this.nameUserUpdate = nameUserUpdate;
         this.dateCreate = dateCreate;
         this.dateUpdate = dateUpdate;
+        this.productStatus = productStatus;
         this.status = status;
     }
 
@@ -196,6 +199,14 @@ public class ProductDetail {
 
     public void setDateUpdate(LocalDateTime dateUpdate) {
         this.dateUpdate = dateUpdate;
+    }
+
+    public Integer getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(Integer productStatus) {
+        this.productStatus = productStatus;
     }
 
     public Integer getStatus() {

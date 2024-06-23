@@ -61,9 +61,14 @@ public class UpdateAuto {
     public void updateStatusProductAuto() {
         for (ProductDetail productDetail : productDetailRepository.findAll()) {
             if (productDetail.getQuantity() == 0) {
-                productDetail.setStatus(0);
+                productDetail.setProductStatus(0);
             } else {
-                productDetail.setStatus(1);
+                productDetail.setProductStatus(1);
+            }
+            productDetailRepository.save(productDetail);
+
+            if(productDetail.getQuantity() == 0 && productDetail.getProductStatus() == 0) {
+                productDetail.setStatus(0);
             }
             productDetailRepository.save(productDetail);
         }

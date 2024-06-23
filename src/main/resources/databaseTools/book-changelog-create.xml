@@ -176,6 +176,7 @@
             <column name="name_user_update" type="nvarchar(255)"/>
             <column name="date_create" type="datetime2(6)"/>
             <column name="date_update" type="datetime2(6)"/>
+            <column name="product_status" type="integer"/>
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
