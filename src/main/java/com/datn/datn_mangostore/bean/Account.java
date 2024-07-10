@@ -30,7 +30,6 @@ public class Account implements UserDetails {
     private String images;
     private String encryptionPassword;
     private String veryCode;
-    private String address;
     private Integer accumulatedPoints;
     @ManyToOne
     @JoinColumn(name = "idRank")
@@ -51,7 +50,6 @@ public class Account implements UserDetails {
                    String images,
                    String encryptionPassword,
                    String veryCode,
-                   String address,
                    Integer accumulatedPoints,
                    Rank rank,
                    AddressClient addressClient,
@@ -66,7 +64,6 @@ public class Account implements UserDetails {
         this.images = images;
         this.encryptionPassword = encryptionPassword;
         this.veryCode = veryCode;
-        this.address = address;
         this.accumulatedPoints = accumulatedPoints;
         this.rank = rank;
         this.addressClient = addressClient;
@@ -147,14 +144,6 @@ public class Account implements UserDetails {
 
     public void setVeryCode(String veryCode) {
         this.veryCode = veryCode;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Integer getAccumulatedPoints() {

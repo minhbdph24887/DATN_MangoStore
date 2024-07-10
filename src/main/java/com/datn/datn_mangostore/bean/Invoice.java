@@ -34,6 +34,7 @@ public class Invoice {
     private Integer returnClientMoney;
     private Integer shippingMoney;
     private Integer leftoverMoney;
+    private String deliveryAddress;
     private Integer totalPayment;
     private Integer invoiceStatus;
 
@@ -53,6 +54,7 @@ public class Invoice {
                    Integer returnClientMoney,
                    Integer shippingMoney,
                    Integer leftoverMoney,
+                   String deliveryAddress,
                    Integer totalPayment,
                    Integer invoiceStatus) {
         this.id = id;
@@ -71,6 +73,7 @@ public class Invoice {
         this.returnClientMoney = returnClientMoney;
         this.shippingMoney = shippingMoney;
         this.leftoverMoney = leftoverMoney;
+        this.deliveryAddress = deliveryAddress;
         this.totalPayment = totalPayment;
         this.invoiceStatus = invoiceStatus;
     }
@@ -204,6 +207,14 @@ public class Invoice {
 
     public void setPayments(String payments) {
         this.payments = payments;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public Integer getTotalPayment() {
