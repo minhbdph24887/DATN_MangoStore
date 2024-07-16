@@ -32,7 +32,7 @@ public class UpdateAuto {
         this.voucherClientRepository = voucherClientRepository;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 1000)
     public void updateVoucherStatusesAuto() {
         for (Voucher voucher : voucherRepository.findAll()) {
             LocalDateTime now = LocalDateTime.now();
@@ -47,13 +47,14 @@ public class UpdateAuto {
             } else if (voucherStartDate.isAfter(now) && voucherEndDate.isAfter(now)) {
                 voucher.setVoucherStatus(2);
             }
+            voucherRepository.save(voucher);
 
             if (voucher.getQuantity() == 0 || voucher.getVoucherStatus() == 0) {
                 voucher.setStatus(0);
             } else {
                 voucher.setStatus(1);
             }
-            voucherRepository.save(voucher);
+
         }
     }
 
@@ -61,14 +62,9 @@ public class UpdateAuto {
     public void updateStatusProductAuto() {
         for (ProductDetail productDetail : productDetailRepository.findAll()) {
             if (productDetail.getQuantity() == 0) {
-                productDetail.setProductStatus(0);
-            } else {
-                productDetail.setProductStatus(1);
-            }
-            productDetailRepository.save(productDetail);
-
-            if(productDetail.getQuantity() == 0 && productDetail.getProductStatus() == 0) {
                 productDetail.setStatus(0);
+            } else {
+                productDetail.setStatus(1);
             }
             productDetailRepository.save(productDetail);
         }

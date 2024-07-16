@@ -46,6 +46,7 @@ function restoreVoucher(button) {
     const newQuantityElement = tdElement.getElementsByClassName("quantityNew")[0];
     let quantity;
 
+
     if (oldQuantityElement && window.getComputedStyle(oldQuantityElement).display !== "none") {
         quantity = oldQuantityElement.value;
     } else if (newQuantityElement && window.getComputedStyle(newQuantityElement).display !== "none") {
@@ -61,21 +62,17 @@ function restoreVoucher(button) {
         quantity: quantity,
     };
 
-    if (restore()) {
-        alert("Restore Voucher Fall.");
-    } else {
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080" + "/api/mangostore/admin/voucher/restore",
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (response) {
-                window.open("http://localhost:8080/mangostore/admin/voucher", "_self")
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080" + "/api/mangostore/admin/voucher/restore",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+            window.open("http://localhost:8080/mangostore/admin/voucher", "_self")
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 }

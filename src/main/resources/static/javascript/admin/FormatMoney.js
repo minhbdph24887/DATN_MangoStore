@@ -9,9 +9,20 @@ if (formatMoneyPage) {
         return value.replace(/[\D.]+/g, '');
     }
 
-    function onInputAll(value) {
-        document.getElementById('currencyInput').value = formatToCurrencyAll(value);
-        document.getElementById('output').value = formatToNumberAll(formatToCurrencyAll(value));
+    function onInputReducedVoucher(value){
+        document.getElementById('reducedVoucherInput').value = formatToCurrencyAll(value);
+        document.getElementById('reducedVoucherValue').value = formatToNumberAll(formatToCurrencyAll(value));
+    }
+    function onInputMinimumOrder(value){
+        document.getElementById('minimumOrderInput').value = formatToCurrencyAll(value);
+        document.getElementById('minimumOrderValue').value = formatToNumberAll(formatToCurrencyAll(value));
+    }
+    window.onload = function() {
+        const inputMinimumElement = document.getElementById('minimumOrderInput');
+        inputMinimumElement.value = formatToCurrencyAll(inputMinimumElement.value);
+
+        const inputReduceElement = document.getElementById('reducedVoucherInput');
+        inputReduceElement.value = formatToCurrencyAll(inputReduceElement.value);
     }
 }
 

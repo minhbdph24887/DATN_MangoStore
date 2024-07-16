@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="indexFormatMoneyPage addVoucher">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#overview" role="tab"
+                       aria-controls="overview" aria-selected="true">Active Voucher</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab"
+                       href="#inactiveVoucher" role="tab"
+                       aria-selected="false">Inactive Voucher</a>
+                </li>
+            </ul>
+            <div th:if="false">
+                <div class="btn-wrapper">
+                    <a href="#" class="btn btn-otline-dark align-items-center"><i
+                            class="icon-share"></i> Share</a>
+                    <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
+                    <a href="#" class="btn btn-primary text-white me-0"><i
+                            class="icon-download"></i> Export</a>
+                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                        Launch demo modal
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel"
+                 aria-labelledby="overview">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{/mangostore/admin/voucher/search}" method="post">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                                    data-target="#myModal">Add Voucher
+                                            </button>
+
+                                        </div>
+                                        <div class="col-sm-7 form-group">
+                                            <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                                   placeholder="Search Name or Code Voucher"/>
+                                        </div>
+                                        <!--                    <div class="col-sm-2">-->
+                                        <!--                      <button type="submit" class="btn btn-info btn-lg" data-toggle="modal"-->
+                                        <!--                      >SearchVoucher-->
+                                        <!--                      </button>-->
+                                        <!--                    </div>-->
+                                    </div>
+                                </form>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 50px">#</th>
+                                                <th style="width: 109px">Code</th>
+                                                <th style="width: 117px">Name</th>
+                                                <th style="width: 100px">Quantity</th>
+                                                <th style="width: 130px">Reduce</th>
+                                                <th style="width: 130px">Minimum</th>
+                                                <th style="width: 70px">Rank</th>
+                                                <th style="width: 70px">Start Date</th>
+                                                <th style="width: 70px">End Date</th>
+                                                <th style="width: 70px">Status</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 442px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="item, start : ${listVoucherAll}">
+                                                <td style="width: 50px" th:text="${start.count}"></td>
+                                                <td style="width: 109px">
+                                                    <a th:href="@{|/mangostore/admin/voucher/detail/${item.id}|}"
+                                                       th:text="${item.codeVoucher}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td style="width: 117px; word-break: break-all"
+                                                    th:text="${item.nameVoucher}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${item.quantity}"></td>
+                                                <td style="width: 130px"
+                                                    th:text="${#numbers.formatDecimal(item.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 130px"
+                                                    th:text="${#numbers.formatDecimal(item.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 70px" th:text="${item.rank.nameRank}"></td>
+                                                <td style="width: 70px" th:text="${item.startDay}"></td>
+                                                <td style="width: 70px" th:text="${item.endDate}"></td>
+                                                <td style="width: 102px" th:if="${item.voucherStatus == 1}">
+                                                    <label class="badge badge-success">InProgress</label>
+                                                </td>
+                                                <td style="width: 102px" th:if="${item.voucherStatus == 2}">
+                                                    <label class="badge badge-info">ComingSoon</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listRank.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Rank is entity
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="inactiveVoucher" role="tabpanel"
+                 aria-labelledby="audiences">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{/mangostore/admin/voucher/search/in-active}" method="post">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                                    data-target="#myModal">Add Voucher
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-7 form-group">
+                                            <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                                   placeholder="Search Name or Code Voucher"/>
+                                        </div>
+                                        <!--                    <div class="col-sm-2">-->
+                                        <!--                      <button type="submit" class="btn btn-info btn-lg" data-toggle="modal"-->
+                                        <!--                      >SearchVoucher-->
+                                        <!--                      </button>-->
+                                        <!--                    </div>-->
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 50px">#</th>
+                                                <th style="width: 109px">Code</th>
+                                                <th style="width: 117px">Name</th>
+                                                <th style="width: 100px">Quantity</th>
+                                                <th style="width: 130px">ReduceValue</th>
+                                                <th style="width: 130px">MiniumPrice</th>
+                                                <th style="width: 70px">Rank</th>
+                                                <th style="width: 70px">Status</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 395px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listVoucherInactive, stat : ${listVoucherInactive}">
+                                                <td style="width: 40px" th:text="${stat.count}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listVoucherInactive.codeVoucher}"></td>
+                                                <td style="width: 145px;word-break: break-all"
+                                                    th:text="${listVoucherInactive.nameVoucher}"></td>
+<!--                                                <td style="width: 141px">-->
+<!--                                                    <input type="hidden" name="id" class="idVoucher"-->
+<!--                                                           th:value="${listVoucherInactive.id}">-->
+<!--                                                    <th:block th:if="${listVoucherInactive.quantity == 0}">-->
+<!--                                                        <input type="number" style="width: 70px" name="quantity"-->
+<!--                                                               class="quantityNew"-->
+<!--                                                               th:value="${listVoucherInactive.quantity}">-->
+<!--                                                        <button type="submit" th:text="Save" class="btn btn-info"-->
+<!--                                                                onclick="restoreVoucher(this)"></button>-->
+<!--                                                    </th:block>-->
+<!--                                                    <th:block th:unless="${listVoucherInactive.quantity == 0}">-->
+<!--                                                        <input type="text" style="width: 70px" name="quantity"-->
+<!--                                                               class="quantityOld"-->
+<!--                                                               th:value="${listVoucherInactive.quantity}" readonly>-->
+<!--                                                        <button type="submit" th:text="Save" disabled-->
+<!--                                                                class="btn btn-info"-->
+<!--                                                                onclick="restoreVoucher(this)"></button>-->
+<!--                                                    </th:block>-->
+
+<!--                                                </td>-->
+                                                <td style="width: 141px">
+                                                    <input type="hidden" name="id" class="idVoucher"
+                                                           th:value="${listVoucherInactive.id}">
+                                                    <th:block th:if="${listVoucherInactive.quantity == 0}">
+                                                        <input type="number" style="width: 70px" name="quantity"
+                                                               class="quantityNew"
+                                                               th:value="${listVoucherInactive.quantity}">
+                                                    </th:block>
+                                                    <th:block th:unless="${listVoucherInactive.quantity == 0}">
+                                                        <input type="text" style="width: 70px" name="quantity"
+                                                               class="quantityOld"
+                                                               th:value="${listVoucherInactive.quantity}" readonly>
+                                                    </th:block>
+                                                    <th:block th:if="${listVoucherInactive.voucherStatus == 0}">
+                                                        <button type="submit" th:text="Save" class="btn btn-info" disabled
+                                                                onclick="restoreVoucher(this)"></button>
+                                                    </th:block>
+                                                    <th:block th:unless="${listVoucherInactive.voucherStatus == 0}">
+                                                        <button type="submit" th:text="Save" class="btn btn-info"
+                                                                onclick="restoreVoucher(this)"></button>
+                                                    </th:block>
+
+                                                </td>
+                                                <td style="width: 105px"
+                                                    th:text="${#numbers.formatDecimal(listVoucherInactive.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 130px"
+                                                    th:text="${#numbers.formatDecimal(listVoucherInactive.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listVoucherInactive.rank.nameRank}"></td>
+                                                <td style="width: 102px"
+                                                    th:if="${listVoucherInactive.voucherStatus == 0}">
+                                                    <label class="badge badge-danger">Finished</label>
+                                                </td>
+                                                <td style="width: 102px"
+                                                    th:if="${listVoucherInactive.voucherStatus == 1}">
+                                                    <label class="badge badge-success">InProgress</label>
+                                                </td>
+                                                <td style="width: 102px"
+                                                    th:if="${listVoucherInactive.voucherStatus == 2}">
+                                                    <label class="badge badge-info">ComingSoon</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listVoucherInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Voucher Inactive is entity
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal add-->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="formVoucher" th:action="@{/mangostore/admin/voucher/add}" th:object="${addVoucher}"
+                          method="post">
+                        <h3 class="mb-4">Add Voucher</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Code Voucher:</label>
+                                            <input type="text"
+                                                   th:text ="${codeVoucher}"
+                                                   id="codeVoucherInput"
+                                                   class="form-control"
+                                                   name="codeVoucher"
+                                                   placeholder="Enter Code Voucher">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Name Voucher:</label>
+                                            <input type="text"
+                                                   th:text ="${nameVoucher}"
+                                                   id="nameVoucherInput"
+                                                   class="form-control"
+                                                   name="nameVoucher"
+                                                   placeholder="Enter Name Voucher">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Voucher From:</label>
+                                            <select name="voucherFrom" class="form-select">
+                                                <option value="all" th:text="all"></option>
+                                                <option value="offline" th:text="offline"></option>
+                                                <option value="online" th:text="online"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Voucher belongs to rank:</label>
+                                            <select name="rank" class="form-select">
+                                                <option th:each="listRank : ${listRank}"
+                                                        th:value="${listRank.id}"
+                                                        th:text="${listRank.nameRank}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Quantity:</label>
+                                            <input type="number"
+                                                   th:text ="${quantityVoucher}"
+                                                   id="quantityVoucherInput"
+                                                   class="form-control"
+                                                   name="quantity"
+                                                   placeholder="Enter Quantity Voucher">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Minimum Order:</label>
+                                            <div class="d-flex">
+                                                <input type="text"
+                                                       id="minimumOrderInput"
+                                                       class="form-control"
+                                                       oninput="onInputMinimumOrder(this.value)"
+                                                       name="minimumOrderInput"
+                                                       th:text ="${miniumVoucher}"
+                                                       placeholder="Enter Minimum Order">
+                                                <span style="margin-left: 0.5rem">VND</span>
+                                                <input type="hidden" name="minimumPrice" id="minimumOrderValue">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Reduced Voucher:</label>
+                                            <div class="d-flex">
+                                                <input type="text"
+                                                       id="reducedVoucherInput"
+                                                       name="reducedVoucherInput"
+                                                       class="form-control"
+                                                       th:text ="${reduceVoucher}"
+                                                       oninput="onInputReducedVoucher(this.value)"
+                                                       placeholder="Enter ReducedValue Voucher">
+                                                <span style="margin-left: 0.5rem">VND</span>
+                                                <input type="hidden" name="reducedValue" id="reducedVoucherValue">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Start Day:</label>
+                                            <input type="date"
+                                                   id="startDay"
+                                                   th:text ="${startDayVoucher}"
+                                                   class="form-control"
+                                                   name="startDay">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">End Date:</label>
+                                            <input type="date"
+                                                   id="endDate"
+                                                   th:text ="${endDateVoucher}"
+                                                   class="form-control"
+                                                   name="endDate">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-6">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                    <input type="button"
+                                           value="Save"
+                                           onclick="addVoucherForm()"
+                                           class="btn btn-primary">
+                                    <div class="submitting"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--Model notification-->
+    <div th:if="${showNotificationInsert}" class="modal fade" id="insertSuccessful" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    Add new promotion successfully
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${showNotificationEnroll}" class="modal fade" id="insertEnroll" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <h5 style="color: red" th:text="${textMessage}"></h5>
+                    <h5 style="color: #095cd8" th:text="${textMessageSuccess}"></h5>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+</body>
+</html>

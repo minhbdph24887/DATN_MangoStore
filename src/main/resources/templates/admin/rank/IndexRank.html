@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="addRank">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Rank Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Rank Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Index Rank</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Rank Active</h4>
+                            <form th:action="@{/mangostore/admin/rank/search}" method="POST">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                                data-target="#myModal">Add Rank
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                               placeholder="Search Name Rank"/>
+                                    </div>
+<!--                                    <div class="col-sm-2">-->
+<!--                                        <button type="submit" class="btn btn-info btn-lg">Search</button>-->
+<!--                                    </div>-->
+                                </div>
+                            </form>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 109px">CodeRank</th>
+                                            <th style="width: 117px">NameRank</th>
+                                            <th style="width: 100px">MinimumScore</th>
+                                            <th style="width: 100px">MaximumScore</th>
+                                            <th style="width: 100px">UserCreate</th>
+                                            <th style="width: 100px">UserUpdate</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 100px">DateUpdate</th>
+                                            <th style="width: 100px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 230px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listRank, stat : ${listRank}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 109px">
+                                                <a th:href="@{|/mangostore/admin/rank/detail/${listRank.id}|}"
+                                                   th:text="${listRank.codeRank}"
+                                                   style="text-decoration: none">
+                                                </a>
+                                            </td>
+                                            <td style="width: 117px; word-break: break-all"
+                                                th:text="${listRank.nameRank}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listRank.minimumScore}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listRank.maximumScore}"></td>
+                                            <td style="width: 100px" th:text="${listRank.userCreate}"></td>
+                                            <td style="width: 100px" th:text="${listRank.userUpdate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listRank.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listRank.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px" th:if="${listRank.status == 1}">
+                                                <label class="badge badge-success">Active</label>
+                                            </td>
+                                            <td style="width: 100px" th:if="${listRank.status == 0}">
+                                                <label class="badge badge-danger">Inactive</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listRank.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Rank is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Rank Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 109px">CodeRank</th>
+                                            <th style="width: 117px">NameRank</th>
+                                            <th style="width: 100px">MinimumScore</th>
+                                            <th style="width: 100px">MaximumScore</th>
+                                            <th style="width: 100px">UserCreate</th>
+                                            <th style="width: 100px">UserUpdate</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 100px">DateUpdate</th>
+                                            <th style="width: 100px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 377px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listRankInactive, stat : ${listRankInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 109px">
+                                                <a th:href="@{|/mangostore/admin/rank/restore/${listRankInactive.id}|}"
+                                                   th:text="${listRankInactive.codeRank}"
+                                                   onclick="return restore()"
+                                                   style="text-decoration: none"></a>
+                                            </td>
+                                            <td style="width: 117px;word-break: break-all"
+                                                th:text="${listRankInactive.nameRank}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listRankInactive.minimumScore}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listRankInactive.maximumScore}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listRankInactive.userCreate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listRankInactive.userUpdate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listRankInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listRankInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px" th:if="${listRankInactive.status == 0}">
+                                                <label class="badge badge-danger">Stop Working</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listRankInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Rank Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--    Modal-->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="formRank" th:action="@{/mangostore/admin/rank/add}" th:object="${addRank}"
+                          method="post" onsubmit="return add()">
+                        <h3 class="mb-4">Add Rank</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Name Rank: </label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="nameRank" id="nameRankInput"
+                                                   placeholder="Enter Name Rank">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Minimum Sroce: </label>
+                                            <input type="number" id="minimumScore"
+                                                   class="form-control"
+                                                   name="minimumScore"
+                                                   placeholder="Enter Minimum Score">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Maximum Score: </label>
+                                            <input type="number" id="maximumScore"
+                                                   class="form-control"
+                                                   name="maximumScore"
+                                                   placeholder="Enter Maximum Score">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                    <input type="button"
+                                           value="Save"
+                                           onclick="addRankForm()"
+                                           class="btn btn-primary">
+                                    <div class="submitting"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
