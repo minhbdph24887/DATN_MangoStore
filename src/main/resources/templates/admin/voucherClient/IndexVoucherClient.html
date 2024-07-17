@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="indexFormatMoneyPage">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"-->
+<!--                       href="#tab1" role="tab"-->
+<!--                       aria-controls="tab1" aria-selected="true">Active Voucher</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"-->
+<!--                       aria-controls="tab2" role="tab"-->
+<!--                       aria-selected="false">Voucher Inactive</a>-->
+<!--                </li>-->
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Index Voucher</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Voucher Client Active</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 110px">Code</th>
+                                            <th style="width: 145px">NameVoucher</th>
+                                            <th style="width: 111px">ReducedValue</th>
+                                            <th style="width: 104px">VoucherFrom</th>
+                                            <th style="width: 100px">FullName</th>
+                                            <th style="width: 104px">Save Day</th>
+                                            <th style="width: 104px">StartDay</th>
+                                            <th style="width: 101px">EndDate</th>
+                                            <th style="width: 102px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 245px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="items, stat : ${listVoucherClient}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 110px">
+                                                <a th:href="@{|/mangostore/admin/voucher-client/detail/${items.id}|}"
+                                                   th:text="${items.codeVoucher}"
+                                                   style="text-decoration: none">
+                                                </a>
+                                            </td>
+                                            <td style="width: 145px; word-break: break-all"
+                                                th:text="${items.nameVoucher}"></td>
+                                            <td style="width: 111px"
+                                                th:text="${#numbers.formatDecimal(items.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                            <td style="width: 104px" th:text="${items.voucher.voucherFrom}"></td>
+                                            <td style="width: 100px" th:text="${items.account.fullName}"></td>
+                                            <td style="width: 104px"
+                                                th:text="${#temporals.format(items.saveDate, 'dd/MM/yyyy')}"></td>
+                                            <td style="width: 104px"
+                                                th:text="${#temporals.format(items.startDay, 'dd/MM/yyyy')}"></td>
+                                            <td style="width: 101px"
+                                                th:text="${#temporals.format(items.endDate, 'dd/MM/yyyy')}"></td>
+                                            <td style="width: 102px" th:if="${items.voucherStatus == 1}">
+                                                <label class="badge badge-success">InProgress</label>
+                                            </td>
+                                            <td style="width: 102px" th:if="${items.voucherStatus == 2}">
+                                                <label class="badge badge-info">ComingSoon</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listVoucherClient.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Voucher Client is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Voucher Clinet Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 110px">Code</th>
+                                            <th style="width: 145px">NameVoucher</th>
+                                            <th style="width: 111px">ReducedValue</th>
+                                            <th style="width: 104px">VoucherFrom</th>
+                                            <th style="width: 100px">FullName</th>
+                                            <th style="width: 104px">Save Day</th>
+                                            <th style="width: 104px">StartDay</th>
+                                            <th style="width: 101px">EndDate</th>
+                                            <th style="width: 102px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 395px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listVoucherClientAdminInactive, stat : ${listVoucherClientAdminInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 100px" th:text="${listVoucherClientAdminInactive.codeVoucher}"></td>
+                                            <td style="width: 145px;word-break: break-all"
+                                                th:text="${listVoucherClientAdminInactive.nameVoucher}"></td>
+                                            <!--                                            <td style="width: 141px">-->
+                                            <!--                                                <input type="hidden" name="id" class="idVoucher"-->
+                                            <!--                                                       th:value="${listVoucherClientAdminInactive.id}">-->
+
+                                            <!--                                                <button type="submit" th:text="Save" class="btn btn-info"-->
+                                            <!--                                                        onclick="restoreVoucher(this)"></button>-->
+                                            <!--                                            </td>-->
+                                            <td style="width: 105px"
+                                                th:text="${#numbers.formatDecimal(listVoucherClientAdminInactive.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                            <td style="width: 100px" th:text="${listVoucherInactive.voucher.id}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listVoucherClientAdminInactive.account.fullName}"></td>
+                                            <td style="width: 104px"
+                                                th:text="${#temporals.format(listVoucherClientAdminInactive.saveDate, 'dd/MM/yyyy')}"></td>
+                                            <td style="width: 104px"
+                                                th:text="${#temporals.format(listVoucherClientAdminInactive.startDay, 'dd/MM/yyyy')}"></td>
+                                            <td style="width: 101px"
+                                                th:text="${#temporals.format(listVoucherClientAdminInactive.endDate, 'dd/MM/yyyy')}"></td>
+
+                                            <td style="width: 102px" th:if="${listVoucherClientAdminInactive.voucherStatus == 0}">
+                                                <label class="badge badge-danger">Finished</label>
+                                            </td>
+                                            <td style="width: 102px" th:if="${listVoucherClientAdminInactive.voucherStatus == 1}">
+                                                <label class="badge badge-success">InProgress</label>
+                                            </td>
+                                            <td style="width: 102px" th:if="${listVoucherClientAdminInactive.voucherStatus == 2}">
+                                                <label class="badge badge-info">ComingSoon</label>
+                                            </td>
+                                        </tr>
+<!--                                        <tr th:if="${listVoucherClientAdminInactive.isEmpty()}">-->
+<!--                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">-->
+<!--                                                Voucher Inactive is entity-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -15,4 +15,16 @@ public interface RankRepository extends JpaRepository<Rank, Long> {
 
     @Query(value = "select * from rank where status= 1 order by id desc", nativeQuery = true)
     List<Rank> getAllRankByStatus1();
+
+    @Query(value = "select * from rank where status= 0 order by id desc", nativeQuery = true)
+    List<Rank> getAllRankByStatus0();
+
+    @Query(value = "select * from rank where name_rank like %:nameRank% and status= 1", nativeQuery = true)
+    List<Rank> searchRankByName(@Param("nameRank") String nameRank);
+
+    @Query(value = "select * from rank where code_rank like %:codeRank% and status= 1", nativeQuery = true)
+    List<Rank> searchRankByCode(@Param("codeRank") String codeRank);
+
+    @Query(value = "select * from rank where name_rank= :nameRank", nativeQuery = true)
+    Rank detailRankByNameRank(@Param("nameRank") String nameRank);
 }

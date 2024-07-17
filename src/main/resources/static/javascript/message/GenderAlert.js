@@ -44,7 +44,8 @@ function confirmAlertForm(message1, message2, idForm) {
     });
 }
 
-function confirmAlertLink(message1, message2, url) {
+function confirmAlertLink(event, message1, message2, url) {
+    event.preventDefault();
     Swal.fire({
         title: "Are you sure?",
         text: message1,

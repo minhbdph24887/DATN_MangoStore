@@ -51,7 +51,7 @@ function restoreVoucher(button) {
     } else if (newQuantityElement && window.getComputedStyle(newQuantityElement).display !== "none") {
         quantity = newQuantityElement.value;
         if (quantity <= 0) {
-            alert("The new quantity is incorrect, please re-enter.");
+            dangerAlert("The new quantity is incorrect, please re-enter.");
             return;
         }
     }
@@ -61,21 +61,20 @@ function restoreVoucher(button) {
         quantity: quantity,
     };
 
-    if (restore()) {
-        alert("Restore Voucher Fall.");
-    } else {
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080" + "/api/mangostore/admin/voucher/restore",
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (response) {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080" + "/api/mangostore/admin/voucher/restore",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+            successAlert('Khôi Phục Voucher Thành Công').then(() => {
                 window.open("http://localhost:8080/mangostore/admin/voucher", "_self")
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
+            });
+        },
+        error: function (error) {
+            dangerAlert('Lỗi')
+            console.clear();
+        }
+    });
 }

@@ -39,7 +39,7 @@ if (checkAddVoucherPage) {
                         } else {
                             errorAlert('An error occurred.');
                         }
-                        console.log(e);
+                        console.clear();
                     }
                 });
             }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="indexFormatMoneyPage ">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom"></div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher-client}">Index Voucher
+                            Client</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detail Voucher</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card container">
+                    <div class="card">
+                        <div class="card-body container">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">CodeVoucher</label>
+                                        <input type="text" class="form-control" name="codeVoucher"
+                                               th:value="${voucherClient.codeVoucher}" readonly/>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label class="form-label">NameVoucher</label>
+                                        <input type="text" class="form-control" name="nameVoucher"
+                                               th:value="${voucherClient.nameVoucher}" readonly/>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Status</label>
+                                        <th:block th:if="${voucherClient.voucherStatus == 1}">
+                                            <label class="badge badge-success form-control">InProgress</label>
+                                        </th:block>
+                                        <th:block th:if="${voucherClient.voucherStatus == 2}">
+                                            <label class="badge badge-info form-control">ComingSoon</label>
+                                        </th:block>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="form-label">ReducedValue</label>
+                                            <div class="d-flex">
+                                                <div class="form-control"
+                                                     th:text="${#numbers.formatDecimal(voucherClient.reducedValue , 0, 'COMMA', 0, 'POINT')}"
+                                                     readonly></div>
+                                                <span style="margin-left: 0.5rem">VND</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">StartDay</label>
+                                            <input type="text" class="form-control" name="startDay"
+                                                   th:value="${#temporals.format(voucherClient.startDay, 'yyyy-MM-dd')}"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">EndDate</label>
+                                            <input type="text" class="form-control" name="endDate"
+                                                   th:value="${#temporals.format(voucherClient.endDate, 'yyyy-MM-dd')}"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
