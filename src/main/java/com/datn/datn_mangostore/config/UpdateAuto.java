@@ -58,6 +58,30 @@ public class UpdateAuto {
     }
 
     @Scheduled(fixedRate = 5000)
+    public void updateVoucherClientStatusesAuto() {
+        for (VoucherClient voucherClient : voucherClientRepository.findAll()) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime voucherStartDate = voucherClient.getStartDay().atStartOfDay();
+            LocalDateTime voucherEndDate = voucherClient.getEndDate().atStartOfDay();
+
+            if (voucherStartDate.isBefore(now) && voucherEndDate.isBefore(now)) {
+                voucherClient.setVoucherStatus(0);
+            } else if (voucherStartDate.isBefore(now) && voucherEndDate.isAfter(now)) {
+                voucherClient.setVoucherStatus(1);
+            } else if (voucherStartDate.isAfter(now) && voucherEndDate.isAfter(now)) {
+                voucherClient.setVoucherStatus(2);
+            }
+            voucherClientRepository.save(voucherClient);
+
+            if (voucherClient.getVoucherStatus() == 0) {
+                voucherClient.setStatus(0);
+            }
+
+            voucherClientRepository.save(voucherClient);
+        }
+    }
+
+    @Scheduled(fixedRate = 5000)
     public void updateStatusProductAuto() {
         for (ProductDetail productDetail : productDetailRepository.findAll()) {
             if (productDetail.getQuantity() == 0) {
@@ -81,7 +105,7 @@ public class UpdateAuto {
             Invoice detailInvoiceClient = invoiceRepository.findInvoiceByIdAccount(invoice.getIdCustomer());
             if (detailInvoiceClient != null) {
                 if (detailInvoiceClient.getInvoiceCreationDate().plusMinutes(30).isBefore(today)) {
-                    detailInvoiceClient.setInvoiceStatus(5);
+                    detailInvoiceClient.setInvoiceStatus(8);
                     invoiceRepository.save(detailInvoiceClient);
                 }
             }

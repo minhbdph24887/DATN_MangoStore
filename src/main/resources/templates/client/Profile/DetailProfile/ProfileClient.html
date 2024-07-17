@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main class="showImage checkBirthday detailProfile">
+    <div class="container">
+        <div style="height: 660px;">
+            <div class="row">
+                <div class="col-md-3" th:replace="~{/client/Profile/IndexProfile :: detailView}"></div>
+                <div class="col-md-9">
+                    <h4>My profile</h4>
+                    <p>Manage profile information for account security</p>
+                    <hr>
+                    <form id="fromUpdateProfile" th:action="@{/mangostore/profile/update}" method="post"
+                          th:object="${profile}"
+                          enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin-bottom: 5px;">Full Name:</label>
+                                    <div class="col-sm-7">
+                                        <label style="margin-top: 16px;">
+                                            <input type="hidden" name="id" th:field="*{id}" id="idProfile"/>
+                                            <input type="text" id="nameClientInput" class="form-control"
+                                                   th:field="*{fullName}"
+                                                   style="width: 484px;"/>
+                                            <span style="font-size: 15px;">* Username to display information</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3">Phone Number:</label>
+                                    <div class="col-sm-7">
+                                        <label>
+                                            <input type="text" class="form-control" id="numberPhoneInput"
+                                                   th:field="*{numberPhone}"
+                                                   style="width: 484px;"/>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3">Email:</label>
+                                    <div class="col-sm-7">
+                                        <label>
+                                            <input type="text" class="form-control" id="emailInput" th:field="*{email}"
+                                                   style="width: 484px;"/>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-2" style="margin-bottom: 5px;">Gender:</label>
+                                    <div class="col-sm-7" style="margin-left: 58px; margin-bottom: 12px;">
+                                        <label style="margin-top: 16px;">
+                                            <input type="radio" class="me-2" name="gender" value="true"
+                                                   th:checked="${profile.gender == true}"
+                                                   style="width: 21px;">
+                                            <span th:text="Nam"></span>
+                                        </label>
+                                        <label style="margin-left: 15px;">
+                                            <input type="radio" class="me-2" name="gender" value="false"
+                                                   th:checked="${profile.gender == false}"
+                                                   style="width: 21px;">
+                                            <span th:text="Nữ"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-2" style="margin-bottom: 18px;">Birthday:</label>
+                                    <div class="col-sm-7" style="margin-left: 58px; margin-bottom: 12px;">
+                                        <label style="margin-top: -5px;">
+                                            <input type="date" class="form-control" id="birthdayInput"
+                                                   th:field="*{birthday}" style="width: 287px;"/>
+                                            <span id="errorBirthday"
+                                                  style="display: none; position: absolute; top: 100%; left: 20px; color: red">Invalid Date of Birth</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 d-flex">
+                                <div class="info-wrap" style="margin-top: 72px;">
+                                    <div class="form-group">
+                                        <img id="previewImage"
+                                             style="width: 100px; height: 100px; object-fit: cover; margin-left: 31px"
+                                             alt=""
+                                             th:src="${profile.images != null} ? '/images/profile/' + ${profile.images} : ''"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="media-body ml-4">
+                                            <label class="btn btn-outline-primary btn-sm"
+                                                   style="width: 128px;font-size: 10px;">
+                                                Upload new photo
+                                                <input type="file" class="account-settings-fileinput" id="imageInput"
+                                                       name="imageFile" accept="images/profile/*">
+                                            </label>&nbsp;
+                                            <button type="button" class="btn btn-default md-btn-flat btn-sm"
+                                                    style="font-size: 10px;">Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-outline-success"
+                                            onclick="UpdateProfileClient()" style="margin-left: 52px;">Save As
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

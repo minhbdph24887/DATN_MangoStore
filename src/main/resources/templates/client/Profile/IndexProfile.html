@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main>
+    <div class="container">
+        <div style="height: 527px">
+            <div class="row">
+                <div class="col-md-3" th:fragment="detailView">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="d-flex">
+                                    <th:block th:if="${profile.getImages() != null}">
+                                        <img th:src="@{|/images/profile/${profile.getImages()}|}" alt="Profile image"
+                                             style="width: 36px; height: 36px; border-radius: 100%; margin-bottom: -3px;"
+                                             class="me-2">
+                                        <span class="me-2" th:text="${profile.getFullName()}"
+                                              style="margin-top: 3px;"></span>
+                                    </th:block>
+                                    <th:block th:unless="${profile.getImages() != null}">
+                                        <i class="bi bi-person-circle me-2"
+                                           style="font-size: 34px; vertical-align: middle;"></i>
+                                        <span class="me-2" th:text="${profile.getFullName()}"
+                                              style="margin-top: 15px;"></span>
+                                    </th:block>
+                                </div>
+                                <hr>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table>
+                        <tr>
+                            <td>
+                                <a th:href="@{/mangostore/profile}" style="text-decoration: none; color: #555;">Edit
+                                    Profile</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table>
+                        <tr>
+                            <td>
+                                <a th:href="@{/mangostore/change-password}" style="text-decoration: none; color: #555;">Change
+                                    Password</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table>
+                        <tr>
+                            <td>
+                                <a th:href="@{/mangostore/purchase}"
+                                   style="text-decoration: none; color: #555;">Orders</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table>
+                        <tr>
+                            <td>
+                                <a th:href="@{/mangostore/voucher-wallet}" style="text-decoration: none; color: #555;">My
+                                    Voucher</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

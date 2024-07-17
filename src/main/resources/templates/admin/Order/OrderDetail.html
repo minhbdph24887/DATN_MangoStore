@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="updateInvoiceStatusPage">
+    <div>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/order/list}">Index Invoice List</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detail Invoice</li>
+        </ul>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Detail Invoice</h4>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div style="height: 585px;">
+                            <div class="form-horizontal">
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">CodeInvoice:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static" th:text="${detailInvoice.codeInvoice}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">NameInvoice:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static" th:text="${detailInvoice.nameInvoice}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">InvoiceCreator:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static" th:text="${detailAccountByInvoice.fullName}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">DateCreateInvoice:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="${#temporals.format(detailInvoice.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">InvoicePaymentDate:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="${#temporals.format(detailInvoice.invoicePaymentDate, 'HH:mm:ss : dd/MM/yyyy')}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">PaymentMethods:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="${detailInvoice.payments}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">Delivery Address:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="${detailInvoice.deliveryAddress}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-7" style="margin: 0;">TotalInvoiceAmount:</label>
+                                    <div class="col-sm-5" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="' ' + ${#numbers.formatDecimal(detailInvoice.totalInvoiceAmount, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-7" style="margin: 0;">ShippingMoney:</label>
+                                    <div class="col-sm-5" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="'+ ' + ${#numbers.formatDecimal(detailInvoice.shippingMoney, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-7"
+                                           style="margin: 0;">CustomerPoints(converted):</label>
+                                    <div class="col-sm-5" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="'- ' + ${#numbers.formatDecimal(detailInvoice.customerPoints * 1000, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-7" style="margin: 0;">VoucherMoney:</label>
+                                    <th:block th:if="${detailInvoice.voucher != null}">
+                                        <div class="col-sm-5" style="margin: 0;">
+                                            <p class="form-control-static"
+                                               th:text="'- ' + ${#numbers.formatDecimal(detailInvoice.voucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                               style="margin: 0; color: red"></p>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${detailInvoice.voucherClient != null}">
+                                        <div class="col-sm-5" style="margin: 0;">
+                                            <p class="form-control-static"
+                                               th:text="'- ' + ${#numbers.formatDecimal(detailInvoice.voucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                               style="margin: 0; color: red"></p>
+                                        </div>
+                                    </th:block>
+                                    <th:block
+                                            th:if="${detailInvoice.voucher == null && detailInvoice.voucherClient == null}">
+                                        <div class="col-sm-5" style="margin: 0;">
+                                            <p class="form-control-static"
+                                               style="margin: 0; color: red">- 0 VND</p>
+                                        </div>
+                                    </th:block>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-6"
+                                           style="margin: 0;"></label>
+                                    <div class="col-sm-6" style="margin: 0;">
+                                        ------------------------------------------
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-7"
+                                           style="margin: 0;"></label>
+                                    <div class="col-sm-5" style="margin: 0;">
+                                        <p class="form-control-static"
+                                           th:text="${#numbers.formatDecimal(detailInvoice.totalPayment, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                           style="margin: 0; color: red; font-size: 22px;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <th:block th:if="${detailInvoice.invoiceStatus != 5}">
+                            <button class="btn btn-outline-success" th:data-id="${detailInvoice.id}"
+                                    onclick="updateStatusInvoice(event)">Order confirmation
+                            </button>
+                        </th:block>
+                    </div>
+                    <div class="col-md-5">
+                        <div style="height: 426px;">
+                            <div class="card-header">
+                                <h6>Invoice Process</h6>
+                            </div>
+                            <ul class="timeline">
+                                <th:block th:if="${detailInvoice.invoiceStatus >= 2}">
+                                    <li>
+                                        <div class="timeline-panel">
+                                            <p>Confirmed</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${detailInvoice.invoiceStatus >= 3}">
+                                    <li>
+                                        <div class="timeline-panel">
+                                            <p>DeliveredToDVVC</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${detailInvoice.invoiceStatus >= 4}">
+                                    <li>
+                                        <div class="timeline-panel">
+                                            <p>AreDelivering</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${detailInvoice.invoiceStatus >= 5}">
+                                    <li>
+                                        <div class="timeline-panel">
+                                            <p>Success</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+                        <div style="height: 226px;">
+                            <h6>List of products</h6>
+                            <div class="contentCheckOut" style="height: 205px">
+                                <th:block th:each="findAllInvoiceDetail : ${listInvoiceDetail}">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 22px;">
+                                                <img th:src="@{|/images/product/${findAllInvoiceDetail.productDetail.product.images.imagesFile}|}"
+                                                     alt="" style="width: 85px; height: 89px;">
+                                            </td>
+                                            <td>
+                                                <div class="me-5">
+                                                    <h6 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 250px; margin-left: 38px; margin-right: 18px;">
+                                                        [[*{findAllInvoiceDetail.productDetail.product.nameProduct}]]</h6>
+                                                    <div class="d-flex">
+                                                        <p th:utext="('Size ' + ${findAllInvoiceDetail.productDetail.size.nameSize} + ', Màu ' + ${findAllInvoiceDetail.productDetail.color.nameColor})"
+                                                           class="me-2" style="margin-left: 48px"></p>
+                                                        <span class="me-3"
+                                                              th:text="${'x' + findAllInvoiceDetail.quantity}"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td th:text="${#numbers.formatDecimal(findAllInvoiceDetail.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                class="text-end pe-4"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

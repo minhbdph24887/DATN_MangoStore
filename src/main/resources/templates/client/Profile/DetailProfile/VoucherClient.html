@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main class="voucherClientPage">
+    <div class="container">
+        <div style="height: 660px; width: 104%">
+            <div class="row">
+                <div class="col-md-3" th:replace="~{/client/Profile/IndexProfile :: detailView}"></div>
+                <div class="col-md-9">
+                    <h4>My Voucher</h4>
+                    <p>Vouchers exclusively for customers</p>
+                    <div class="row" style="max-height: 570px; overflow-y: scroll;">
+                        <th:block th:unless="${listVoucherClient.empty}">
+                            <th:block th:each="listVoucherClient, stat : ${listVoucherClient}">
+                                <div th:if="${stat.index % 2 == 0}" class="row">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <img th:src="@{|/images/layout/logoVoucher.png|}"
+                                                     style="margin-top: 5px; width: 122px; height: 135px;"
+                                                     alt="">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"
+                                                        th:text="${listVoucherClient.nameVoucher}"
+                                                        style="width: 262px;"></h5>
+                                                    <p th:text="${'Decrease to: ' + #numbers.formatDecimal(listVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                       style="white-space: nowrap;"></p>
+                                                    <p class="card-text">
+                                                        <small class="text-muted"
+                                                               th:text="${listVoucherClient.validity}"></small>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${stat.index % 2 == 1 || stat.index + 1 == stat.size}" class="row">
+                                </div>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${listVoucherClient.empty}">
+                            <div class="col-md-12">
+                                <h5>There are no vouchers available</h5>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main>
+    <div>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Index Invoice List</li>
+        </ul>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">List Invoice</h4>
+                <div class="table-responsive">
+                    <div class="header">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>CodeInvoice</th>
+                                <th>NameInvoice</th>
+                                <th>InvoiceCreationDate</th>
+                                <th>InvoicePaymentDate</th>
+                                <th>TotalInvoiceAmount</th>
+                                <th>TotalPayment</th>
+                                <th>Status Invoice</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="content" style="height: 476px;">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr th:each="listInvoice, stat : ${listInvoice}">
+                                <td th:text="${stat.count}"></td>
+                                <td>
+                                    <a th:href="@{|/mangostore/admin/order/detail/${listInvoice.id}|}"
+                                       th:text="${listInvoice.codeInvoice}"
+                                       style="text-decoration: none">
+                                    </a>
+                                </td>
+                                <td th:text="${listInvoice.nameInvoice}"></td>
+                                <td th:text="${#temporals.format(listInvoice.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
+                                <td th:text="${#temporals.format(listInvoice.invoicePaymentDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
+                                <td th:text="${#numbers.formatDecimal(listInvoice.totalInvoiceAmount, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                <td th:text="${#numbers.formatDecimal(listInvoice.totalPayment, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                <td th:if="${listInvoice.invoiceStatus == 2}">
+                                    <label class="badge badge-success">đã xác nhận</label>
+                                </td>
+                                <td th:if="${listInvoice.invoiceStatus == 3}">
+                                    <label class="badge badge-success">đã giao ĐVVC</label>
+                                </td>
+                                <td th:if="${listInvoice.invoiceStatus == 4}">
+                                    <label class="badge badge-success">đang giao hàng</label>
+                                </td>
+                                <td th:if="${listInvoice.invoiceStatus == 5}">
+                                    <label class="badge badge-success">thành công</label>
+                                </td>
+                            </tr>
+                            <tr th:if="${listInvoice.isEmpty()}">
+                                <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                    List Invoice Is Entity
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

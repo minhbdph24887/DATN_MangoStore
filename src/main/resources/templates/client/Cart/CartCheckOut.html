@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main class="checkOutPage addAddressClient checkAddVoucher checkButtonCheckOut">
+    <div class="container">
+        <h2 class="title">View Checkout</h2>
+        <div class="row" style="--bs-gutter-y: -3rem;">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">List Of Products</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <input type="hidden" id="idInvoiceInput" th:value="${shoppingCart.id}"/>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Total Amount:</h6>
+                        </div>
+                        <span class="text-muted"
+                              th:text="${#numbers.formatDecimal(shoppingCart.getTotalInvoiceAmount(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Invoice Creation Date:</h6>
+                        </div>
+                        <span class="text-muted" id="checkCreateInvoice"
+                              th:text="${#temporals.format(shoppingCart.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Conversion Point:</h6>
+                        </div>
+                        <th:block th:if="${conversionPoint != null}">
+                            <span class="text-muted"
+                                  th:text="${#numbers.formatDecimal(conversionPoint, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                        </th:block>
+                        <th:block th:unless="${conversionPoint != null}">
+                            <span class="text-muted">No Data</span>
+                        </th:block>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Shipping Money:</h6>
+                        </div>
+                        <span class="text-muted"
+                              th:text="${#numbers.formatDecimal(shoppingCart.getShippingMoney(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Reduced Voucher:</h6>
+                        </div>
+                        <th:block th:if="${shoppingCart.getVoucherClient() != null}">
+                            <span class="text-muted"
+                                  th:text="${#numbers.formatDecimal(shoppingCart.getVoucherClient().getReducedValue(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                        </th:block>
+                        <th:block
+                                th:if="${shoppingCart.getVoucherClient() == null and shoppingCart.getVoucher() == null}">
+                            <span class="text-muted">No Data</span>
+                        </th:block>
+                        <th:block th:if="${shoppingCart.getVoucher() != null}">
+                            <span class="text-muted"
+                                  th:text="${#numbers.formatDecimal(shoppingCart.getVoucher().getReducedValue(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                        </th:block>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total Payment:</span>
+                        <strong th:text="${#numbers.formatDecimal(shoppingCart.getTotalPayment(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></strong>
+                    </li>
+                </ul>
+
+                <div class="card p-2 mb-3">
+                    <div class="input-group">
+                        <th:block th:if="${shoppingCart.getVoucherClient() != null}">
+                            <label>
+                                <input type="text" class="form-control"
+                                       th:value="${shoppingCart.getVoucherClient().getCodeVoucher()}"
+                                       style="width: 240px; height: 47px;" readonly>
+                            </label>
+                        </th:block>
+                        <th:block th:if="${shoppingCart.getVoucher() != null}">
+                            <label>
+                                <input type="text" class="form-control"
+                                       th:value="${shoppingCart.getVoucher().getCodeVoucher()}"
+                                       style="width: 240px; height: 47px;" readonly>
+                            </label>
+                        </th:block>
+                        <th:block
+                                th:if="${shoppingCart.getVoucherClient() == null and shoppingCart.getVoucher() == null}">
+                            <label>
+                                <input type="text" class="form-control" value="No use voucher"
+                                       style="width: 240px; height: 47px;" readonly>
+                            </label>
+                        </th:block>
+                        <button type="submit" class="btn btn-info" data-bs-toggle="modal"
+                                data-bs-target="#addVoucher">Choose
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card p-2">
+                    <h5>Payment Methods</h5>
+                    <div class="form-check">
+                        <input type="radio" name="payment" class="form-check-input" id="cod" style="width: 21px;">
+                        <label class="form-check-label" for="cod">Pay After Receive (COD)</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="radio" name="payment" class="form-check-input" id="banking" style="width: 21px;">
+                        <label class="form-check-label" for="banking">Always Transfer Money (Banking)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">Invoice Information</h4>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Delivery Address:</label>
+                        <div class="input-group">
+                            <th:block th:if="${profile.getAddressClient() != null}">
+                                <th:block th:each="addressClientStatus : ${addressClientStatus}">
+                                    <table style="width: 552px;">
+                                        <tr>
+                                            <td th:text="${addressClientStatus.nameClient + ', ' + addressClientStatus.phoneNumber}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td th:text="${addressClientStatus.specificAddress + ', ' + addressClientStatus.commune + ', ' +
+                                            addressClientStatus.district + ', ' + addressClientStatus.province}"></td>
+                                        </tr>
+                                    </table>
+                                </th:block>
+                            </th:block>
+                            <th:block th:unless="${profile.getAddressClient() != null}">
+                                <table style="width: 552px;">
+                                    <tr>
+                                        <td>No Address</td>
+                                    </tr>
+                                </table>
+                            </th:block>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#myModal1" style="margin-left: 40px; height: 50px;">
+                                Select Address
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <form th:action="@{/mangostore/cart/client-point/add}" method="post">
+                    <label class="form-label">Customer Points:</label>
+                    <div class="d-flex">
+                        <label>
+                            <input type="text" class="form-control me-2" th:value="${pointClient + ' point'}"
+                                   style="width: 275px; height: 48px;"
+                                   readonly>
+                        </label>
+                        <button type="submit" class="btn btn-secondary">Apply</button>
+                    </div>
+                    <span>* 1 point = 1,000 VND</span>
+                </form>
+                <br>
+                <h5>List of products in the invoice</h5>
+                <div class="content" style="height: 324px">
+                    <th:block th:each="listProductByIdInvoice : ${listProductByIdInvoice}">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td style="padding-bottom: 22px;">
+                                    <img th:src="@{|/images/product/${listProductByIdInvoice.productDetail.product.images.imagesFile}|}"
+                                         alt="" style="width: 85px; height: 89px;">
+                                </td>
+                                <td>
+                                    <div class="me-5">
+                                        <h6 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 298px;margin-right: 18px;">
+                                            [[*{listProductByIdInvoice.productDetail.product.nameProduct}]]</h6>
+                                        <div class="d-flex">
+                                            <p th:utext="('Size ' + ${listProductByIdInvoice.productDetail.size.nameSize} + ', Màu ' + ${listProductByIdInvoice.productDetail.color.nameColor})"
+                                               class="me-2" style="margin-left: 48px"></p>
+                                            <span class="me-3"
+                                                  th:text="${'x' + listProductByIdInvoice.quantity}"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td th:text="${#numbers.formatDecimal(listProductByIdInvoice.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                    class="text-end pe-4"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </th:block>
+                </div>
+                <div class="row gy-3 d-flex justify-content-between">
+                    <div class="col-md-6">
+                        <a th:href="@{/mangostore/cart}" class="btn btn-default btn-lg me-2" style="width: 315px;">Back
+                            To
+                            Cart</a>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-success btn-lg" type="submit" style="width: 353px;"
+                                th:data-invoice-id="${shoppingCart.getId()}" onclick="handlePaymentSelection()">Continue
+                            to checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">List Address Client</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/mangostore/cart/client-address/update-status}" method="post">
+                        <div th:if="${listAddressClient.empty}">
+                            <h5>No customer address</h5>
+                        </div>
+                        <div th:unless="${listAddressClient.empty}">
+                            <h5>List Address</h5>
+                            <div class="contentCheckOut" style="height: 418px; justify-content: start">
+                                <table>
+                                    <tbody th:each="getAllAddressClient : ${listAddressClient}">
+                                    <tr>
+                                        <td class="d-flex">
+                                            <div class="info">
+                                                <label style="margin-top: 10px;">
+                                                    <input type="radio" name="id" th:value="${getAllAddressClient.id}"
+                                                           th:checked="${getAllAddressClient.status == 1}" class="me-1"
+                                                           style="margin-bottom: 1px; width: 21px;">
+                                                    <div style="width: 500px; margin-bottom: -14px;">
+                                                        <p class="me-2" style="margin-left: 10px;">
+                                                            [[*{getAllAddressClient.nameClient + ' || ' +
+                                                            getAllAddressClient.phoneNumber}]]
+                                                            <span th:if="${getAllAddressClient.status == 1}"
+                                                                  class="default-label">Default</span>
+                                                        </p>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <button class="btn btn-primary edit-btn"
+                                                    style="height: 42px; padding-left: 5px; margin-left: 80px;"
+                                                    th:data-id="${getAllAddressClient.id}"
+                                                    th:data-nameclient="${getAllAddressClient.nameClient}"
+                                                    th:data-phonenumber="${getAllAddressClient.phoneNumber}"
+                                                    th:data-province="${getAllAddressClient.province}"
+                                                    th:data-district="${getAllAddressClient.district}"
+                                                    th:data-commune="${getAllAddressClient.commune}"
+                                                    th:data-specificaddress="${getAllAddressClient.specificAddress}">
+                                                Edit AddressClient
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="d-flex">
+                                            <p style="margin-left: 34px;" class="info" th:text="${getAllAddressClient.specificAddress + ', ' + getAllAddressClient.commune + ', ' +
+                                            getAllAddressClient.district + ', ' + getAllAddressClient.province}"></p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Apply</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#myModal2">
+                                + Add address
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content apiAddress">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Address</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addressClientForm" th:object="${newAddressClient}" method="post"
+                          th:action="@{/mangostore/cart/address-client/create}">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="nameClientInput" class="form-label">Name Client:</label>
+                                    <input type="text" id="nameClientInput" class="form-control" name="nameClient"
+                                           placeholder="Enter Name Client">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="numberPhoneInput" class="form-label">Number Phone:</label>
+                                    <input type="text" id="numberPhoneInput" class="form-control" name="phoneNumber"
+                                           placeholder="Enter Phone Number">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <span>What is your address?</span>
+                                <div class="col-md-4">
+                                    <label class="form-label">Province:</label>
+                                    <select name="province" class="form-select form-select-sm mb-3 city-select"
+                                            aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn tỉnh thành</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">District:</label>
+                                    <select name="district" class="form-select form-select-sm mb-3 district-select"
+                                            aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn quận huyện</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Commune:</label>
+                                    <select name="commune" class="form-select form-select-sm ward-select"
+                                            aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn phường xã</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="specificAddress" class="form-label">Specific Address:</label>
+                                    <textarea id="specificAddress" class="form-control" name="specificAddress"
+                                              placeholder="Enter a specific address"></textarea>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <br>
+                                    <label><input type="radio" name="status" value="1" checked style="width: 21px;"/>
+                                        set as default address</label>
+                                    <br>
+                                    <label><input type="radio" name="status" value="0" style="width: 21px;"/> do not
+                                        select as default address</label>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="AddAddressClient()">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#myModal1">Close
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editAddressClientModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content apiAddress">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Address</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAddressForm" method="post"
+                          th:action="@{/mangostore/cart/address-client/update}" th:object="${editAddressClient}">
+                        <input type="hidden" id="editAddressId" name="id">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="editNameClientInput" class="form-label">Name Client:</label>
+                                    <input type="text" id="editNameClientInput" class="form-control" name="nameClient"
+                                           placeholder="Enter Name Client">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editNumberPhoneInput" class="form-label">Number Phone:</label>
+                                    <input type="text" id="editNumberPhoneInput" class="form-control" name="phoneNumber"
+                                           placeholder="Enter Phone Number">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <span>What is your address?</span>
+                                <div class="col-md-4">
+                                    <label class="form-label">Province:</label>
+                                    <select name="province"
+                                            class="form-select form-select-sm mb-3 edit-city-select city-select"
+                                            aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn tỉnh thành</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">District:</label>
+                                    <select name="district"
+                                            class="form-select form-select-sm mb-3 edit-district-select district-select"
+                                            aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn quận huyện</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Commune:</label>
+                                    <select name="commune"
+                                            class="form-select form-select-sm edit-ward-select ward-select"
+                                            aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn phường xã</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="editSpecificAddress" class="form-label">Specific Address:</label>
+                                    <textarea id="editSpecificAddress" class="form-control" name="specificAddress"
+                                              placeholder="Enter a specific address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="updateAddressClient()">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#myModal1">Close
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addVoucher">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">List Voucher</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addVoucherClient" th:action="@{/mangostore/cart/client-voucher/add}" method="post">
+                        <div th:if="${listVoucherClient.empty}">
+                            <h5>No customer voucher</h5>
+                        </div>
+                        <div th:unless="${listVoucherClient.empty}">
+                            <h5>List Voucher</h5>
+                            <div class="contentCheckOut" style="height: 418px">
+                                <th:block th:each="getAllVoucherClient : ${listVoucherClient}">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 22px;">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card mb-4" style="width: 734px;">
+                                                            <div class="row g-0">
+                                                                <div class="col-md-3">
+                                                                    <img th:src="@{|/images/layout/logoVoucher.png|}"
+                                                                         style="font-size: 81px;margin-left: 12px;margin-top: 4px;width: 122px;height: 135px;"
+                                                                         alt="">
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <div class="card-body">
+                                                                        <h5 class="card-title"
+                                                                            th:text="${getAllVoucherClient.nameVoucher}"
+                                                                            style="margin-right: 325px; width: 200px;"></h5>
+                                                                        <p class="card-text"
+                                                                           th:text="${'Minimum order: ' + #numbers.formatDecimal(getAllVoucherClient.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                                           style="margin-right: 184px; white-space: nowrap;"></p>
+                                                                        <input type="hidden"
+                                                                               th:id="'minimumPrice' + ${getAllVoucherClient.id}"
+                                                                               th:value="${getAllVoucherClient.minimumPrice}">
+                                                                        <p class="card-text"
+                                                                           th:text="${'Decrease to: ' + #numbers.formatDecimal(getAllVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                                           style="margin-right: 184px; white-space: nowrap;"></p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                                                    <label>
+                                                                        <input type="radio" name="idVoucher"
+                                                                               id="checkedForListVoucher"
+                                                                               style="width: 21px;"
+                                                                               th:value="${getAllVoucherClient.id}">
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group me-2">
+                                <input type="text" class="form-control" id="codeVoucherInput"
+                                       placeholder="Please Enter Code Voucher" style="width: 347px;">
+                            </div>
+                            <input type="hidden" id="totalPayment" th:value="${shoppingCart.getTotalPayment()}">
+                            <button type="button" class="btn btn-success"
+                                    onclick="addVoucherForInvoice()">
+                                Apply
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

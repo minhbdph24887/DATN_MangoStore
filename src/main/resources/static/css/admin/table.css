@@ -5,6 +5,12 @@
     display: block;
 }
 
+.contentCheckOut{
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
 .table {
     width: 100%;
     table-layout: fixed;

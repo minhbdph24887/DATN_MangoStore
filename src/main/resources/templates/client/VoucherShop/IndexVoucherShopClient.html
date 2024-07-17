@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main class="voucherShopPage">
+    <div class="container">
+        <div style="height: 660px;">
+            <h5 style="margin-right: 1020px; width: 231px;">List Voucher Shop</h5>
+            <th:block th:unless="${listVoucher.isEmpty()}">
+                <div class="container">
+                    <div class="table-responsive">
+                        <div class="header">
+                            <table class="table table-striped"></table>
+                        </div>
+                        <div class="content" style="height: 592px">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr th:each="listVoucher : ${listVoucher}">
+                                    <td style="width: 120px;">
+                                        <div>
+                                            <img th:src="@{|/images/layout/logoVoucher.png|}"
+                                                 style="font-size: 81px;margin-left: 12px;margin-top: 4px;width: 122px;height: 135px;">
+                                        </div>
+                                    </td>
+                                    <td style="width: 235px;">
+                                        <h5 style="font-size: 30px; margin-right: 77px; text-align: center; margin-top: 19px; overflow: hidden; text-overflow: ellipsis;"
+                                            th:text="${listVoucher.nameVoucher}"></h5>
+                                    </td>
+                                    <td style="width: 600px;">
+                                        <div style="margin-right: 285px; text-align: center; margin-top: 3px;">
+                                            <div class="card-body">
+                                                <p class="card-text"
+                                                   th:text="${'Decrease to: ' + #numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                   style="margin-right: 83px; white-space: nowrap;"></p>
+                                                <p class="card-text"
+                                                   th:text="${'Minimum order: ' + #numbers.formatDecimal(listVoucher.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                   style="margin-right: 83px; white-space: nowrap;"></p>
+                                                <p class="card-text">
+                                                    <small class="text-muted" th:text="${listVoucher.validity}"
+                                                           style="margin-right: 131px;"></small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width: 83px;">
+                                        <div style="text-align: center; margin-top: 26px;">
+                                            <input type="hidden" id="checkLogin"
+                                                   th:value="${profile != null ? 'profile' : 'null'}">
+                                            <button type="button" class="btn btn-primary addVoucherButton"
+                                                    th:data-voucher-id="${listVoucher.id}">
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+            <th:block th:if="${listVoucher.isEmpty()}">
+                <div class="alert alert-danger">
+                    <strong>Notification!</strong> Currently, the shop's Vouchers are no longer required to wait until a
+                    new voucher is available.
+                </div>
+            </th:block>
+        </div>
+    </div>
+</main>
+</body>
+</html>

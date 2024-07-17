@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main class="productClientPage">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="height: 75px;">
+                <div class="form-group">
+                    <nav class="navbar navbar-expand-sm">
+                        <div class="container-fluid">
+                            <div class="d-flex">
+                                <div class="d-flex align-items-center">
+                                    <p style="width: 120px; margin-bottom: 1px;">Sorted by:</p>
+                                    <label>
+                                        <select class="form-select me-2" style="width: 200px;"
+                                                id="priceSortSelect" onchange="sortProducts()">
+                                            <option value="default" disabled selected>Sort By Price</option>
+                                            <option value="" th:selected="${sortDirection == ''}">Default
+                                                Price
+                                            </option>
+                                            <option value="LowToHigh"
+                                                    th:selected="${sortDirection == 'LowToHigh'}">Price: Low to
+                                                High
+                                            </option>
+                                            <option value="HighToLow"
+                                                    th:selected="${sortDirection == 'HighToLow'}">Price: High to
+                                                Low
+                                            </option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div style="margin-left: 477px;"></div>
+                                <div class="ml-auto mt-3 mr-2" style="margin-left: 76px;">
+                                    <div class="d-flex">
+                                        <span style="margin-top: 9px; width: 147px;">[[*{currentPage}]] of [[*{totalPage}]] pages</span>
+                                        <nav aria-label="Page navigation example" style="margin-left: 57px;">
+                                            <ul class="pagination">
+                                                <li th:classappend="${currentPage > 1} ? '' : 'disabled'"
+                                                    class="page-item" style="margin-right: 0;">
+                                                    <a class="page-link"
+                                                       th:href="@{${sortDirection != null && sortDirection!= '' ? '?sortDirection=' + sortDirection + '&' : '?'} + 'pageNo=' + ${currentPage - 1}}"
+                                                       aria-label="Previous">
+                                                            <span aria-hidden="true"
+                                                                  class="font-weight-bold">&lt;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                                <li th:classappend="${currentPage < totalPage} ? '' : 'disabled'"
+                                                    class="page-item" style="margin-right: 0;">
+                                                    <a class="page-link"
+                                                       th:href="@{${sortDirection != null && sortDirection!= '' ? '?sortDirection=' + sortDirection + '&' : '?'} + 'pageNo=' + ${currentPage + 1}}"
+                                                       aria-label="Next">
+                                                            <span aria-hidden="true"
+                                                                  class="font-weight-bold">&gt;</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-md-12" style="height: 585px;">
+                <div class="form-group">
+                    <div class="row">
+                        <div th:each="productDetail : ${listProductDetail}" class="mb-2 me-2"
+                             style="flex: 0 0 21%; max-width: 21%;">
+                            <div class="card"
+                                 style="width: 228px; height: 300px; margin: 0.05rem 0.05rem 0.05rem 50px;">
+                                <div>
+                                    <a th:href="@{/mangostore/product/detail/{id} (id= ${productDetail.id})}">
+                                        <img th:src="@{|/images/product/${productDetail.product.images.imagesFile}|}"
+                                             alt="" style="width: 208px; margin-top: 4px; margin-left: 8px;">
+                                    </a>
+                                </div>
+                                <div style="margin-top: 6px; margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    [[*{productDetail.getProduct().getNameProduct()}]]
+                                </div>
+                                <div th:with="priceRange=${priceRangeMap[productDetail.product.id]}"
+                                     style="color: red; margin-top: 14px; margin-left: 20px;">
+                                    <span th:if="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
+                                    <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

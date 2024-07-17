@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+<body>
+<main class="IndexPurchasePage DetailPurchasePage CancelPurchasePage">
+    <div class="container">
+        <div style="height: 660px;">
+            <div class="row">
+                <div class="col-md-3" th:replace="~{/client/Profile/IndexProfile :: detailView}"></div>
+                <div class="col-md-9">
+                    <h4>Purchase Order</h4>
+                    <p>Customer invoice information</p>
+                    <hr>
+                    <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                            <input type="submit" name="all" class="btn btn-outline-secondary me-2" style="width: 50px;"
+                                   value="All" onclick="changeStatus('all')"
+                                   th:classappend="${status == 'all' ? 'active' : ''}"/>
+                            <input type="submit" name="waitForConfirmation" class="btn btn-outline-secondary me-2"
+                                   style="width: 127px;" value="Chờ Xác Nhận"
+                                   onclick="changeStatus('waitForConfirmation')"
+                                   th:classappend="${status == 'waitForConfirmation' ? 'active' : ''}"/>
+                            <input type="submit" name="confirmed" class="btn btn-outline-secondary me-2"
+                                   style="width: 117px;" value="Đã Xác Nhận"
+                                   onclick="changeStatus('confirmed')"
+                                   th:classappend="${status == 'confirmed' ? 'active' : ''}"/>
+                            <input type="submit" name="deliveredToDVVC" class="btn btn-outline-secondary me-2"
+                                   style="width: 130px;" value="Đã Giao ĐVCC"
+                                   onclick="changeStatus('deliveredToDVVC')"
+                                   th:classappend="${status == 'deliveredToDVVC' ? 'active' : ''}"/>
+                            <input type="submit" name="areDelivering" class="btn btn-outline-secondary me-2"
+                                   style="width: 143px;" value="Đang Giao Hàng"
+                                   onclick="changeStatus('areDelivering')"
+                                   th:classappend="${status == 'areDelivering' ? 'active' : ''}"/>
+                            <input type="submit" name="success" class="btn btn-outline-secondary me-2"
+                                   style="width: 107px;" value="thành công" onclick="changeStatus('success')"
+                                   th:classappend="${status == 'success' ? 'active' : ''}"/>
+                            <input type="submit" name="cancelled" class="btn btn-outline-secondary me-2"
+                                   style="width: 76px;" value="đã hủy" onclick="changeStatus('cancelled')"
+                                   th:classappend="${status == 'cancelled' ? 'active' : ''}"/>
+                        </div>
+                        <div class="ml-auto mr-2">
+                            <div class="d-flex">
+                                <span style="margin-top: 9px; width: 147px; margin-left: 10px;">[[*{currentPage}]] of [[*{totalPage}]] pages</span>
+                                <nav aria-label="Page navigation example" style="margin-left: -45px;">
+                                    <ul class="pagination">
+                                        <li th:classappend="${currentPage > 1} ? '' : 'disabled'"
+                                            class="page-item" style="margin-right: 0;">
+                                            <a class="page-link"
+                                               th:href="@{${status != null && status!= '' ? '?status=' + status + '&' : '?'} + 'pageNo=' + ${currentPage - 1}}"
+                                               aria-label="Previous">
+                                                                                    <span aria-hidden="true"
+                                                                                          class="font-weight-bold">&lt;</span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                        </li>
+                                        <li th:classappend="${currentPage < totalPage} ? '' : 'disabled'"
+                                            class="page-item" style="margin-right: 0;">
+                                            <a class="page-link"
+                                               th:href="@{${status != null && status!= '' ? '?status=' + status + '&' : '?'} + 'pageNo=' + ${currentPage + 1}}"
+                                               aria-label="Next">
+                                                                                    <span aria-hidden="true"
+                                                                                          class="font-weight-bold">&gt;</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="max-width: 104%">
+                        <h5>List Invoice</h5>
+                        <table>
+                            <tr th:each="listInvoice, iterStat : ${listInvoice}">
+                                <td class="d-flex">
+                                    <button type="button" class="btn me-2" data-bs-toggle="modal"
+                                            data-bs-target="#myModal"
+                                            style="  margin-top: 20px; width: 132px; background: rgba(0, 0, 0, 0.125);"
+                                            th:text="${listInvoice.nameInvoice}"
+                                            th:data-id="${listInvoice.id}"></button>
+                                    <div class="me-2" style="width: 180px; margin-top: 8px;"
+                                         th:text="${#temporals.format(listInvoice.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></div>
+                                    <div class="me-2" style="width: 180px; margin-top: 8px;"
+                                         th:text="${#temporals.format(listInvoice.invoicePaymentDate, 'HH:mm:ss : dd/MM/yyyy')}"></div>
+                                    <div class="me-2" style="width: 120px; margin-top: 8px;"
+                                         th:text="${#numbers.formatDecimal(listInvoice.totalPayment, 0, 'COMMA', 0, 'POINT') + ' VND'}"></div>
+                                    <div class="me-2" style="width: 122px; margin-top: 8px;"
+                                         th:if="${listInvoice.invoiceStatus == 1}">
+                                        <label class="badge badge-success">chờ xác nhận</label>
+                                    </div>
+                                    <div class="me-2" style="width: 122px; margin-top: 8px;"
+                                         th:if="${listInvoice.invoiceStatus == 2}">
+                                        <label class="badge badge-success">đã xác nhận</label>
+                                    </div>
+                                    <div class="me-2" style="width: 122px; margin-top: 8px;"
+                                         th:if="${listInvoice.invoiceStatus == 3}">
+                                        <label class="badge badge-success">đã giao ĐVVC</label>
+                                    </div>
+                                    <div class="me-2" style="width: 122px; margin-top: 8px;"
+                                         th:if="${listInvoice.invoiceStatus == 4}">
+                                        <label class="badge badge-success">đang giao hàng</label>
+                                    </div>
+                                    <div class="me-2" style="width: 122px; margin-top: 8px;"
+                                         th:if="${listInvoice.invoiceStatus == 5}">
+                                        <label class="badge badge-success">thành công</label>
+                                    </div>
+                                    <div class="me-2" style="width: 122px; margin-top: 8px;"
+                                         th:if="${listInvoice.invoiceStatus == 6}">
+                                        <label class="badge badge-danger">đã hủy</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body" style="height: 783px;">
+                    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
+                        <article class="cardInvoice">
+                            <div class="card-body" style="height: 716px;">
+                                <h6 id="order-id">Order ID: </h6>
+                                <article class="card">
+                                    <div class="card-body row">
+                                        <div class="col">
+                                            <strong>Invoice Payment Date:</strong> <br>
+                                            <span id="invoice-payment-date"></span></div>
+                                        <div style="width: 785px;">
+                                            <strong>Customer Address:</strong> <br>
+                                            <span id="customer-address"></span></div>
+                                    </div>
+                                </article>
+                                <div id="track" class="track">
+                                    <div class="step" id="step1">
+                                        <span class="icon">
+                                            <i class="bi bi-patch-exclamation"></i>
+                                        </span>
+                                        <span class="text">Wait For Confirmation</span>
+                                    </div>
+                                    <div class="step" id="step2">
+                                        <span class="icon">
+                                         <i class="fa fa-check"></i>
+                                        </span>
+                                        <span class="text">Confirmed</span>
+                                    </div>
+                                    <div class="step" id="step3">
+                                        <span class="icon">
+                                            <i class="fa fa-truck"></i>
+                                        </span>
+                                        <span class="text">Delivered To DVVC</span>
+                                    </div>
+                                    <div class="step" id="step4">
+                                        <span class="icon">
+                                            <i class="bi bi-box"></i>
+                                        </span>
+                                        <span class="text">Are Delivering</span>
+                                    </div>
+                                    <div class="step" id="step5">
+                                        <span class="icon">
+                                            <i class="bi bi-check2-circle"></i>
+                                        </span>
+                                        <span class="text">Success</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="contentCheckOut" style="height: 435px;">
+                                    <ul class="row" id="invoice-items" style="width: 100%;"></ul>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="width: 500px;">
+                        <input type="hidden" id="id-invoice">
+                        <strong>Total Payment:</strong>
+                        <span style="font-size: 20px;" id="total-payment"></span></div>
+                    <button type="button" class="btn btn-danger" id="cancel-invoice" onclick="cancelInvoice()">Cancel Invoice</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,40 @@
+.timeline {
+    position: relative;
+    padding: 20px 0;
+    list-style: none;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 4px;
+    background: #e9ecef;
+}
+
+.timeline > li {
+    position: relative;
+    margin-bottom: 20px;
+    padding-left: 40px;
+}
+
+.timeline > li::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #007bff;
+}
+
+.timeline > li .timeline-panel {
+    position: relative;
+    background: #fff;
+    border: 1px solid #d4d4d4;
+    padding: 10px;
+    border-radius: 5px;
+}
