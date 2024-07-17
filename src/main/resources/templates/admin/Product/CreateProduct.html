@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="checkAddProduct restoreProductPage">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Active Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Product Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/product}">Index Product</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Create Product</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card container">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="font-weight-bold py-3 mb-4">
+                                Create Product,
+                            </h4>
+                            <div style="height: 500px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Name Product</label>
+                                        <div class="form-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="nameProductInput"
+                                                   placeholder="Enter Name Product">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="d-flex">
+                                            <label class="form-label me-2">Multiple Image Upload</label>
+                                            <input type="file" id="myFile" name="filename" multiple class="form-control" style="width: 104px;">
+                                        </div>
+                                        <div id="imagePreview" class="d-flex flex-wrap mt-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="createProduct()" class="btn btn-primary">
+                                Save
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Product Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 114px">CodeProduct</th>
+                                            <th style="width: 122px">ImagesProduct</th>
+                                            <th style="width: 151px">NameProduct</th>
+                                            <th style="width: 100px">UserCreate</th>
+                                            <th style="width: 100px">UserUpdate</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 100px">DateUpdate</th>
+                                            <th style="width: 84px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 395px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listProductInactive, stat : ${listProductInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 114px">
+                                                <button type="button" th:data-id="${listProductInactive.id}" class="btn btn-red"
+                                                        onclick="restoreProduct(this)"
+                                                        style="text-decoration: none">[[*{listProductInactive.codeProduct}]]</button>
+                                            </td>
+                                            <td style="width: 120px;">
+                                                <div th:if="${listProductInactive.images != null and listProductInactive.images.imagesFile != null}">
+                                                    <img th:src="@{|/images/product/${listProductInactive.images.imagesFile}|}" alt="image" style="width: 116px; height: 132px">
+                                                </div>
+
+                                            </td>
+                                            <td style="width: 151px;word-break: break-all"
+                                                th:text="${listProductInactive.nameProduct}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listProductInactive.nameUserCreate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listProductInactive.nameUserUpdate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listProductInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listProductInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 84px" th:if="${listProductInactive.status == 0}">
+                                                <label class="badge badge-danger">Stop Working</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listProductInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Product Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

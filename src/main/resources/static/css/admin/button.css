@@ -10,3 +10,58 @@
     margin: 4px 2px;
     cursor: pointer;
 }
+/*css table productDetail*/
+/* Style for the table */
+#result {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Style for table rows and cells */
+#result th, #result td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* Ensure form controls and delete button have consistent width and alignment */
+#result input.form-control,
+#result .btn-delete {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto; /* Center align */
+    display: block; /* Center align */
+}
+
+/* Style for the delete button */
+.btn-delete {
+    width: 70px; /* Set a fixed width */
+    padding: 5px;
+    text-align: center;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Ensure even spacing between table cells */
+#result th:nth-child(1),
+#result td:nth-child(1) {
+    width: 25%;
+    text-align: left;
+}
+
+#result th:nth-child(2),
+#result td:nth-child(2),
+#result th:nth-child(3),
+#result td:nth-child(3),
+#result th:nth-child(4),
+#result td:nth-child(4) {
+    width: 20%;
+}
+
+#result th:nth-child(5),
+#result td:nth-child(5) {
+    width: 15%;
+}

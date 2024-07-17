@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+      <style>
+        /* Style for the table and inputs to ensure consistent spacing */
+#result tbody tr {
+    vertical-align: middle;
+}
+
+#result input.form-control {
+    width: 100%;
+    box-sizing: border-box;
+    margin-right: 10px; /* Adjust as needed for spacing */
+}
+
+/* Style for the delete button */
+.btn-delete {
+    display: inline-block;
+    margin-top: 5px; /* Adjust to align vertically with input fields */
+    margin-left: 10px; /* Adjust to add space between inputs and button */
+}
+
+      </style>
+<body>
+<main class="comboboxSelect2 createProductDetail formatMoneyImportPriceProductDetail formatMoneyPriceProductDetail">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Active Product Detail</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Product Detail Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/product-detail}">Index Product
+                            Detail</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Create Product Detail</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Add Product Detail</h3>
+                            <form th:action="@{/mangostore/admin/product-detail/add}" th:object="${productDetailForm}"
+                                  enctype="multipart/form-data" method="post" onsubmit="return add()">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">NameProduct: <span
+                                                                class="required">*</span></label>
+                                                        <select name="idProduct" class="form-select" id="idProduct" aria-label="Product search">
+                                                            <option selected>Tìm kiếm sản phẩm theo từ khóa</option>
+                                                            <option th:each="listProduct : ${listProduct}"
+                                                                    th:value="${listProduct.id}"
+                                                                    th:if="${listProduct.images != null && listProduct.images.imagesFile != null}"
+                                                                    th:data-image="@{|/images/product/${listProduct.images.imagesFile}|}"
+                                                                    th:data-name="${listProduct.nameProduct}"
+                                                                    th:text="${listProduct.nameProduct}">
+                                                            </option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Size: <span
+                                                                class="required">*</span></label>
+                                                        <select name="idSize" multiple="multiple"
+                                                                aria-label="Default select example"
+                                                                class="form-select js-example-basic-multiple"
+                                                                id="size">
+                                                            <option th:each="listSize : ${listSize}"
+                                                                    th:value="${listSize.nameSize}"
+                                                                    th:text="${listSize.nameSize}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Color: <span
+                                                                class="required">*</span></label>
+                                                        <select name="idColor" multiple="multiple"
+                                                                aria-label="Default select example"
+                                                                class="form-select js-example-basic-multiple"
+                                                                id="color">
+                                                            <option th:each="listColor : ${listColor}"
+                                                                    th:value="${listColor.nameColor}"
+                                                                    th:text="${listColor.nameColor}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Origin: <span
+                                                                class="required">*</span></label>
+                                                        <select name="origin" class="form-select" id="origin">
+                                                            <option th:each="listOrigin : ${listOrigin}"
+                                                                    th:value="${listOrigin.id}"
+                                                                    th:text="${listOrigin.nameOrigin}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Material: <span
+                                                                class="required">*</span></label>
+                                                        <select name="material" class="form-select" id="material">
+                                                            <option th:each="listMaterial : ${listMaterial}"
+                                                                    th:value="${listMaterial.id}"
+                                                                    th:text="${listMaterial.nameMaterial}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Category: <span
+                                                                class="required">*</span></label>
+                                                        <select name="category" class="form-select" id="category">
+                                                            <option th:each="listCategory : ${listCategory}"
+                                                                    th:value="${listCategory.id}"
+                                                                    th:text="${listCategory.nameCategory}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Describe:</label>
+                                                        <textarea class="form-control" name="describe"
+                                                                  id="describeInput"
+                                                                  placeholder="Enter Describe"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 d-flex align-items-stretch">
+                                            <div class="info-wrap bg-primary w-100 p-lg-5 p-4">
+                                                <div class="form-group">
+                                                    <img id="product-image" src="" alt="Product Image" style="display: none; width: 100%;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h3>Variant List</h3>
+                                        <div style="margin-left: 500px">
+                                            <button type="button" onclick="generateVariants()" class="btn btn-warning">
+                                                Render
+                                            </button>
+                                        </div>
+                                        <div class="row">
+                                            <table id="result">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 172px">NameProduct</th>
+                                                    <th style="width: 80px">Quantity</th>
+                                                    <th style="width: 100px">ImportPrice</th>
+                                                    <th style="width: 100px">Price</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="text-right mt-3">
+                                <input type="button" onclick="addProductDetailAPI()"
+                                       value="Save"
+                                       class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Product Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 122px">ImagesProduct</th>
+                                            <th style="width: 115px">Name</th>
+                                            <th style="width: 70px">Material</th>
+                                            <th style="width: 70px">Origin</th>
+                                            <th style="width: 70px">Describe</th>
+                                            <th style="width: 124px">Quantity</th>
+                                            <th style="width: 70px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 395px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listProductDetailInactive, stat : ${listProductDetailInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+<!--                                            <td style="width: 122px">-->
+<!--                                                <div th:if="${listProductDetailInactive.imagesProductDetail != null}">-->
+<!--                                                    <img th:src="@{|/image/product/${listProductDetailInactive.imagesProductDetail}|}" alt="image" style="width: 116px; height: 132px">-->
+<!--                                                </div>-->
+<!--                                                <div th:if="${listProductDetailInactive.imagesProductDetail == null}">-->
+<!--                                                    <span>No Image Available</span>-->
+<!--                                                </div>-->
+<!--                                            </td>-->
+
+                                            <td style="width: 122px"><img
+                                                    th:src="@{|/images/product/${listProductDetailInactive.product.images.imagesFile}|}"
+                                                    alt="image" style="width: 116px; height: 132px">
+                                            </td>
+                                            <td style="width: 115px; word-break: break-all"
+                                                th:text="${listProductDetailInactive.product.nameProduct + '(' + listProductDetailInactive.size.nameSize + ', ' + listProductDetailInactive.color.nameColor + ')'}"></td>
+                                            <td style="width: 70px"
+                                                th:text="${listProductDetailInactive.material.nameMaterial}"></td>
+                                            <td style="width: 70px"
+                                                th:text="${listProductDetailInactive.origin.nameOrigin}"></td>
+                                            <td style="width: 70px"
+                                                th:text="${listProductDetailInactive.describe}"></td>
+                                            <td style="width: 124px">
+                                                <input type="hidden" name="id" class="idProductDetail"
+                                                       th:value="${listProductDetailInactive.id}">
+                                                <th:block th:if="${listProductDetailInactive.quantity == 0}">
+                                                    <input type="number" style="width: 70px" name="quantity"
+                                                           class="quantityNew"
+                                                           th:value="${listProductDetailInactive.quantity}">
+                                                </th:block>
+                                                <th:block th:unless="${listProductDetailInactive.quantity == 0}">
+                                                    <input type="text" style="width: 70px" name="quantity"
+                                                           class="quantityOld"
+                                                           th:value="${listProductDetailInactive.quantity}" readonly>
+                                                </th:block>
+                                                <button type="submit" th:text="Save" class="btn btn-info"
+                                                        onclick="restoreProductDetail(this)"></button>
+                                            </td>
+                                            <td style="width: 70px" th:if="${listProductDetailInactive.productStatus == 1}">
+                                                <label class="badge badge-success">Còn hàng</label>
+                                            </td>
+
+                                            <td th:if="${listProductDetailInactive.productStatus == 0}">
+                                                <label class="badge badge-danger">Hết hàng</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listProductDetailInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Product Detail Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

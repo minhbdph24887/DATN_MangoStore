@@ -80,6 +80,7 @@ if (formatMoneyFrom) {
 }
 
 const formEditProductDetail = document.querySelector(".formEditProductDetail");
+
 if (formEditProductDetail) {
     function formatCurrencyOnLoadPDD() {
         const valueImportPrice = document.getElementById('importPriceInput').value;
@@ -91,30 +92,32 @@ if (formEditProductDetail) {
     function prepareValueForSubmitPDD() {
         const valueImportPrice = document.getElementById('importPriceInput').value;
         const valuePrice = document.getElementById('priceInput').value;
-        document.getElementById('outputImportPrice').value = formatToNumberPDD(valueImportPrice);
-        document.getElementById('outputPrice').value = formatToNumberPDD(valuePrice);
+        document.getElementById('outputImportPrice').value = removeCommasPDD(valueImportPrice);
+        document.getElementById('outputPrice').value = removeCommasPDD(valuePrice);
+
+        const activeCheckbox = document.getElementById("active");
+        const statusInput = document.getElementById("status");
+        statusInput.value = activeCheckbox.checked ? 1 : 0;
+
         return true;
-    }
-
-    function formatToCurrencyPDD(value) {
-        const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
-        return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
-    }
-
-    function formatToNumberPDD(value) {
-        return value.replace(/[\D.]+/g, '');
     }
 
     function onInputImportPrice(value) {
         document.getElementById('importPriceInput').value = formatToCurrencyPDD(value);
-        document.getElementById('outputImportPrice').value = formatToNumberPDD(formatToCurrencyPDD(value));
     }
 
     function onInputPrice(value) {
         document.getElementById('priceInput').value = formatToCurrencyPDD(value);
-        document.getElementById('outputPrice').value = formatToNumberPDD(formatToCurrencyPDD(value));
     }
 
-    window.onload = formatCurrencyOnLoadPDD;
+    function formatToCurrencyPDD(value) {
+        value = value.replace(/\D/g, '');
+        return new Intl.NumberFormat('en-US').format(value);
+    }
 
+    function removeCommasPDD(value) {
+        return value.replace(/,/g, '');
+    }
+
+    formatCurrencyOnLoadPDD();
 }
