@@ -3,188 +3,188 @@
       th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
 <body>
 <main class="updateRankPage restoreRankPage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Active Rank</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Rank Inactive</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/rank}">Index Rank</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail Rank</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card container">
-                    <div class="card">
-                        <div class="card-body container">
-                            <h4 class="font-weight-bold py-3 mb-4">
-                                Update Rank,
-                            </h4>
-                            <form id="formRankUpdate" th:action="@{/mangostore/admin/rank/update}" th:object="${detailRank}"
-                                  method="post">
-                                <input type="hidden" th:field="*{id}" th:value="${detailRank.id}" id="idRank">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Code Rank</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="codeRank" th:field="*{codeRank}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <div class="form-group">
-                                            <label class="form-label">Name Rank</label>
-                                            <input type="text" id="nameRankInput"
-                                                   class="form-control"
-                                                   name="nameRank" th:field="*{nameRank}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Minimum Score</label>
-                                            <input type="number" id="minimumScore"
-                                                   class="form-control"
-                                                   name="minimumScore" th:field="*{minimumScore}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Maximum Score</label>
-                                            <input type="number" id="maximumScore"
-                                                   class="form-control"
-                                                   name="maximumScore" th:field="*{maximumScore}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">User Create</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="userCreate" th:field="*{userCreate}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">User Update</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="userUpdate" th:field="*{userUpdate}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Date Create</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="dateCreate" th:field="*{dateCreate}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Date Update</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="dateUpdate" th:field="*{dateUpdate}" readonly/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-right mt-3">
-                                    <input type="button"
-                                            value="Save As"
-                                           onclick="updateRankForm()"
-                                            class="btn btn-primary">
-                                    <a th:href="@{/mangostore/admin/rank/delete/{id}(id=${detailRank.id})}">
-                                        <button type="button" class="btn btn-danger" onclick="deleteRank()">Delete
-                                        </button>
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">List Product Inactive</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 109px">CodeRank</th>
-                                            <th style="width: 117px">NameRank</th>
-                                            <th style="width: 100px">MinimumScore</th>
-                                            <th style="width: 100px">MaximumScore</th>
-                                            <th style="width: 100px">UserCreate</th>
-                                            <th style="width: 100px">UserUpdate</th>
-                                            <th style="width: 100px">DateCreate</th>
-                                            <th style="width: 100px">DateUpdate</th>
-                                            <th style="width: 100px">Status</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 377px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listRankInactive, stat : ${listRankInactive}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 109px">
-                                                <button type="button" class="btn btn-outline-info" th:data-id="${listRankInactive.id}"
-                                                        onclick="restoreRank(this)"
-                                                        style="text-decoration: none">[[*{listRankInactive.codeRank}]]</button>
-                                            </td>
-                                            <td style="width: 117px;word-break: break-all"
-                                                th:text="${listRankInactive.nameRank}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listRankInactive.minimumScore}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listRankInactive.maximumScore}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listRankInactive.userCreate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listRankInactive.userUpdate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listRankInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listRankInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px" th:if="${listRankInactive.status == 0}">
-                                                <label class="badge badge-danger">Stop Working</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listRankInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Rank Inactive is entity
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="home-tab">
+    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+             href="#tab1" role="tab"
+             aria-controls="tab1" aria-selected="true">Active Rank</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+             aria-controls="tab2" role="tab"
+             aria-selected="false">Rank Inactive</a>
+        </li>
+      </ul>
     </div>
+    <div class="tab-content tab-content-basic">
+      <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+        <div>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/rank}">Index Rank</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detail Rank</li>
+          </ul>
+        </div>
+        <div class="col-lg-12 grid-margin stretch-card container">
+          <div class="card">
+            <div class="card-body container">
+              <h4 class="font-weight-bold py-3 mb-4">
+                Update Rank,
+              </h4>
+              <form id="formRankUpdate" th:action="@{/mangostore/admin/rank/update}" th:object="${detailRank}"
+                    method="post">
+                <input type="hidden" th:field="*{id}" th:value="${detailRank.id}" id="idRank">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-label">Code Rank</label>
+                      <input type="text"
+                             class="form-control"
+                             name="codeRank" th:field="*{codeRank}" readonly/>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="form-group">
+                      <label class="form-label">Name Rank</label>
+                      <input type="text" id="nameRankInput"
+                             class="form-control"
+                             name="nameRank" th:field="*{nameRank}"/>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Minimum Score</label>
+                      <input type="number" id="minimumScore"
+                             class="form-control"
+                             name="minimumScore" th:field="*{minimumScore}"/>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Maximum Score</label>
+                      <input type="number" id="maximumScore"
+                             class="form-control"
+                             name="maximumScore" th:field="*{maximumScore}"/>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-label">User Create</label>
+                      <input type="text"
+                             class="form-control"
+                             name="userCreate" th:field="*{userCreate}" readonly/>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-label">User Update</label>
+                      <input type="text"
+                             class="form-control"
+                             name="userUpdate" th:field="*{userUpdate}" readonly/>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-label">Date Create</label>
+                      <input type="text"
+                             class="form-control"
+                             name="dateCreate" th:field="*{dateCreate}" readonly/>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-label">Date Update</label>
+                      <input type="text"
+                             class="form-control"
+                             name="dateUpdate" th:field="*{dateUpdate}" readonly/>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-right mt-3">
+                  <input type="button"
+                         value="Save As"
+                         onclick="updateRankForm()"
+                         class="btn btn-primary">
+                  <a th:href="@{/mangostore/admin/rank/delete/{id}(id=${detailRank.id})}">
+                    <button type="button" class="btn btn-danger" onclick="deleteRank()">Delete
+                    </button>
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="tab2" role="tabpanel"
+           aria-labelledby="tab2">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">List Product Inactive</h4>
+              <div class="table-responsive">
+                <div class="header">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th style="width: 30px">#</th>
+                      <th style="width: 109px">CodeRank</th>
+                      <th style="width: 117px">NameRank</th>
+                      <th style="width: 100px">MinimumScore</th>
+                      <th style="width: 100px">MaximumScore</th>
+                      <th style="width: 100px">UserCreate</th>
+                      <th style="width: 100px">UserUpdate</th>
+                      <th style="width: 100px">DateCreate</th>
+                      <th style="width: 100px">DateUpdate</th>
+                      <th style="width: 100px">Status</th>
+                    </tr>
+                    </thead>
+                  </table>
+                </div>
+                <div class="content" style="height: 377px">
+                  <table class="table table-hover">
+                    <tbody>
+                    <tr th:each="listRankInactive, stat : ${listRankInactive}">
+                      <td style="width: 30px" th:text="${stat.count}"></td>
+                      <td style="width: 109px">
+                        <button type="button" class="btn btn-outline-info" th:data-id="${listRankInactive.id}"
+                                onclick="restoreRank(this)"
+                                style="text-decoration: none">[[*{listRankInactive.codeRank}]]</button>
+                      </td>
+                      <td style="width: 117px;word-break: break-all"
+                          th:text="${listRankInactive.nameRank}"></td>
+                      <td style="width: 100px"
+                          th:text="${listRankInactive.minimumScore}"></td>
+                      <td style="width: 100px"
+                          th:text="${listRankInactive.maximumScore}"></td>
+                      <td style="width: 100px"
+                          th:text="${listRankInactive.userCreate}"></td>
+                      <td style="width: 100px"
+                          th:text="${listRankInactive.userUpdate}"></td>
+                      <td style="width: 100px"
+                          th:text="${#temporals.format(listRankInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                      <td style="width: 100px"
+                          th:text="${#temporals.format(listRankInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                      <td style="width: 100px" th:if="${listRankInactive.status == 0}">
+                        <label class="badge badge-danger">Stop Working</label>
+                      </td>
+                    </tr>
+                    <tr th:if="${listRankInactive.isEmpty()}">
+                      <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                        Rank Inactive is entity
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 </body>
 </html>

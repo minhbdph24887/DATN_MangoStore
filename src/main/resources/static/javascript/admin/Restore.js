@@ -10,7 +10,7 @@ function restoreProductDetail(button) {
     } else if (newQuantityElement && window.getComputedStyle(newQuantityElement).display !== "none") {
         quantity = newQuantityElement.value;
         if (quantity <= 0) {
-            alert("The new quantity is incorrect, please re-enter.");
+            dangerAlert("The new quantity is incorrect, please re-enter.");
             return;
         }
     }
@@ -19,24 +19,21 @@ function restoreProductDetail(button) {
         idProductDetail: idProductDetail,
         quantity: quantity,
     };
-
-    if (restore()) {
-        alert("Restore ProductDetail Fall.");
-    } else {
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080" + "/api/mangostore/admin/product-detail/restore",
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (response) {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080" + "/api/mangostore/admin/product-detail/restore",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+            successAlert('Khôi phục thành công').then(() => {
                 window.open("http://localhost:8080/mangostore/admin/product-detail", "_self")
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 }
 
 function restoreVoucher(button) {
@@ -77,4 +74,58 @@ function restoreVoucher(button) {
             console.clear();
         }
     });
+}
+
+const restoreCategoryPage = document.querySelector('.restoreCategoryPage');
+if (restoreCategoryPage) {
+    function restoreCategory(button) {
+        const idCategory = button.getAttribute("data-id");
+        const url = "/mangostore/admin/category/restore/" + idCategory;
+        confirmAlertLink(event, "Do you want to restore?", "Successful recovery", url)
+    }
+}
+
+const restoreColorPage = document.querySelector('.restoreColorPage');
+if (restoreColorPage) {
+    function restoreColor(button) {
+        const idColor = button.getAttribute("data-id");
+        const url = "/mangostore/admin/color/restore/" + idColor;
+        confirmAlertLink(event, "Do you want to restore?", "Successful recovery", url)
+    }
+}
+
+const restoreMaterialPage = document.querySelector('.restoreMaterialPage');
+if (restoreMaterialPage) {
+    function restoreMaterial(button) {
+        const idMaterial = button.getAttribute("data-id");
+        const url = "/mangostore/admin/material/restore/" + idMaterial;
+        confirmAlertLink(event, "Do you want to restore?", "Successful recovery", url);
+    }
+}
+
+const restoreSizePage = document.querySelector('.restoreSizePage');
+if (restoreSizePage) {
+    function restoreSize(button) {
+        const idSize = button.getAttribute("data-id");
+        const url = "/mangostore/admin/size/restore/" + idSize;
+        confirmAlertLink(event, "Do you want to restore?", "Successful recovery", url);
+    }
+}
+
+const restoreOriginPage = document.querySelector('.restoreOriginPage');
+if (restoreOriginPage) {
+    function restoreOrigin(button) {
+        const idOrigin = button.getAttribute("data-id");
+        const url = "/mangostore/admin/origin/restore/" + idOrigin;
+        confirmAlertLink(event, "Do you want to restore?", "Successful recovery", url);
+    }
+}
+
+const restoreProductPage = document.querySelector('.restoreProductPage');
+if (restoreProductPage) {
+    function restoreProduct(button) {
+        const idProduct = button.getAttribute("data-id");
+        const url = "/mangostore/admin/product/restore/" + idProduct;
+        confirmAlertLink(event, "Do you want to restore?", "Successful recovery", url);
+    }
 }

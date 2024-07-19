@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="restoreColorPage">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Active Color</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Color Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Index Color</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Color Active</h4>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                            data-target="#myModal">Add Color
+                                    </button>
+                                </div>
+                                <div class="col-sm-7 form-group" style="margin-left: 100px;">
+
+                                    <form action="/mangostore/admin/color" method="get">
+                                        <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                               placeholder="Search Name Color"/>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <form id="addColorForm" action="/mangostore/admin/color/add" method="post" onsubmit="return confirmAndSubmitColor(event)">
+                                                <h3 class="mb-4">Add Color</h3>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"> Name Color : </label>
+                                                            <input type="text" class="form-control" name="nameColor" placeholder="Enter Name Color" >
+                                                            <span style="font-size: 13px;">If you add the color attribute, you only need to add the name without adding the word "color" (for example, "Color Red" just add "Red")</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <input type="submit" value="Save" class="btn btn-primary">
+                                                            <div class="submitting"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 104px">CodeColor</th>
+                                            <th style="width: 136px">NameColor</th>
+                                            <th style="width: 100px">UserCreate</th>
+                                            <th style="width: 100px">UserUpdate</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 100px">DateUpdate</th>
+                                            <th style="width: 84px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 250px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listColor, stat : ${listColor}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 104px">
+                                                <a th:href="@{|/mangostore/admin/color/detail/${listColor.id}|}"
+                                                   th:text="${listColor.codeColor}"
+                                                   style="text-decoration: none">
+                                                </a>
+                                            </td>
+                                            <td style="width: 136px; word-break: break-all"
+                                                th:text="${listColor.nameColor}"></td>
+                                            <td style="width: 100px" th:text="${listColor.nameUserCreate}"></td>
+                                            <td style="width: 100px" th:text="${listColor.nameUserUpdate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listColor.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listColor.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 84px" th:if="${listColor.status == 1}">
+                                                <label class="badge badge-success">Is Active</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listColor.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Color is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Color Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 104px">CodeColor</th>
+                                            <th style="width: 136px">NameColor</th>
+                                            <th style="width: 100px">UserCreate</th>
+                                            <th style="width: 100px">UserUpdate</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 100px">DateUpdate</th>
+                                            <th style="width: 84px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 395px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listColorInactive, stat : ${listColorInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 114px">
+                                                <button type="button" th:data-id="${listColorInactive.id}" class="btn btn-red"
+                                                        onclick="restoreColor(this)"
+                                                        style="text-decoration: none">[[*{listColorInactive.codeColor}]]</button>
+                                            </td>
+
+                                            <td style="width: 136px;word-break: break-all"
+                                                th:text="${listColorInactive.nameColor}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listColorInactive.nameUserCreate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${listColorInactive.nameUserUpdate}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listColorInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listColorInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 84px" th:if="${listColorInactive.status == 0}">
+                                                <label class="badge badge-danger">Stop Working</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listColorInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Color Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

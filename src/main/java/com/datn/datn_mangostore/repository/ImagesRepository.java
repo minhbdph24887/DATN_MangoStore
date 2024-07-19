@@ -10,6 +10,18 @@ import java.util.List;
 
 @Repository
 public interface ImagesRepository extends JpaRepository<Images, Long> {
+    @Query(value = "select * from images where images_file = :fileImages", nativeQuery = true)
+    Images findByFileImages(@Param("fileImages") String fileImages);
+
+    List<Images> findBySaveToProduct(Long productId);
+
+    @Query("SELECT i FROM Images i WHERE i.saveToProduct = :productId")
+    List<Images> findByProductId(@Param("productId") Long productId);
+//Vinh
+
+    @Query("SELECT i.imagesFile FROM Images i")
+    List<String> findAllImagesFiles();
+
     @Query(value = "select * from images where save_to_product= :idProduct", nativeQuery = true)
     List<Images> findAllImagesByProduct(@Param("idProduct") Long idProduct);
 }

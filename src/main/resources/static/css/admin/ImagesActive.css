@@ -1,0 +1,9 @@
+.image-card.selected {
+    border: 2px solid #ff9f1a;
+    background-color: #ff9f1a;
+}
+
+.remove-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

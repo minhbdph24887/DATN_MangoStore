@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
 
 <body>
-<main class="indexSell checkNumberPhone checkVoucher addProductDetail updateQuantityInvoiceDetail checkInfoMoneyPage updateStatusInvoice">
+<main class="indexSell checkNumberPhonePage checkVoucherPage addProductDetail updateQuantityInvoiceDetail checkInfoMoneyPage updateStatusInvoice">
     <div>
         <ul class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/sell}">Index Sell</a></li>
@@ -85,7 +85,7 @@
                                             th:value="${listVoucherClient.id}"
                                             th:text="${listVoucherClient.nameVoucher + '( ' + #numbers.formatDecimal(listVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND )'}"></option>
                                 </select>
-                                <button type="button" class="btn btn-success" onclick="updateVoucher()">Apply</button>
+                                <button type="button" class="btn btn-success" onclick="updateVoucherForSell()">Apply</button>
                             </div>
                         </div>
                     </div>

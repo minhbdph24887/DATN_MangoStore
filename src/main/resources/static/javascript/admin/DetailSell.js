@@ -1,5 +1,5 @@
-const checkNumberPhonePage = document.querySelector('.checkNumberPhone');
-if (checkNumberPhonePage) {
+const checkNumberPhone = document.querySelector('.checkNumberPhonePage');
+if (checkNumberPhone) {
     $(document).ready(function () {
         const $select2 = $('.select2-search-example').select2({
             placeholder: "NumberClient",
@@ -104,9 +104,9 @@ if (checkNumberPhonePage) {
     }
 }
 
-const checkVoucherPage = document.querySelector('.checkVoucher');
-if (checkVoucherPage) {
-    function updateVoucher() {
+const checkVoucher = document.querySelector('.checkVoucherPage');
+if (checkVoucher) {
+    function updateVoucherForSell() {
         const voucherSelect = document.getElementById('voucherSelect');
         const selectedValue = voucherSelect.value;
 

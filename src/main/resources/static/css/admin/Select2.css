@@ -1,0 +1,16 @@
+.select2-container--default .select2-selection--single {
+    height: 100px; /* Chiều cao của combobox */
+    width: 100%; /* Chiều rộng tối đa của combobox */
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    display: block;
+    line-height: normal;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered img {
+    display: block;
+    width: 30px; /* Chiều rộng mới của hình ảnh */
+    height: 30px; /* Chiều cao mới của hình ảnh */
+    margin: 0 auto 10px; /* Canh giữa hình ảnh và thêm khoảng cách phía dưới */
+}

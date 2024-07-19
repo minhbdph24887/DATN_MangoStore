@@ -5,7 +5,7 @@
     display: block;
 }
 
-.contentCheckOut{
+.contentCheckOut {
     width: 100%;
     overflow-x: auto;
     display: block;
@@ -18,4 +18,26 @@
 
 .content {
     overflow-y: auto;
+}
+
+.variant-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.variant-table th, .variant-table td {
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    padding: 10px;
+}
+
+.variant-table th {
+    background-color: #f8f9fa;
+}
+
+.variant-table input {
+    width: 100%;
+    box-sizing: border-box;
 }

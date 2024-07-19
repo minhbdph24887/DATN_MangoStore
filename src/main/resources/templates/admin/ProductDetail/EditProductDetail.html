@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="checkBoxDetail updateProductDetailPage formEditProductDetail deleteProductDetailPage">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Active Product Detail</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Product Detail Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/product-detail}">Index Product
+                            Detail</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Product Detail</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Update Product Detail</h3>
+                            <form id="formUpdate" th:action="@{/mangostore/admin/product-detail/update}"
+                                  th:object="${editProductDetail}"
+                                  method="post" onsubmit="return prepareValueForSubmitPDD()">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-4 grid-margin stretch-card">
+                                            <div class="col-md-12">
+                                                <h5 style="font-size: 18px">Images Product Detail</h5>
+                                                <div class="row">
+                                                    <img  th:src="@{|/images/product/${editProductDetail.product.images.imagesFile}|}" alt="image" style="width: 100%;">
+
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" name="id" th:field="*{id}" id="idProductDetail"
+                                                               th:value="${editProductDetail.id}">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">UserCreate</label>
+                                                            <input type="text" class="form-control"
+                                                                   th:field="*{nameUserCreate}" readonly/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">UserUpdate</label>
+                                                            <input type="text" class="form-control"
+                                                                   th:field="*{nameUserUpdate}" readonly/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">DateCreate</label>
+                                                            <input type="text" class="form-control"
+                                                                   th:field="*{dateCreate}" readonly/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">DateUpdate</label>
+                                                            <input type="text" class="form-control"
+                                                                   th:field="*{dateUpdate}" readonly/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 grid-margin stretch-card">
+                                            <div class="col-md-12">
+                                                <h5 style="font-size: 18px">Variant Product Detail</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Size</label>
+                                                            <div class="form-control"
+                                                                 th:text="${editProductDetail.size.nameSize}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Color</label>
+                                                            <div class="form-control"
+                                                                 th:text="${editProductDetail.color.nameColor}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Material</label>
+                                                            <div class="form-control"
+                                                                 th:text="${editProductDetail.material.nameMaterial}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Origin</label>
+                                                            <div class="form-control"
+                                                                 th:text="${editProductDetail.origin.nameOrigin}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Category</label>
+                                                            <div class="form-control"
+                                                                 th:text="${editProductDetail.category.nameCategory}"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 grid-margin stretch-card">
+                                            <div class="col-md-12">
+                                                <h5 style="font-size: 18px">Product Quantity and Price</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Describe</label>
+                                                            <textarea name="describe" class="form-control"
+                                                                      th:field="*{describe}"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Quantity</label>
+                                                            <input type="number" class="form-control"
+                                                                   th:field="*{quantity}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Import Price</label>
+                                                            <div class="d-flex">
+                                                                <input type="text" id="importPriceInput"
+                                                                       oninput="onInputImportPrice(this.value)"
+                                                                       class="form-control"
+                                                                       th:value="${editProductDetail.importPrice}"/>
+                                                                <span style="margin-left: 0.5rem">VND</span>
+                                                                <input type="hidden" name="importPrice"
+                                                                       th:field="*{importPrice}" id="outputImportPrice">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Price</label>
+                                                            <div class="d-flex">
+                                                                <input type="text" id="priceInput"
+                                                                       oninput="onInputPrice(this.value)"
+                                                                       class="form-control"
+                                                                       th:value="${editProductDetail.price}"/>
+                                                                <span style="margin-left: 0.5rem">VND</span>
+                                                                <input type="hidden" name="price" th:field="*{price}"
+                                                                       id="outputPrice">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right mt-3">
+                                    <input type="button" class="btn btn-primary" onclick="updateProductDetail()"
+                                           value="Save As">
+                                    <a th:href="@{/mangostore/admin/product-detail/delete/{id}(id=${editProductDetail.id})}">
+                                        <button type="button" class="btn btn-danger" onclick="removeProductDetail()">Delete
+                                        </button>
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Product Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 122px">ImagesProduct</th>
+                                            <th style="width: 115px">Name</th>
+                                            <th style="width: 70px">Material</th>
+                                            <th style="width: 70px">Origin</th>
+                                            <th style="width: 70px">Describe</th>
+                                            <th style="width: 124px">Quantity</th>
+                                            <th style="width: 70px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 395px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listProductDetailInactive, stat : ${listProductDetailInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 115px; word-break: break-all"
+                                                th:text="${listProductDetailInactive.product.nameProduct + '(' + listProductDetailInactive.size.nameSize + ', ' + listProductDetailInactive.color.nameColor + ')'}"></td>
+                                            <td style="width: 70px"
+                                                th:text="${listProductDetailInactive.material.nameMaterial}"></td>
+                                            <td style="width: 70px"
+                                                th:text="${listProductDetailInactive.origin.nameOrigin}"></td>
+                                            <td style="width: 70px"
+                                                th:text="${listProductDetailInactive.describe}"></td>
+                                            <td style="width: 124px">
+                                                <div class="d-flex">
+                                                    <input type="hidden" name="id" class="idProductDetail"
+                                                           th:value="${listProductDetailInactive.id}">
+                                                    <th:block th:if="${listProductDetailInactive.quantity == 0}">
+                                                        <input type="number" style="width: 70px; height: 30px; margin-left: 65px;" name="quantity"
+                                                               class="quantityNew"
+                                                               th:value="${listProductDetailInactive.quantity}">
+                                                    </th:block>
+                                                    <th:block th:unless="${listProductDetailInactive.quantity == 0}">
+                                                        <input type="text" style="width: 70px; height: 30px; margin-left: 65px;" name="quantity"
+                                                               class="quantityOld"
+                                                               th:value="${listProductDetailInactive.quantity}" readonly>
+                                                    </th:block>
+                                                    <button type="submit" th:text="Save" class="btn btn-info"
+                                                            onclick="restoreProductDetail(this)"></button>
+                                                </div>
+                                            </td>
+                                            <td style="width: 70px" th:if="${listProductDetailInactive.productStatus == 1}">
+                                                <label class="badge badge-success">Còn hàng</label>
+                                            </td>
+
+                                            <td style="width: 70px" th:if="${listProductDetailInactive.productStatus == 0}">
+                                                <label class="badge badge-danger">Hết hàng</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listProductDetailInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Product Detail Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
