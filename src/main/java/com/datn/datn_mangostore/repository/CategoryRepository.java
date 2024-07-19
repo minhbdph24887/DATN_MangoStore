@@ -16,7 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "select * from category where status= 0 order by id desc", nativeQuery = true)
     List<Category> getAllCategoryByStatus0();
 
-    @Query(value = "select * from category where name_category like %:searchCategory% and status= 1", nativeQuery = true)
+    @Query(value = "select * from category where name_category COLLATE Latin1_General_CI_AI like %:searchCategory% and status= 1", nativeQuery = true)
     List<Category> searchCategory(@Param("searchCategory") String searchCategory);
 
     @Query(value = "select * from category where name_category = :nameCategory", nativeQuery = true)

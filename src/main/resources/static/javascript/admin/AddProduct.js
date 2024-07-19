@@ -263,6 +263,7 @@ async function updateProduct(event) {
 
     const nameProductInput = document.querySelector('input[name="nameProduct"]').value.trim();
     const idProduct = document.querySelector('input[name="id"]').value.trim();
+    var codeProduct = document.getElementById('codeProduct').value.trim();
 
     if (nameProductInput === '') {
         dangerAlert('Please Enter The Name Product');
@@ -279,12 +280,12 @@ async function updateProduct(event) {
 
     try {
         // Check if the product name already exists
-        const url = '/api/mangostore/admin/productsExistUpdate/' + encodeURIComponent(nameProductInput) + '?id=' + encodeURIComponent(idProduct);
+        const url = '/api/mangostore/admin/productsExistUpdate/' + encodeURIComponent(nameProductInput) + '?codeProduct=' + encodeURIComponent(codeProduct);
         const response = await fetch(url);
         if (response.ok) {
             const responseData = await response.json();
 
-            if (responseData === 2 && idProduct !== '') {
+            if (responseData === 2 && codeProduct !== '') {
                 // If product already exists and idProduct is different, show a warning
                 Swal.fire("Product name already exists", "", "warning");
             } else {

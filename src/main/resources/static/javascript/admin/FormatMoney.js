@@ -101,13 +101,24 @@ if (formEditProductDetail) {
 
         return true;
     }
-
+// Hàm để loại bỏ ký tự không phải số
+    function removeNonNumeric(value) {
+        return value.replace(/[^0-9]/g, '');
+    }
     function onInputImportPrice(value) {
-        document.getElementById('importPriceInput').value = formatToCurrencyPDD(value);
+        // Format giá cho người dùng xem
+        const formattedValue = formatToCurrencyPDD(value);
+        document.getElementById('importPriceInput').value = formattedValue;
+        // Lưu giá gốc vào hidden input
+        document.getElementById('outputImportPrice').value = removeNonNumeric(value);
     }
 
     function onInputPrice(value) {
-        document.getElementById('priceInput').value = formatToCurrencyPDD(value);
+        // Format giá cho người dùng xem
+        const formattedValue = formatToCurrencyPDD(value);
+        document.getElementById('priceInput').value = formattedValue;
+        // Lưu giá gốc vào hidden input
+        document.getElementById('outputPrice').value = removeNonNumeric(value);
     }
 
     function formatToCurrencyPDD(value) {

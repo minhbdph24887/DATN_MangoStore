@@ -70,16 +70,16 @@ function fetchData(formData) {
 }
 
 
-function updatePagination(totalPages, currentPage, totalItems) {
-    // Cập nhật các nút phân trang
-    $('#firstPage').toggleClass('disabled', currentPage === 0);
-    $('#previousPage').toggleClass('disabled', currentPage === 0);
-    $('#nextPage').toggleClass('disabled', currentPage >= totalPages - 1);
-    $('#lastPage').toggleClass('disabled', currentPage >= totalPages - 1);
-
-    // Cập nhật thông tin trang hiện tại
-    document.getElementById('currentPageDisplay').innerHTML = 'Current Page: ' + (currentPage + 1);
-}
+// function updatePagination(totalPages, currentPage, totalItems) {
+//     // Cập nhật các nút phân trang
+//     $('#firstPage').toggleClass('disabled', currentPage === 0);
+//     $('#previousPage').toggleClass('disabled', currentPage === 0);
+//     $('#nextPage').toggleClass('disabled', currentPage >= totalPages - 1);
+//     $('#lastPage').toggleClass('disabled', currentPage >= totalPages - 1);
+//
+//     // Cập nhật thông tin trang hiện tại
+//     document.getElementById('currentPageDisplay').innerHTML = 'Current Page: ' + (currentPage + 1);
+// }
 
 function refreshData() {
     // Clear filter fields

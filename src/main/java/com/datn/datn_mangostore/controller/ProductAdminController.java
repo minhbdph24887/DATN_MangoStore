@@ -105,7 +105,7 @@ public class ProductAdminController {
     }
 
     @PostMapping(value = "product-detail/update")
-    public String updateProductDetail(@Valid ProductDetail editProductDetail,
+    public String updateProductDetail(@ModelAttribute @Valid ProductDetail editProductDetail,
                                       BindingResult result,
                                       HttpSession session) {
         return productDetailService.updateProductDetail(editProductDetail, result, session);

@@ -17,7 +17,7 @@ public interface OriginRepository extends JpaRepository<Origin, Long> {
     List<Origin> getAllOriginByStatus0();
 
 
-    @Query(value = "SELECT * FROM origin WHERE name_origin LIKE %:searchOrigin% AND status= 1", nativeQuery = true)
+    @Query(value = "select * from origin where name_origin COLLATE Latin1_General_CI_AI like %:searchOrigin% and status= 1", nativeQuery = true)
     List<Origin> searchOrigin(@Param("searchOrigin") String searchOrigin);
 
     @Query(value = "select * from origin where name_origin = :nameOrigin", nativeQuery = true)

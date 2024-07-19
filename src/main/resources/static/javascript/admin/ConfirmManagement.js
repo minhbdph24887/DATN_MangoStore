@@ -648,3 +648,108 @@ function removeCategory(event) {
 
     return false; // Prevent the default action
 }
+
+function removeProductDetail(event) {
+    event.preventDefault(); // Prevent the default anchor click behavior
+
+    Swal.fire({
+        title: "Are you sure you want to delete this product detail?",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        icon: "warning"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = event.target.closest('a').href;
+        }
+    });
+
+    return false; // Prevent the default action
+}
+function updateProductDetail(event) {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định của form submit
+
+    Swal.fire({
+        title: "Are you sure you want to save changes to this product detail?",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        cancelButtonText: "Cancel",
+        icon: "warning"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Lấy form data
+            const form = event.target.closest('form');
+            const formData = new FormData(form);
+            const actionUrl = form.getAttribute('action');
+
+
+            // Lấy giá trị từ các trường nhập liệu
+            const describe = formData.get('describe').trim();
+            const quantity = parseFloat(formData.get('quantity'));
+            const importPrice = parseFloat(formData.get('importPrice'));
+            const price = parseFloat(formData.get('price'));
+
+            // Hàm kiểm tra dữ liệu
+            function validateFormData() {
+                return describe !== '' &&
+                    !isNaN(quantity) && quantity > 0 &&
+                    !isNaN(importPrice) && importPrice > 0 &&
+                    !isNaN(price) && price > 0;
+            }
+
+            // Kiểm tra dữ liệu và thông báo lỗi nếu không hợp lệ
+            if (!validateFormData()) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Please fill out all fields correctly. Ensure that quantity, import price, and price are greater than 0.",
+                    icon: "error",
+                });
+                return false;
+            }
+
+
+            // Gửi yêu cầu đến server
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData,
+            }).then(response => {
+                // Kiểm tra xem phản hồi có phải là JSON không
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json(); // Trả về JSON nếu có
+                } else {
+                    // Trả về HTML nếu không phải JSON
+                    return response.text().then(html => {
+                        // Phân tích HTML để lấy URL từ phản hồi
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const meta = doc.querySelector('meta[http-equiv="refresh"]');
+
+                        return response.url; // Trả về URL nếu tìm thấy trong meta tag
+                    });
+                }
+            }).then(result => {
+                    // Nếu phản hồi là lệnh chuyển hướng, lấy URL và chuyển hướng đến đó
+                    Swal.fire({
+                        title: "Saved!",
+                        text: "Your product detail has been updated.",
+                        icon: "success",
+                    }).then(() => {
+                        window.location.href = result; // Chuyển hướng đến URL
+                    });
+
+            }).catch(error => {
+                console.error("Fetch error:", error);
+                Swal.fire({
+                    title: "Error!",
+                    text: error.message || "There was a problem saving your product detail.",
+                    icon: "error",
+                });
+            });
+        }
+    });
+
+    return false; // Ngăn chặn hành vi mặc định
+}
+
