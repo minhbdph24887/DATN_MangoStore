@@ -5,4 +5,5 @@ import org.springframework.ui.Model;
 
 public interface ClientService {
     String indexClient(Model model, HttpSession session);
+
 }

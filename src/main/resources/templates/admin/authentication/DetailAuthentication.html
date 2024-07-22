@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="checkUpdateAuthenticationPage">
+
+    <div>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/authentication}">Index Authentication</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detail Authentication</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-lg-5 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Detail Role</h4>
+                    <div class="table-responsive">
+                        <div class="form-group">
+                            ID Code Authentication: <span style="color: red">[[${detailAuthentication.getId()}]]</span>
+                        </div>
+                        <div class="form-group">
+                            Account Information: <span style="color: red;">[[${detailAuthentication.getAccount().getFullName()}]]</span>
+                        </div>
+                        <div class="form-group">
+                            Account Rights: <span
+                                style="color: red">[[${detailAuthentication.getRole().getName()}]]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Update Authentication</h4>
+                    <form id="formUpdateAuthentication" th:action="@{/mangostore/admin/authentication/update}" th:object="${detailAuthentication}"
+                          method="post" onsubmit="return update()">
+                        <input type="hidden" th:field="*{id}" th:value="${detailAuthentication.id}">
+                        <div class="form-group">
+                            <label class="form-label">Name Account:</label>
+                            <div class="form-control" th:text="${detailAuthentication.account.fullName}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Name Role:</label>
+                            <select name="role" class="form-control" >
+                                <option th:each="listRole : ${listRole}"
+                                        th:value="${listRole.id}"
+                                        th:text="${listRole.name}"
+                                        th:selected="${detailAuthentication.role.id == listRole.id}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="text-right mt-3">
+                            <input type="hidden" th:value="${detailAuthentication.getAccount().getId()}" id="idAccount">
+                            <button type="button" onclick="checkUpdateAuthentication()" class="btn btn-primary">Save As</button>&nbsp;
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

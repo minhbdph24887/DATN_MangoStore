@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="apiAddress AddAddress">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Active Address Client</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Address Client Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Index Address Client</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Address Client Active</h4>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                            data-target="#myModal">Add Address Client
+                                    </button>
+                                </div>
+                                <div class="col-sm-7 form-group" style="margin-left: 100px;">
+                                    <form>
+                                        <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                               placeholder="Search Name Client"/>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <form id="formAddAddress123"
+                                                  th:action="@{/mangostore/admin/address-client/add}"
+                                                  th:object="${addAddressClient}" method="post">
+                                                <h3 class="mb-4">Add Address Client</h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="nameClient"
+                                                                   id="nameClientInput"
+                                                                   placeholder="Enter Name Client">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control"
+                                                                   name="phoneNumber"
+                                                                   id="phoneNumberInput"
+                                                                   placeholder="Enter Phone Number">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <span>What is your address?</span>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Province:</label>
+                                                            <select name="province"
+                                                                    class="form-select form-select-sm mb-3 edit-city-select city-select"
+                                                                    aria-label=".form-select-sm">
+                                                                <option value="" selected>Chọn tỉnh thành</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">District:</label>
+                                                            <select name="district"
+                                                                    class="form-select form-select-sm mb-3 edit-district-select district-select"
+                                                                    aria-label=".form-select-sm">
+                                                                <option value="" selected>Chọn quận huyện</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Commune:</label>
+                                                            <select name="commune"
+                                                                    class="form-select form-select-sm edit-ward-select ward-select"
+                                                                    aria-label=".form-select-sm">
+                                                                <option value="" selected>Chọn phường xã</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label class="form-label">Specific Address:</label>
+                                                            <textarea name="specificAddress" class="form-control"
+                                                                      placeholder="Please enter specific address"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <br>
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <input type="button" value="Save" onclick="addAddress()"
+                                                                   class="btn btn-primary">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 114px">CodeAddress</th>
+                                            <th style="width: 151px">NameClient</th>
+                                            <th style="width: 115px">PhoneNumber</th>
+                                            <th style="width: 172px">SpecificAddressClient</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 84px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 200px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listAddressClient, stat : ${listAddressClient}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 114px">
+                                                <a th:href="@{|/mangostore/admin/address-client/detail/${listAddressClient.id}|}"
+                                                   th:text="${listAddressClient.codeAddress}"
+                                                   style="text-decoration: none">
+                                                </a>
+                                            </td>
+                                            <td style="width: 151px; word-break: break-all"
+                                                th:text="${listAddressClient.nameClient}"></td>
+                                            <td style="width: 115px" th:text="${listAddressClient.phoneNumber}"></td>
+                                            <td style="width: 172px; word-break: break-all"
+                                                th:text="${listAddressClient.specificAddress +', '+ listAddressClient.commune +', '+ listAddressClient.district +', '+ listAddressClient.province}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listAddressClient.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 84px" th:if="${listAddressClient.status == 1}">
+                                                <label class="badge badge-success">IsActive</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listAddressClient.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Address Client is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Address Client Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 114px">CodeAddress</th>
+                                            <th style="width: 151px">NameClient</th>
+                                            <th style="width: 115px">PhoneNumber</th>
+                                            <th style="width: 172px">SpecificAddressClient</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 84px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 347px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listAddressClientInactive, stat : ${listAddressClientInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 114px">
+                                                <a th:href="@{|/mangostore/admin/address-client/restore/${listAddressClientInactive.id}|}"
+                                                   th:text="${listAddressClientInactive.codeAddress}"
+                                                   onclick="return restore()"
+                                                   style="text-decoration: none"></a>
+                                            </td>
+                                            <td style="width: 151px; word-break: break-all"
+                                                th:text="${listAddressClientInactive.nameClient}"></td>
+                                            <td style="width: 115px"
+                                                th:text="${listAddressClientInactive.phoneNumber}"></td>
+                                            <td style="width: 172px; word-break: break-all"
+                                                th:text="${listAddressClientInactive.specificAddress +', '+ listAddressClientInactive.commune +', '+ listAddressClientInactive.district +', '+ listAddressClientInactive.province}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listAddressClientInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 84px" th:if="${listAddressClientInactive.status == 0}">
+                                                <label class="badge badge-danger">StopWorking</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listAddressClientInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Address Client Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

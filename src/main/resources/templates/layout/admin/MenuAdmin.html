@@ -83,19 +83,24 @@
                 <ul class="nav flex-column sub-menu">
                     <th:block th:if="${checkMenuAdmin == true}">
                         <li class="nav-item"><a class="nav-link"
-                                                th:href="@{/mangostore/admin/account}"> Account </a></li>
+                                                th:href="@{/mangostore/admin/list-staff}"> Staff </a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                                th:href="@{/mangostore/admin/list-client}"> Client </a></li>
                         <li class="nav-item"><a class="nav-link"
                                                 th:href="@{/mangostore/admin/role}"> Role </a></li>
                         <li class="nav-item"><a class="nav-link"
                                                 th:href="@{/mangostore/admin/authentication}"> Authority </a></li>
-                        <li class="nav-item"><a class="nav-link"
-                                                th:href="@{/mangostore/admin/address-client}"> Address Client </a></li>
+<!--                        <li class="nav-item"><a class="nav-link"-->
+<!--                                                th:href="@{/mangostore/admin/address-client}"> Address Client </a></li>-->
                     </th:block>
                     <th:block th:if="${checkMenuAdmin == false}">
                         <li class="nav-item"><a class="nav-link"
-                                                th:href="@{/mangostore/admin/account}"> Account </a></li>
+                                                th:href="@{/mangostore/admin/list-staff/detail-view}"> Detail Profile </a></li>
                         <li class="nav-item"><a class="nav-link"
-                                                th:href="@{/mangostore/admin/address-client}"> Address Client </a></li>
+                                                th:href="@{/mangostore/admin/list-client}"> Client </a></li>
+<!--                        <li class="nav-item"><a class="nav-link"-->
+<!--                                                th:href="@{/mangostore/admin/address-client}"> Address Client </a></li>-->
+
                     </th:block>
                 </ul>
             </div>

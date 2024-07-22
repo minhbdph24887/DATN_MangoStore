@@ -1,4 +1,4 @@
-const showImagesPage = document.querySelector('.showImage');
+const showImagesPage = document.querySelector('.ShowImages');
 if (showImagesPage) {
     const originalImageSrc = document.getElementById('previewImage').src;
     document.getElementById('imageInput').addEventListener('change', function (e) {

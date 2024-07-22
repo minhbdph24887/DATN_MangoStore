@@ -26,12 +26,13 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="2" author="minhbdph24887">
         <createTable tableName="roles">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)"/>
             <column name="note" type="nvarchar(255)"/>
             <column name="status" type="integer"/>
@@ -51,7 +52,7 @@
             </column>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="4" author="minhbdph24887">
         <createTable tableName="color">
             <column name="id" type="bigint" autoIncrement="true">
@@ -66,7 +67,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="5" author="minhbdph24887">
         <createTable tableName="material">
             <column name="id" type="bigint" autoIncrement="true">
@@ -81,7 +82,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="6" author="minhbdph24887">
         <createTable tableName="product">
             <column name="id" type="bigint" autoIncrement="true">
@@ -97,7 +98,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="7" author="minhbdph24887">
         <createTable tableName="origin">
             <column name="id" type="bigint" autoIncrement="true">
@@ -112,7 +113,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="8" author="minhbdph24887">
         <createTable tableName="size">
             <column name="id" type="bigint" autoIncrement="true">
@@ -127,7 +128,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="9" author="minhbdph24887">
         <createTable tableName="images">
             <column name="id" type="bigint" autoIncrement="true">
@@ -143,7 +144,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="10" author="minhbdph24887">
         <createTable tableName="product_detail">
             <column name="id" type="bigint" autoIncrement="true">
@@ -179,7 +180,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="11" author="minhbdph24887">
         <createTable tableName="rank">
             <column name="id" type="bigint" autoIncrement="true">
@@ -196,7 +197,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="12" author="minhbdph24887">
         <createTable tableName="voucher">
             <column name="id" type="bigint" autoIncrement="true">
@@ -222,7 +223,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="13" author="minhbdph24887">
         <createTable tableName="voucher_client">
             <column name="id" type="bigint" autoIncrement="true">
@@ -246,7 +247,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="14" author="minhbdph24887">
         <createTable tableName="address_client">
             <column name="id" type="bigint" autoIncrement="true">
@@ -264,7 +265,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="15" author="minhbdph24887">
         <createTable tableName="invoice">
             <column name="id" type="bigint" autoIncrement="true">
@@ -290,7 +291,7 @@
             <column name="invoice_status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="16" author="minhbdph24887">
         <createTable tableName="invoice_detail">
             <column name="id" type="bigint" autoIncrement="true">
@@ -308,7 +309,7 @@
             <column name="capital_sum" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="17" author="minhbdph24887">
         <createTable tableName="category">
             <column name="id" type="bigint" autoIncrement="true">
@@ -323,7 +324,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="18" author="minhbdph24887">
         <createTable tableName="shopping_cart">
             <column name="id" type="bigint" autoIncrement="true">
@@ -337,7 +338,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="19" author="minhbdph24887">
         <createTable tableName="shopping_cart_detail">
             <column name="id" type="bigint" autoIncrement="true">
@@ -356,7 +357,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="20" author="minhbdph24887">
         <createTable tableName="favourite">
             <column name="id" type="bigint" autoIncrement="true">
@@ -369,7 +370,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="21" author="minhbdph24887">
         <createTable tableName="favourite_detail">
             <column name="id" type="bigint" autoIncrement="true">
@@ -385,7 +386,7 @@
             <column name="status" type="integer"/>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="22" author="minhbdph24887">
         <addForeignKeyConstraint constraintName="fk_account"
                                  baseTableName="authentication" baseColumnNames="id_account"
@@ -394,7 +395,7 @@
                                  baseTableName="authentication" baseColumnNames="id_role"
                                  referencedTableName="roles" referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="23" author="minhbdph24887">
         <addForeignKeyConstraint constraintName="fk_product"
                                  baseTableName="product_detail" baseColumnNames="id_product"
@@ -415,19 +416,19 @@
                                  constraintName="fk_images_product"
                                  referencedTableName="images" referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="24" author="minhbdph24887">
         <addForeignKeyConstraint constraintName="fk_rank"
                                  baseTableName="accounts" baseColumnNames="id_rank"
                                  referencedTableName="rank" referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="25" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="voucher" baseColumnNames="id_rank" constraintName="fk_voucher"
                                  referencedTableName="rank"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="26" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="voucher_client" baseColumnNames="id_account"
                                  constraintName="fk_voucher_client_account" referencedTableName="accounts"
@@ -436,13 +437,13 @@
                                  constraintName="fk_voucher_client_voucher" referencedTableName="voucher"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="27" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="accounts" baseColumnNames="id_address_client"
                                  constraintName="fk_address_client_accounts" referencedTableName="address_client"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="28" author="minhbph24887">
         <addForeignKeyConstraint baseTableName="invoice" baseColumnNames="id_account"
                                  constraintName="fk_invoice_account" referencedTableName="accounts"
@@ -454,7 +455,7 @@
                                  constraintName="fk_invoice_voucher_client" referencedTableName="voucher_client"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="29" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="invoice_detail" baseColumnNames="id_product_detail"
                                  constraintName="fk_invoice_product_detail" referencedTableName="product_detail"
@@ -463,19 +464,19 @@
                                  constraintName="fk_invoice_detail" referencedTableName="invoice"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="30" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="product_detail" baseColumnNames="id_category"
                                  constraintName="fk_product_detail_category" referencedTableName="category"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="31" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="shopping_cart" baseColumnNames="id_account"
                                  constraintName="fk_shopping_cart_account" referencedTableName="accounts"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="32" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="shopping_cart_detail" baseColumnNames="id_shopping_cart"
                                  constraintName="fk_shopping_cart_detail" referencedTableName="shopping_cart"
@@ -484,13 +485,13 @@
                                  constraintName="fk_shopping_cart_product_detail" referencedTableName="product_detail"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="33" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="favourite" baseColumnNames="id_account"
                                  constraintName="fk_favourite_account" referencedTableName="accounts"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="34" author="minhbdph24887">
         <addForeignKeyConstraint baseTableName="favourite_detail" baseColumnNames="id_favourite"
                                  constraintName="fk_favourite_detail" referencedTableName="favourite"
@@ -499,7 +500,7 @@
                                  constraintName="fk_favorite_detail" referencedTableName="product_detail"
                                  referencedColumnNames="id"/>
     </changeSet>
-    
+
     <changeSet id="35" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="LLH4O242BD"/>
@@ -513,7 +514,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="36" author="minhbdph24887">
         <insert tableName="accounts">
             <column name="full_name" value="Bùi Đức Minh"/>
@@ -528,7 +529,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="37" author="minhbdph24887">
         <insert tableName="shopping_cart">
             <column name="code_shopping_cart" value="BLM7M55HBF"/>
@@ -537,7 +538,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="38" author="minhbdph24887">
         <insert tableName="favourite">
             <column name="code_favourite" value="VQ0UB7L7XT"/>
@@ -545,7 +546,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="39" author="minhbdph24887">
         <insert tableName="roles">
             <column name="name" value="ADMIN"/>
@@ -553,7 +554,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="40" author="minhbdph24887">
         <insert tableName="roles">
             <column name="name" value="USER"/>
@@ -561,7 +562,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="41" author="minhbdph24887">
         <insert tableName="roles">
             <column name="name" value="STAFF"/>
@@ -569,14 +570,14 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="42" author="minhbdph24887">
         <insert tableName="authentication">
             <column name="id_account" value="1"/>
             <column name="id_role" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="43" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="MD2YT4J661"/>
@@ -590,7 +591,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="44" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="B92LV7VY38"/>
@@ -604,7 +605,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="45" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="G70E3LJQ9S"/>
@@ -618,7 +619,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="46" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="6NB9ROY7EK"/>
@@ -632,7 +633,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="47" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="9JIZ3EL82W"/>
@@ -646,7 +647,7 @@
             <column name="status" value="1"/>
         </insert>
     </changeSet>
-    
+
     <changeSet id="48" author="minhbdph24887">
         <insert tableName="rank">
             <column name="code_rank" value="TSD4EG4NHO"/>

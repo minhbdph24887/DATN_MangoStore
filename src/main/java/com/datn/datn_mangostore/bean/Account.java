@@ -34,9 +34,9 @@ public class Account implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "idRank")
     private Rank rank;
-    @ManyToOne
-    @JoinColumn(name = "idAddressClient")
-    private AddressClient addressClient;
+//    @ManyToOne
+//    @JoinColumn(name = "idAddressClient")
+//    private AddressClient addressClient;
     @OneToMany(mappedBy = "account")
     List<Authentication> authentications;
     private Integer status;
@@ -52,7 +52,7 @@ public class Account implements UserDetails {
                    String veryCode,
                    Integer accumulatedPoints,
                    Rank rank,
-                   AddressClient addressClient,
+//                   AddressClient addressClient,
                    List<Authentication> authentications,
                    Integer status) {
         this.id = id;
@@ -66,7 +66,7 @@ public class Account implements UserDetails {
         this.veryCode = veryCode;
         this.accumulatedPoints = accumulatedPoints;
         this.rank = rank;
-        this.addressClient = addressClient;
+//        this.addressClient = addressClient;
         this.authentications = authentications;
         this.status = status;
     }
@@ -162,13 +162,13 @@ public class Account implements UserDetails {
         this.rank = rank;
     }
 
-    public AddressClient getAddressClient() {
-        return addressClient;
-    }
-
-    public void setAddressClient(AddressClient addressClient) {
-        this.addressClient = addressClient;
-    }
+//    public AddressClient getAddressClient() {
+//        return addressClient;
+//    }
+//
+//    public void setAddressClient(AddressClient addressClient) {
+//        this.addressClient = addressClient;
+//    }
 
     public List<Authentication> getAuthentications() {
         return authentications;

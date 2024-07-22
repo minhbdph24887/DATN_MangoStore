@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+<body>
+<main class="apiAddress checkBoxDetail">
+    <div class="home-tab">
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                       href="#tab1" role="tab"
+                       aria-controls="tab1" aria-selected="true">Active Address Client</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                       aria-controls="tab2" role="tab"
+                       aria-selected="false">Address Client Inactive</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                <div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/address-client}">Index Address
+                            Client</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Address Client</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Update Address Client</h3>
+                            <form th:action="@{/mangostore/admin/address-client/update}"
+                                  th:object="${editAddressClient}"
+                                  method="post" onsubmit="return update()">
+                                <input type="hidden" name="id" th:field="*{id}"
+                                       th:value="${editAddressClient.id}">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">CodeAddress</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="codeAddress" th:field="*{codeAddress}" readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label class="form-label">SpecificAddressClient</label>
+                                            <input type="text" class="form-control"
+                                                   th:value="${editAddressClient.specificAddress +', '+ editAddressClient.commune +', '+ editAddressClient.district +', '+ editAddressClient.province}"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label class="form-label">Status</label>
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       th:checked="${editAddressClient.status == 1}" id="active">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <input type="hidden" id="status" name="status">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">NameClient</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="nameClient" th:field="*{nameClient}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">PhoneNumber</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="phoneNumber" th:field="*{phoneNumber}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Account Create</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   th:value="${editAddressClient.account.fullName}" readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Date Create</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   th:value="${#temporals.format(editAddressClient.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h4>Update Address Client</h4>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">SpecificAddress</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           name="specificAddress" th:field="*{specificAddress}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">Province</label>
+                                                    <select name="province" class="form-select form-select-sm mb-3"
+                                                            id="city" aria-label=".form-select-sm">
+                                                        <option value="" selected>Chọn tỉnh thành</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">District</label>
+                                                    <select name="district"
+                                                            class="form-select form-select-sm mb-3"
+                                                            id="district" aria-label=".form-select-sm">
+                                                        <option value="" selected>Chọn quận huyện</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">Commune</label>
+                                                    <select name="commune" class="form-select form-select-sm"
+                                                            id="ward" aria-label=".form-select-sm">
+                                                        <option value="" selected>Chọn phường xã</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right mt-3">
+                                    <input type="submit" class="btn btn-primary" value="Save As">
+                                    <a th:href="@{/mangostore/admin/address-client/delete/{id}(id=${editAddressClient.id})}">
+                                        <button type="button" class="btn btn-danger" onclick="return remove()">Delete
+                                        </button>
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel"
+                 aria-labelledby="tab2">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">List Product Inactive</h4>
+                            <div class="table-responsive">
+                                <div class="header">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30px">#</th>
+                                            <th style="width: 114px">CodeAddress</th>
+                                            <th style="width: 151px">NameClient</th>
+                                            <th style="width: 115px">PhoneNumber</th>
+                                            <th style="width: 172px">SpecificAddressClient</th>
+                                            <th style="width: 100px">DateCreate</th>
+                                            <th style="width: 84px">Status</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="content" style="height: 347px">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr th:each="listAddressClientInactive, stat : ${listAddressClientInactive}">
+                                            <td style="width: 30px" th:text="${stat.count}"></td>
+                                            <td style="width: 114px">
+                                                <a th:href="@{|/mangostore/admin/address-client/restore/${listAddressClientInactive.id}|}"
+                                                   th:text="${listAddressClientInactive.codeAddress}"
+                                                   onclick="return restore()"
+                                                   style="text-decoration: none"></a>
+                                            </td>
+                                            <td style="width: 151px; word-break: break-all"
+                                                th:text="${listAddressClientInactive.nameClient}"></td>
+                                            <td style="width: 115px"
+                                                th:text="${listAddressClientInactive.phoneNumber}"></td>
+                                            <td style="width: 172px; word-break: break-all"
+                                                th:text="${listAddressClientInactive.specificAddress +', '+ listAddressClientInactive.commune +', '+ listAddressClientInactive.district +', '+ listAddressClientInactive.province}"></td>
+                                            <td style="width: 100px"
+                                                th:text="${#temporals.format(listAddressClientInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                            <td style="width: 84px" th:if="${listAddressClientInactive.status == 0}">
+                                                <label class="badge badge-danger">StopWorking</label>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${listAddressClientInactive.isEmpty()}">
+                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                                Address Client Inactive is entity
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
