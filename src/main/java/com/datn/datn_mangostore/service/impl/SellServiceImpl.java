@@ -465,8 +465,9 @@ public class SellServiceImpl implements SellService {
             }
         }
 
-        Account detailAccount = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
-        if (detailAccount != null) {
+        if(invoice.getIdCustomer() != null){
+            Account detailAccount = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
+            assert detailAccount != null;
             if (invoice.getCustomerPoints() != 0) {
                 detailAccount.setAccumulatedPoints(0);
                 accountRepository.save(detailAccount);
@@ -510,7 +511,7 @@ public class SellServiceImpl implements SellService {
             }
             accountRepository.save(detailAccount);
             gender.updateRankByAccumulatedPointsAccount(detailAccount);
-        } else {
+        }else{
             invoice.setInvoicePaymentDate(LocalDateTime.parse(gender.getCurrentDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd : HH:mm:ss")));
             invoice.setReturnClientMoney(request.getReturnClientMoney());
             invoice.setPayments("cash");

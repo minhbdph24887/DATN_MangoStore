@@ -51,4 +51,31 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, Lo
             "    img.images_file\n" +
             "order by total_quantity desc;", nativeQuery = true)
     List<Object[]> findTopSellingProductsByYear(@Param("year") Integer year);
+
+    @Query(value = "select top(3)\n" +
+            "    id.id_product_detail,\n" +
+            "    sum(id.quantity) as total_quantity,\n" +
+            "    p.name_product as product_name,\n" +
+            "    s.name_size as size_name,\n" +
+            "    c.name_color as color_name,\n" +
+            "    img.images_file as image_path\n" +
+            "from invoice_detail id\n" +
+            "         join product_detail pd on id.id_product_detail = pd.id\n" +
+            "         join product p on pd.id_product = p.id\n" +
+            "         join size s on pd.id_size = s.id\n" +
+            "         join color c on pd.id_color = c.id\n" +
+            "         join images img on p.id_images = img.id\n" +
+            "         join invoice i on id.id_invoice = i.id\n" +
+            "where\n" +
+            "    i.invoice_status = 5\n" +
+            "  and year(i.invoice_payment_date) = :year\n" +
+            "  and month(i.invoice_payment_date) between :startMonth and :endMonth\n" +
+            "group by\n" +
+            "    id.id_product_detail,\n" +
+            "    p.name_product,\n" +
+            "    s.name_size,\n" +
+            "    c.name_color,\n" +
+            "    img.images_file\n" +
+            "order by total_quantity desc;", nativeQuery = true)
+    List<Object[]> findTopSellingProductsByYearAndQuarter(@Param("year") Integer year, @Param("startMonth") int startMonth, @Param("endMonth") int endMonth);
 }

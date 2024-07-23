@@ -9,8 +9,10 @@ import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.InvoiceDetailRepository;
 import com.datn.datn_mangostore.repository.InvoiceRepository;
 import com.datn.datn_mangostore.repository.RoleRepository;
+import com.datn.datn_mangostore.request.IdOrderRequest;
 import com.datn.datn_mangostore.service.OrderService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -107,7 +109,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String listInvoice(Model model,
-                              HttpSession session) {
+                              HttpSession session,
+                              String findByCode) {
         String email = (String) session.getAttribute("loginEmail");
         if (email == null) {
             return "redirect:/mangostore/home";
@@ -138,8 +141,12 @@ public class OrderServiceImpl implements OrderService {
                     model.addAttribute("checkMenuAdmin", false);
                 }
 
-
                 List<Invoice> findAllInvoice = invoiceRepository.getAllInvoiceOnline(detailAccount.getId());
+                if (findByCode != null) {
+                    findAllInvoice = invoiceRepository.findInvoiceByCodeInvoice(detailAccount.getId(), findByCode);
+                    model.addAttribute("findByCode", findByCode);
+                }
+
                 model.addAttribute("listInvoice", findAllInvoice);
                 return "admin/Order/OrderList";
             }
@@ -201,5 +208,17 @@ public class OrderServiceImpl implements OrderService {
         detailInvoice.setInvoiceStatus(newStatusInvoice);
         invoiceRepository.save(detailInvoice);
         return "redirect:/mangostore/admin/order/detail/" + idInvoice;
+    }
+
+    @Override
+    public ResponseEntity<String> checkConfirmInvoice(IdOrderRequest request,
+                                                      HttpSession session) {
+        String email = (String) session.getAttribute("loginEmail");
+        Account detailAccount = accountRepository.detailAccountByEmail(email);
+        if (detailAccount.getId() == Long.parseLong(request.getIdInvoice())) {
+            return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.OK);
+        }
     }
 }

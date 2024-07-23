@@ -1,12 +1,11 @@
 package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
+import com.datn.datn_mangostore.bean.ProductDetail;
 import com.datn.datn_mangostore.bean.Role;
+import com.datn.datn_mangostore.bean.Voucher;
 import com.datn.datn_mangostore.reponse.MonthlyRevenueResponse;
-import com.datn.datn_mangostore.repository.AccountRepository;
-import com.datn.datn_mangostore.repository.InvoiceDetailRepository;
-import com.datn.datn_mangostore.repository.InvoiceRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
+import com.datn.datn_mangostore.repository.*;
 import com.datn.datn_mangostore.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -25,19 +24,27 @@ public class AdminServiceImpl implements AdminService {
     private final RoleRepository roleRepository;
     private final InvoiceRepository invoiceRepository;
     private final InvoiceDetailRepository invoiceDetailRepository;
+    private final ProductDetailRepository productDetailRepository;
+    private final VoucherRepository voucherRepository;
 
     public AdminServiceImpl(AccountRepository accountRepository,
-                            RoleRepository roleRepository, InvoiceRepository invoiceRepository, InvoiceDetailRepository invoiceDetailRepository) {
+                            RoleRepository roleRepository,
+                            InvoiceRepository invoiceRepository,
+                            InvoiceDetailRepository invoiceDetailRepository,
+                            ProductDetailRepository productDetailRepository, VoucherRepository voucherRepository) {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.invoiceRepository = invoiceRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
+        this.productDetailRepository = productDetailRepository;
+        this.voucherRepository = voucherRepository;
     }
 
     @Override
     public String indexAdmin(Model model,
                              HttpSession session,
-                             Integer years) {
+                             Integer years,
+                             String precious) {
         String email = (String) session.getAttribute("loginEmail");
         if (email == null) {
             return "redirect:/mangostore/home";
@@ -62,22 +69,43 @@ public class AdminServiceImpl implements AdminService {
                 }
 
                 Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
+                model.addAttribute("checkMenuAdmin", detailRole.getName().equals("ADMIN"));
 
                 Integer totalInvoiceComplete;
                 Long totalPaymentOfAllInvoices;
                 Integer totalInvoiceCancel;
                 List<Object[]> results;
-                if(years != null){
+                if (years != null && precious != null) {
+                    int startMonth = 1;
+                    int endMonth = 3;
+                    switch (precious) {
+                        case "quyI":
+                            startMonth = 1;
+                            endMonth = 3;
+                            break;
+                        case "quyII":
+                            startMonth = 4;
+                            endMonth = 6;
+                            break;
+                        case "quyIII":
+                            startMonth = 7;
+                            endMonth = 9;
+                            break;
+                        case "quyIV":
+                            startMonth = 10;
+                            endMonth = 12;
+                            break;
+                    }
+                    totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndYearAndQuarter(5, years, startMonth, endMonth);
+                    totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByYearAndQuarter(years, startMonth, endMonth);
+                    totalInvoiceCancel = invoiceRepository.countByInvoiceStatusCancelAndQuarter(years, startMonth, endMonth);
+                    results = invoiceDetailRepository.findTopSellingProductsByYearAndQuarter(years, startMonth, endMonth);
+                } else if (years != null) {
                     totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndYear(5, years);
                     totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByYear(years);
                     totalInvoiceCancel = invoiceRepository.countByInvoiceStatusCancel();
                     results = invoiceDetailRepository.findTopSellingProductsByYear(years);
-                }else{
+                } else {
                     Integer yearNow = Year.now().getValue();
                     totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndYear(5, yearNow);
                     totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByYear(yearNow);
@@ -101,28 +129,67 @@ public class AdminServiceImpl implements AdminService {
                 }
 
                 model.addAttribute("topSellingProducts", topSellingProducts);
+
+                List<ProductDetail> listProductDetailWithQuantity = productDetailRepository.findAllProductByQuantity();
+                model.addAttribute("listProductDetailWithQuantity", listProductDetailWithQuantity);
+
+                List<Voucher> listVoucherByQuantity = voucherRepository.findAlLVoucherByQuantity();
+                model.addAttribute("listVoucherByQuantity", listVoucherByQuantity);
                 return "admin/Index";
             }
         }
     }
 
     @Override
-    public List<MonthlyRevenueResponse> getMonthlyRevenue(Integer year) {
+    public List<MonthlyRevenueResponse> getMonthlyRevenue(Integer year, String quarter) {
         List<Object[]> results;
-        if (year != null) {
-            results = invoiceRepository.findMonthlyRevenueByYear(year);
-        } else {
-            int currentYear = Year.now().getValue();
-            results = invoiceRepository.findMonthlyRevenueByYear(currentYear);
-        }
-        List<MonthlyRevenueResponse> monthlyRevenueList = new ArrayList<>();
 
+        // Determine the year to use: either the provided year or the current year
+        int queryYear = (year != null) ? year : Year.now().getValue();
+        if (year != null && quarter != null) {
+            // If both year and quarter are provided, fetch data for the specific quarter
+            int startMonth;
+            int endMonth;
+            switch (quarter) {
+                case "quyI":
+                    startMonth = 1;
+                    endMonth = 3;
+                    break;
+                case "quyII":
+                    startMonth = 4;
+                    endMonth = 6;
+                    break;
+                case "quyIII":
+                    startMonth = 7;
+                    endMonth = 9;
+                    break;
+                case "quyIV":
+                    startMonth = 10;
+                    endMonth = 12;
+                    break;
+                default:
+                    startMonth = 1;
+                    endMonth = 12;
+                    break;
+            }
+            results = invoiceRepository.findQuarterlyRevenueByYear(queryYear, startMonth, endMonth);
+        } else if (year != null) {
+            // If only year is provided, fetch data for all months of that year
+            results = invoiceRepository.findMonthlyRevenueByYear(queryYear);
+        } else {
+            // If no parameters are provided, fetch data for the current year
+            results = invoiceRepository.findMonthlyRevenueByYear(queryYear);
+        }
+
+        // Convert the results to a list of MonthlyRevenueResponse
+        List<MonthlyRevenueResponse> monthlyRevenueList = new ArrayList<>();
         for (Object[] result : results) {
             int month = ((Number) result[0]).intValue();
             Integer totalRevenue = ((Number) result[1]).intValue();
             MonthlyRevenueResponse dto = new MonthlyRevenueResponse(month, totalRevenue);
             monthlyRevenueList.add(dto);
         }
+
         return monthlyRevenueList;
     }
 }

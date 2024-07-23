@@ -50,7 +50,27 @@ const ConfirmInvoicePage = document.querySelector('.ConfirmInvoicePage');
 if (ConfirmInvoicePage) {
     function confirmInvoice() {
         const idInvoice = document.getElementById('id-invoice').textContent;
-        const url = 'http://localhost:8080/mangostore/admin/confirm-invoice?id=' + idInvoice;
-        confirmAlertLink('Would You Like To Accept This Invoice?', 'Successful Reception', url);
+        const data = {
+            idInvoice: idInvoice,
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080' + '/api/mangostore/admin/check-confirm-invoice',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (response) {
+                const url = 'http://localhost:8080/mangostore/admin/confirm-invoice?id=' + idInvoice;
+                confirmAlertLink(event, 'Would You Like To Accept This Invoice?', 'Successful Reception', url);
+            },
+            error: function (response) {
+                if (response.responseText === '1') {
+                    dangerAlert('Bạn không thể xác nhận hóa đơn của chính mình!');
+                } else {
+                    dangerAlert('Lỗi');
+                }
+                console.clear();
+            }
+        });
     }
 }

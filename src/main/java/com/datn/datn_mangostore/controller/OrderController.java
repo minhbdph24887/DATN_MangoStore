@@ -2,6 +2,7 @@ package com.datn.datn_mangostore.controller;
 
 import com.datn.datn_mangostore.service.OrderService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +33,9 @@ public class OrderController {
 
     @GetMapping(value = "order/list")
     public String listInvoice(Model model,
-                              HttpSession session) {
-        return orderService.listInvoice(model, session);
+                              HttpSession session,
+                              @Param("findByCode") String findByCode) {
+        return orderService.listInvoice(model, session, findByCode);
     }
 
     @GetMapping(value = "order/detail/{id}")

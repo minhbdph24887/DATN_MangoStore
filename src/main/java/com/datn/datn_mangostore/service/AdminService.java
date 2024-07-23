@@ -9,7 +9,9 @@ import java.util.List;
 public interface AdminService {
     String indexAdmin(Model model,
                       HttpSession session,
-                      Integer years);
+                      Integer years,
+                      String precious);
 
-    List<MonthlyRevenueResponse> getMonthlyRevenue(Integer year);
+    List<MonthlyRevenueResponse> getMonthlyRevenue(Integer year,
+                                                   String quarter);
 }

@@ -6,18 +6,19 @@
     <div class="d-flex">
         <p style="width: 112px; margin: 6px;">Filter By Year: </p>
         <div class="me-2">
-            <select id="year" name="fillerByYears" style="width: 200px;" class="form-control" onchange="sortByYear()">
-                <script>
-                    const currentYear = new Date().getFullYear();
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const selectedYear = urlParams.get('fillerByYears') || currentYear;
-
-                    for (let year = currentYear; year >= 1900; year--) {
-                        document.write(`<option value="${year}" ${year === selectedYear ? 'selected' : ''}>${year}</option>`);
-                    }
-                </script>
+            <select id="year" name="fillerByYears" style="width: 200px;" class="form-control" onchange="updateUrl()">
+                <!-- Các năm sẽ được thêm bằng JavaScript -->
             </select>
         </div>
+        <p style="width: 112px; margin: 6px;">Tìm kiếm theo quý:</p>
+        <select class="form-select me-2" id="fitterByPrecious" onchange="updateUrl()"
+                style="width: 238px; height: 33px; margin-top: -2px;">
+            <option value="default" disabled selected>Vui Lòng Lọc Theo Qúy</option>
+            <option value="quyI">Qúy I</option>
+            <option value="quyII">Qúy II</option>
+            <option value="quyIII">Qúy III</option>
+            <option value="quyIV">Qúy IV</option>
+        </select>
         <a type="button" class="btn btn-primary" th:href="@{/mangostore/admin/home}" th:text="Refresh"
            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;"></a>
     </div>
@@ -93,6 +94,88 @@
                                                                 <h5 class="card-title"
                                                                     th:text="${productData.productName} + ' (' + ${productData.sizeName} + ', ' + ${productData.colorName} + ')'"
                                                                     style="margin-right: 325px; width: 300px;"></h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 stretch-card grid-margin" style="height: 505px;">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Danh Sách Sản Phẩm Sắp Hết Hàng</h4>
+                    <div class="contentCheckOut" style="height: 380px;">
+                        <th:block th:each="listProductDetailWithQuantity : ${listProductDetailWithQuantity}">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card mb-4" style="width: 700px;">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-3">
+                                                            <img th:src="@{|/images/product/${listProductDetailWithQuantity.product.images.imagesFile}|}"
+                                                                 style="font-size: 81px;margin-left: 12px;margin-top: 4px;width: 117px;height: 125px;"
+                                                                 alt="">
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title"
+                                                                    th:text="${listProductDetailWithQuantity.product.nameProduct} + ' (' + ${listProductDetailWithQuantity.size.nameSize} + ', ' + ${listProductDetailWithQuantity.color.nameColor} + ')'"
+                                                                    style="margin-right: 325px; width: 300px;"></h5>
+                                                                <h6 th:text="${'Còn : ' + listProductDetailWithQuantity.quantity + ' sản phẩm'}"></h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 stretch-card grid-margin" style="height: 505px;">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Danh Sách Voucher Đang Diễn Ra Sắp Hết Voucher</h4>
+                    <div class="contentCheckOut" style="height: 700px;">
+                        <th:block th:each="listVoucherByQuantity : ${listVoucherByQuantity}">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card mb-4" style="width: 700px;">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-3">
+                                                            <img th:src="@{|/images/layout/logoVoucher.png|}"
+                                                                 style="font-size: 81px;margin-left: 12px;margin-top: 4px;width: 117px;height: 125px;"
+                                                                 alt="">
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title"
+                                                                    th:text="${listVoucherByQuantity.nameVoucher}"
+                                                                    style="margin-right: 325px; width: 300px;"></h5>
+                                                                <h6 th:text="${'Còn : ' + listVoucherByQuantity.quantity + ' lượt dùng'}"></h6>
                                                             </div>
                                                         </div>
                                                     </div>

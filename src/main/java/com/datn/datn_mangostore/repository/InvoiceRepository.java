@@ -51,4 +51,29 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     @Query(value = "select month(invoice_payment_date) as month, sum(total_payment) as totalRevenue from invoice where invoice_status = 5 and year(invoice_payment_date) = :year group by month(invoice_payment_date)", nativeQuery = true)
     List<Object[]> findMonthlyRevenueByYear(@Param("year") Integer year);
+
+    @Query(value = "select * from invoice where id_account= :idAccount and invoice_status in (2, 3, 4, 5) and code_invoice like %:codeInvoice%", nativeQuery = true)
+    List<Invoice> findInvoiceByCodeInvoice(@Param("idAccount") Long idAccount,
+                                           @Param("codeInvoice") String findByCode);
+
+    @Query(value = "select count(*) from invoice where invoice_status = :statusInvoice and year(invoice_payment_date) = :years and month(invoice_payment_date) between :startMonth and :endMonth", nativeQuery = true)
+    Integer countByInvoiceStatusAndYearAndQuarter(@Param("statusInvoice") Integer statusInvoice,
+                                                  @Param("years") Integer years,
+                                                  @Param("startMonth") int startMonth,
+                                                  @Param("endMonth") int endMonth);
+
+    @Query(value = "select sum(invoice.total_payment) from invoice where invoice_status= 5 and year(invoice_payment_date)= :years and month(invoice_payment_date) between :startMonth and :endMonth", nativeQuery = true)
+    Long sumTotalPaymentByYearAndQuarter(@Param("years") Integer years,
+                                         @Param("startMonth") int startMonth,
+                                         @Param("endMonth") int endMonth);
+
+    @Query(value = "select count(*) from invoice where invoice_status = 6 and year(invoice_payment_date) = :years and month(invoice_payment_date) between :startMonth and :endMonth", nativeQuery = true)
+    Integer countByInvoiceStatusCancelAndQuarter(@Param("years") Integer years,
+                                                 @Param("startMonth") int startMonth,
+                                                 @Param("endMonth") int endMonth);
+
+    @Query(value = "select month(invoice_payment_date) as month, sum(total_payment) as totalRevenue from invoice where invoice_status = 5 and year(invoice_payment_date) = :year and month(invoice_payment_date) between :startMonth and :endMonth group by month(invoice_payment_date)", nativeQuery = true)
+    List<Object[]> findQuarterlyRevenueByYear(@Param("year") Integer year,
+                                              @Param("startMonth") int startMonth,
+                                              @Param("endMonth") int endMonth);
 }

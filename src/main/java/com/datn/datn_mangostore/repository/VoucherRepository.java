@@ -41,4 +41,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
     @Query(value = "select * from voucher where voucher_status= 1 and status= 1 and voucher_from= 'offline' and id_rank= 1 order by id desc", nativeQuery = true)
     List<Voucher> getAllVoucherByStatus1();
+
+    @Query(value = "select * from voucher where voucher_status= 1 and quantity > 0 and quantity < 50", nativeQuery = true)
+    List<Voucher> findAlLVoucherByQuantity();
 }
