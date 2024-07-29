@@ -1,6 +1,5 @@
 package com.datn.datn_mangostore.restcontroller;
 
-import com.datn.datn_mangostore.request.DataRequest;
 import com.datn.datn_mangostore.request.RoleRequest;
 import com.datn.datn_mangostore.service.RoleService;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,9 @@ public class RoleRescontroller {
     public RoleRescontroller(RoleService roleService) {
         this.roleService = roleService;
     }
+
     @PostMapping(value = "check-role")
-    public ResponseEntity<String> checkAddRole(@RequestBody RoleRequest request){
+    public ResponseEntity<String> checkAddRole(@RequestBody RoleRequest request) {
         return roleService.checkAddRole(request);
     }
 }

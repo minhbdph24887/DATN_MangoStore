@@ -22,10 +22,8 @@ if (sortDatePage) {
             quarterSelect.value = selectedQuarter;
         }
 
-        // Initialize Select2
         $('#year').select2();
 
-        // Set selected value for Select2 if there is a selectedYear
         if (selectedYear) {
             $('#year').val(selectedYear).trigger('change');
         }

@@ -5,20 +5,20 @@
 <main class="indexSell checkNumberPhonePage checkVoucherPage addProductDetail updateQuantityInvoiceDetail checkInfoMoneyPage updateStatusInvoice">
     <div>
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/sell}">Index Sell</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Detail Sell</li>
+            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/sell}">Trang chủ bán hàng</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Bán hàng</li>
         </ul>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h3>Sales At The Counter</h3>
+                    <h3>Bán Hàng Tại Quầy</h3>
                     <div class="row">
                         <div class="col-md-6">
                             <a type="button" id="createOrderButton" class="btn btn-success"
-                               style="width: 126px;">Create Order *</a>
-                            <span style="font-size: 15px; line-height: 1.5; padding: 5px 10px; color: red">* You only create a maximum of 5 invoices</span>
+                               style="width: 126px;">Tạo hóa đơn *</a>
+                            <span style="font-size: 15px; line-height: 1.5; padding: 5px 10px; color: red">* Bạn chỉ tạo tối đa 5 hóa đơn</span>
                             <br>
                             <th:block th:each="listInvoiceByAccount : ${listInvoiceByAccount}">
                                 <a type="button" class="btn btn-outline-secondary"
@@ -32,7 +32,7 @@
                             <form th:action="@{/mangostore/admin/sell/delete}" method="post">
                                 <input type="hidden" name="id" th:value="${detailInvoice.id}"/>
                                 <button type="submit" class="btn btn-danger"
-                                        style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Cancel Invoice
+                                        style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Hủy hóa đơn
                                 </button>
                             </form>
                         </div>
@@ -43,9 +43,9 @@
                                     <input type="hidden" id="idInvoiceInputNumber" th:value="${detailInvoice.id}"/>
                                     <select class="select2-search-example form-control form-control-full"
                                             id="optionClient">
-                                        <option value="">Select Client</option>
+                                        <option value="">Chọn khách hàng</option>
                                         <option value="add">
-                                            <i class="bi bi-cloud-plus"></i>Add Client
+                                            <i class="bi bi-cloud-plus"></i>Thêm khách hàng
                                         </option>
                                         <option th:each="listAccount : ${listAccount}" th:value="${listAccount.id}"
                                                 th:text="${listAccount.fullName +  ' - '  + listAccount.numberPhone}"></option>
@@ -64,28 +64,38 @@
                                             <input type="hidden" name="id" th:value="${detailInvoice.id}"/>
                                             <input type="hidden" name="point" th:value="${pointClient}">
                                             <input type="text" class="form-control me-2"
-                                                   th:value="${'fullName:' + nameClient + ',  customerPoints:' + pointClient}"
-                                                   readonly style="width: 664px">
-                                            <span>1 point = 1.000 VND</span>
+                                                   th:value="${'Họ tên:' + nameClient + ',  điểm:' + pointClient}"
+                                                   readonly style="width: 646px">
+                                            <span>1 điểm = 1.000 VND</span>
                                         </div>
-                                        <button class="btn btn-info" type="submit">Apply</button>
+                                        <button class="btn btn-info" type="submit"
+                                                style="padding: 7px 19px;font-size: 12px;line-height: 1.5;">Áp dụng
+                                        </button>
                                     </div>
                                 </form>
                             </th:block>
                             <th:block th:unless="${nameClient != null and pointClient != null}">
                                 <div class="form-group d-flex">
-                                    <input type="text" class="form-control" value="No data" readonly>
+                                    <input type="text" class="form-control" value="Không có dữ liệu" readonly>
                                 </div>
                             </th:block>
-                            <div class="form-group d-flex">
-                                <input type="hidden" id="idInvoiceInput" name="id" th:value="${detailInvoice.id}">
-                                <select name="voucher" id="voucherSelect" class="form-control" style="height: 47px;">
-                                    <option value="">Chọn Voucher</option>
-                                    <option th:each="listVoucherClient : ${listVoucherClient}"
-                                            th:value="${listVoucherClient.id}"
-                                            th:text="${listVoucherClient.nameVoucher + '( ' + #numbers.formatDecimal(listVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND )'}"></option>
-                                </select>
-                                <button type="button" class="btn btn-success" onclick="updateVoucherForSell()">Apply</button>
+                            <div class="input-group">
+                                <th:block th:if="${detailInvoice.voucher != null}">
+                                    <label>
+                                        <input type="text" class="form-control"
+                                               th:value="${detailInvoice.voucher.codeVoucher}"
+                                               style="width: 665px; height: 47px;" readonly>
+                                    </label>
+                                </th:block>
+                                <th:block th:if="${detailInvoice.voucher == null}">
+                                    <label>
+                                        <input type="text" class="form-control" value="Không có sử dụng voucher"
+                                               style="width: 665px; height: 47px;" readonly>
+                                    </label>
+                                </th:block>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#addVoucherSell">Chọn
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -99,7 +109,7 @@
                         <div class="col-md-12">
                             <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
                                     data-target="#addProductDetail"
-                                    style=" padding: 5px 10px;font-size: 12px;line-height: 1.5;">Add Product Detail
+                                    style=" padding: 5px 10px;font-size: 12px;line-height: 1.5;">Thêm sản phẩm
                             </button>
                         </div>
                         <div class="col-md-12">
@@ -109,10 +119,10 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 117px">NameProduct</th>
-                                            <th style="width: 139px">Quantity</th>
-                                            <th style="width: 130px">Price</th>
-                                            <th style="width: 80px">Action</th>
+                                            <th style="width: 117px">Tên sản phẩm</th>
+                                            <th style="width: 139px">Số lượng</th>
+                                            <th style="width: 130px">Giá</th>
+                                            <th style="width: 80px">Hành động</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -150,7 +160,7 @@
                                                       method="post">
                                                     <input type="hidden" name="id" th:value="${listInvoiceDetail.id}">
                                                     <button type="submit" class="btn btn-danger">
-                                                        Delete
+                                                        Xóa
                                                     </button>
                                                 </form>
                                             </td>
@@ -167,24 +177,24 @@
         <div class="col-lg-5 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h5>Invoice information</h5>
+                    <h5>Thông tin hóa đơn</h5>
                     <div class="form-horizontal">
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <label class="control-label col-sm-5" style="margin: 0;">CodeInvoice:</label>
+                            <label class="control-label col-sm-5" style="margin: 0;">Mã hóa đơn:</label>
                             <div class="col-sm-7" style="margin: 0;">
                                 <p class="form-control-static" th:text="${detailInvoice.codeInvoice}"
                                    style="margin: 0; color: red"></p>
                             </div>
                         </div>
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <label class="control-label col-sm-5" style="margin: 0;">NameInvoice:</label>
+                            <label class="control-label col-sm-5" style="margin: 0;">Tên hóa đơn:</label>
                             <div class="col-sm-7" style="margin: 0;">
                                 <p class="form-control-static" th:text="${detailInvoice.nameInvoice}"
                                    style="margin: 0; color: red"></p>
                             </div>
                         </div>
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <label class="control-label col-sm-5" style="margin: 0;">DateCreateInvoice:</label>
+                            <label class="control-label col-sm-5" style="margin: 0;">Ngày tạo hóa đơn:</label>
                             <div class="col-sm-7" style="margin: 0;">
                                 <p class="form-control-static"
                                    th:text="${#temporals.format(detailInvoice.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"
@@ -192,7 +202,20 @@
                             </div>
                         </div>
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <label class="control-label col-sm-5" style="margin: 0;">ConversionPoint:</label>
+                            <label class="control-label col-sm-5" style="margin: 0;">Tên khách hàng:</label>
+                            <div class="col-sm-7" style="margin: 0;">
+                                <th:block th:if="${detailInvoice.idCustomer != null}">
+                                    <p class="form-control-static" th:text="${nameClient}"
+                                       style="margin: 0; color: red"></p>
+                                </th:block>
+                                <th:block th:unless="${detailInvoice.idCustomer != null}">
+                                    <p class="form-control-static"
+                                       style="margin: 0; color: red">Không có thông tin khách hàng</p>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: center;">
+                            <label class="control-label col-sm-5" style="margin: 0;">Điểm chuyển đổi:</label>
                             <th:block th:if="${detailInvoice.customerPoints != null}">
                                 <div class="col-sm-7" style="margin: 0;">
                                     <p class="form-control-static"
@@ -224,7 +247,7 @@
                             </th:block>
                         </div>
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <label class="control-label col-sm-5" style="margin: 0;">Total Amount:</label>
+                            <label class="control-label col-sm-5" style="margin: 0;">Tổng cộng:</label>
                             <th:block th:if="${detailInvoice.totalInvoiceAmount != null}">
                                 <div class="col-sm-7" style="margin: 0;">
                                     <p class="form-control-static"
@@ -240,7 +263,7 @@
                             </th:block>
                         </div>
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <label class="control-label col-sm-5" style="margin: 0;">Total Payment:</label>
+                            <label class="control-label col-sm-5" style="margin: 0;">Tổng tiền thanh toán:</label>
                             <th:block th:if="${detailInvoice.totalPayment != null}">
                                 <div class="col-sm-7" style="margin: 0;">
                                     <p class="form-control-static"
@@ -256,19 +279,120 @@
                             </th:block>
                         </div>
                         <div class="form-group" style="display: flex; align-items: center;">
-                            <div class="col-sm-6" style="margin: 0;">
-                                <a type="button" th:href="@{/mangostore/admin/sell/banking(id=${detailInvoice.id})}"
-                                   class="btn btn-info"
-                                   style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">BankTransfer With
-                                    VnPAY</a>
-                            </div>
-                            <div class=" col-sm-6" data-toggle="modal"
-                                 data-target="#cashPayment" style="margin: 0;">
-                                <button type="button" class="btn btn-success"
-                                        style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">CashPayment
-                                </button>
-                            </div>
+                            <th:block
+                                    th:if="${detailInvoice.totalInvoiceAmount != null && detailInvoice.totalInvoiceAmount != 0}">
+                                <div class="col-sm-6" style="margin: 0;">
+                                    <a type="button" th:href="@{/mangostore/admin/sell/banking(id=${detailInvoice.id})}"
+                                       class="btn btn-info"
+                                       style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Chuyển khoản ngân
+                                        hàng với VnPAY</a>
+                                </div>
+                                <div class="col-sm-6" data-toggle="modal" data-target="#cashPayment" style="margin: 0;">
+                                    <button type="button" class="btn btn-success"
+                                            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Thanh toán bằng
+                                        tiền mặt
+                                    </button>
+                                </div>
+                            </th:block>
+                            <th:block
+                                    th:unless="${detailInvoice.totalInvoiceAmount != null && detailInvoice.totalInvoiceAmount != 0}">
+                                <div class="col-sm-6" style="margin: 0;">
+                                    <a type="button" th:href="@{/mangostore/admin/sell/banking(id=${detailInvoice.id})}"
+                                       class="btn btn-info"
+                                       style="padding: 5px 10px;font-size: 12px;line-height: 1.5;
+                                        pointer-events: none; color: gray; text-decoration: none; cursor: not-allowed;">Chuyển
+                                        khoản ngân
+                                        hàng với VnPAY</a>
+                                </div>
+                                <div class="col-sm-6" style="margin: 0;">
+                                    <button type="button" class="btn btn-success" disabled
+                                            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Thanh toán bằng
+                                        tiền mặt
+                                    </button>
+                                </div>
+                            </th:block>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addVoucherSell">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Danh sách Voucher</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idInvoiceInput" name="id" th:value="${detailInvoice.id}">
+                    <div th:if="${listVoucherClient.empty}">
+                        <h5>Không có voucher</h5>
+                    </div>
+                    <div th:unless="${listVoucherClient.empty}">
+                        <h5>Danh sách Voucher</h5>
+                        <div class="contentCheckOut" style="height: 418px">
+                            <th:block th:each="getAllVoucherClient : ${listVoucherClient}">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="padding-bottom: 22px;">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card mb-4" style="width: 720px;">
+                                                        <div class="row g-0">
+                                                            <div class="col-md-3">
+                                                                <img th:src="@{|/images/layout/logoVoucher.png|}"
+                                                                     style="font-size: 81px;margin-left: 12px;margin-top: 4px;width: 122px;height: 135px;"
+                                                                     alt="">
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title"
+                                                                        th:text="${getAllVoucherClient.nameVoucher}"
+                                                                        style="margin-right: 325px; width: 200px;"></h5>
+                                                                    <p class="card-text"
+                                                                       th:text="${'Đơn hàng tối thiểu: ' + #numbers.formatDecimal(getAllVoucherClient.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                                       style="margin-right: 184px; white-space: nowrap;"></p>
+                                                                    <input type="hidden"
+                                                                           th:id="'minimumPrice' + ${getAllVoucherClient.id}"
+                                                                           th:value="${getAllVoucherClient.minimumPrice}">
+                                                                    <p class="card-text"
+                                                                       th:text="${'Giảm tới: ' + #numbers.formatDecimal(getAllVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                                       style="margin-right: 184px; white-space: nowrap;"></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                                                <label>
+                                                                    <input type="radio" name="idVoucher"
+                                                                           id="checkedForListVoucher"
+                                                                           style="width: 21px;"
+                                                                           th:value="${getAllVoucherClient.id}">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="idCustomer" th:value="${detailInvoice.idCustomer}">
+                        <input type="hidden" id="totalInvoiceAmount" th:value="${detailInvoice.totalInvoiceAmount}">
+                        <div class="form-group me-2">
+                            <input type="text" class="form-control" id="codeVoucherInput"
+                                   placeholder="Vui lòng nhập mã voucher" style="width: 347px;">
+                        </div>
+                        <button type="button" class="btn btn-success"
+                                onclick="updateVoucherForSell()">Áp dụng
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng lại</button>
                     </div>
                 </div>
             </div>
@@ -280,23 +404,23 @@
              style="max-width: 100%; margin: 29px 314px 0 314px; padding: 0 0 0 0;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Client</h4>
+                    <h4 class="modal-title">Thêm khách hàng</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container row">
                         <div class="from-group">
-                            <label>Name Client:</label>
+                            <label>Tên khách hàng:</label>
                             <input type="text" id="nameClientInput" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <div class="from-group">
-                                <label>Number Client:</label>
+                                <label>Số điện thoại khách hàng:</label>
                                 <input type="text" id="numberClientInput" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="from-group">
-                                <label>Email Client:</label>
+                                <label>Email khách hàng:</label>
                                 <input type="text" id="emailClientInput" class="form-control">
                             </div>
                         </div>
@@ -304,10 +428,10 @@
                 </div>
                 <div class="modal-footer" style="height: 82px;">
                     <input type="hidden" id="id-invoice">
-                    <button type="button" class="btn btn-outline-secondary" onclick="clearFrom()">Clear</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="clearFrom()">Làm mới</button>
                     <button type="button" class="btn btn-outline-success" onclick="addClient()">
                         <i class="bi bi-check2-circle"></i>
-                        Add Client
+                        Thêm khách hàng
                     </button>
                 </div>
             </div>
@@ -318,7 +442,7 @@
         <div class="modal-dialog modal-fullscreen" style="max-width: 100%;margin: 16px 0 0 20px;padding: 0 0 0 0;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Product</h4>
+                    <h4 class="modal-title">Thêm sản phẩm</h4>
                     <button type="button" class="btn-close" data-dismiss="modal"
                             onclick="window.location.reload();"></button>
                 </div>
@@ -329,12 +453,12 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 30px">#</th>
-                                    <th style="width: 100px">ImagesProduct</th>
-                                    <th style="width: 90px">NameProduct</th>
-                                    <th style="width: 70px">QuantityProduct</th>
-                                    <th style="width: 55px">Price</th>
-                                    <th style="width: 125px">QuantityNew</th>
-                                    <th style="width: 80px">Action</th>
+                                    <th style="width: 100px">Ảnh sản phẩm</th>
+                                    <th style="width: 90px">Tên sản phẩm</th>
+                                    <th style="width: 70px">Số lượng</th>
+                                    <th style="width: 55px">Giá</th>
+                                    <th style="width: 125px">Số lượng nhập vào</th>
+                                    <th style="width: 80px">Hành động</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -369,7 +493,7 @@
                                     <td style="width: 80px">
                                         <button type="button" class="btn btn-info" th:data-id="${listProductDetail.id}"
                                                 onclick="AddProductDetail(this)">
-                                            <i class="bi bi-plus-circle-fill">Add</i>
+                                            <i class="bi bi-plus-circle-fill">Thêm</i>
                                         </button>
                                     </td>
                                 </tr>
@@ -380,7 +504,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"
-                            onclick="window.location.reload();">Close
+                            onclick="window.location.reload();">Đóng lại
                     </button>
                 </div>
             </div>
@@ -395,7 +519,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">ReturnClientMoney</label>
+                                    <label class="form-label">Tiền khách trả</label>
                                     <input type="hidden" name="id" id="idInvoice" th:value="${detailInvoice.id}">
                                     <input type="hidden" id="totalPayment" th:value="${detailInvoice.totalPayment}">
                                     <input type="text" class="form-control"
@@ -406,8 +530,7 @@
                                     <input type="hidden" id="convert"/>
                                     <br>
                                     <div class="form-group" style="display: flex; align-items: center;">
-                                        <label class="control-label col-sm-4" style="margin: 0;">Remaining
-                                            Money:</label>
+                                        <label class="control-label col-sm-4" style="margin: 0;">Tiền thừa: </label>
                                         <div class="col-sm-8" style="margin: 0;">
                                             <p class="form-control-static" id="remainingMoney"
                                                style="margin: 0; color: red"></p>
@@ -419,12 +542,12 @@
                                 <div class="form-group">
                                     <button type="button" class="btn btn-default"
                                             data-dismiss="modal"
-                                            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Close
+                                            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Đóng lại
                                     </button>
                                     <button type="submit"
                                             id="saveButton" onclick="updateInvoiceStatusSell()"
                                             class="btn btn-primary"
-                                            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Pay
+                                            style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Thanh toán
                                     </button>
                                 </div>
                             </div>

@@ -25,7 +25,6 @@ import java.util.Map;
 @Service
 public class ProductClientServiceImpl implements ProductClientService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final ProductDetailRepository productDetailRepository;
     private final Gender gender;
     private final ImagesRepository imagesRepository;
@@ -37,7 +36,6 @@ public class ProductClientServiceImpl implements ProductClientService {
     private final FavouriteDetailRepository favouriteDetailRepository;
 
     public ProductClientServiceImpl(AccountRepository accountRepository,
-                                    RoleRepository roleRepository,
                                     ProductDetailRepository productDetailRepository,
                                     Gender gender,
                                     ImagesRepository imagesRepository,
@@ -48,7 +46,6 @@ public class ProductClientServiceImpl implements ProductClientService {
                                     FavouriteRepository favouriteRepository,
                                     FavouriteDetailRepository favouriteDetailRepository) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.productDetailRepository = productDetailRepository;
         this.gender = gender;
         this.imagesRepository = imagesRepository;
@@ -65,69 +62,58 @@ public class ProductClientServiceImpl implements ProductClientService {
                                      HttpSession session,
                                      String sortDirection,
                                      Integer pageNo) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email != null) {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
-        }
-
-        Page<ProductDetail> itemsProductDetail;
-        if ("LowToHigh".equals(sortDirection)) {
-            itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8));
-            model.addAttribute("sortDirection", "LowToHigh");
-        } else if ("HighToLow".equals(sortDirection)) {
-            itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8));
-            model.addAttribute("sortDirection", "HighToLow");
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
+            return "redirect:/mangostore/home";
         } else {
-            itemsProductDetail = productDetailRepository.getAllProductDetailByIdProduct(PageRequest.of(pageNo - 1, 8));
-        }
-        model.addAttribute("listProductDetail", itemsProductDetail);
-        model.addAttribute("totalPage", itemsProductDetail.getTotalPages());
-        model.addAttribute("currentPage", pageNo);
+            Page<ProductDetail> itemsProductDetail;
+            if ("LowToHigh".equals(sortDirection)) {
+                itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8));
+                model.addAttribute("sortDirection", "LowToHigh");
+            } else if ("HighToLow".equals(sortDirection)) {
+                itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8));
+                model.addAttribute("sortDirection", "HighToLow");
+            } else {
+                itemsProductDetail = productDetailRepository.getAllProductDetailByIdProduct(PageRequest.of(pageNo - 1, 8));
+            }
+            model.addAttribute("listProductDetail", itemsProductDetail);
+            model.addAttribute("totalPage", itemsProductDetail.getTotalPages());
+            model.addAttribute("currentPage", pageNo);
 
-        Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
-        model.addAttribute("priceRangeMap", priceRangeMap);
-        return "client/ProductClient/ListProductClient";
+            Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
+            model.addAttribute("priceRangeMap", priceRangeMap);
+            return "client/ProductClient/ListProductClient";
+        }
     }
 
     @Override
     public String detailProductClient(Long idProductDetail,
                                       Model model,
                                       HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email != null) {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
+            return "redirect:/mangostore/home";
+        } else {
+            ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
+            model.addAttribute("detailProductClient", productDetail);
+
+            assert productDetail != null;
+            List<Images> listImagesByProduct = imagesRepository.findAllImagesByProduct(productDetail.getProduct().getId());
+            model.addAttribute("listImagesByProduct", listImagesByProduct);
+
+            Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
+            model.addAttribute("priceRangeMap", priceRangeMap);
+
+            List<Color> itemsColor = colorRepository.findAll();
+            model.addAttribute("listColor", itemsColor);
+
+            List<Size> itemsSize = sizeRepository.findAll();
+            model.addAttribute("listSize", itemsSize);
+
+            List<ProductDetail> getAllProductDetailByCategory = productDetailRepository.findAllByIdCategory(productDetail.getCategory().getId());
+            model.addAttribute("listProductDetailByCategory", getAllProductDetailByCategory);
+            return "client/ProductClient/DetailProductClient";
         }
-
-        ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
-        model.addAttribute("detailProductClient", productDetail);
-
-        assert productDetail != null;
-        List<Images> listImagesByProduct = imagesRepository.findAllImagesByProduct(productDetail.getProduct().getId());
-        model.addAttribute("listImagesByProduct", listImagesByProduct);
-
-        Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
-        model.addAttribute("priceRangeMap", priceRangeMap);
-
-        List<Color> itemsColor = colorRepository.findAll();
-        model.addAttribute("listColor", itemsColor);
-
-        List<Size> itemsSize = sizeRepository.findAll();
-        model.addAttribute("listSize", itemsSize);
-
-        List<ProductDetail> getAllProductDetailByCategory = productDetailRepository.findAllByIdCategory(productDetail.getCategory().getId());
-        model.addAttribute("listProductDetailByCategory", getAllProductDetailByCategory);
-        return "client/ProductClient/DetailProductClient";
     }
 
     @Override
@@ -149,10 +135,11 @@ public class ProductClientServiceImpl implements ProductClientService {
     }
 
     @Override
-    public boolean addToCart(AddToCartRequest request, HttpSession session) {
+    public ResponseEntity<String> addToCart(AddToCartRequest request,
+                                            HttpSession session) {
         String email = (String) session.getAttribute("loginEmail");
         if (email == null) {
-            return false;
+            return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
         } else {
             Account detailAccount = accountRepository.detailAccountByEmail(email);
             ProductDetail detailProduct = productDetailRepository.getQuantityProductDetail(request.getIdProduct(), request.getIdSize(), request.getIdColor());
@@ -176,13 +163,16 @@ public class ProductClientServiceImpl implements ProductClientService {
                 shoppingCartDetailRepository.save(newShoppingCartDetail);
             } else {
                 Integer quantityNew = request.getQuantity() + existingShoppingCartDetail.getQuantity();
+                if (quantityNew > 50) {
+                    return new ResponseEntity<>("bạn đã thêm vượt quá 50 sản phẩm/món hàng rồi", HttpStatus.BAD_REQUEST);
+                }
                 existingShoppingCartDetail.setQuantity(quantityNew);
                 existingShoppingCartDetail.setCapitalSum(quantityNew * existingShoppingCartDetail.getPrice());
                 existingShoppingCartDetail.setDateCreate(LocalDateTime.now());
                 shoppingCartDetailRepository.save(existingShoppingCartDetail);
             }
             gender.updateTotalShoppingCart(detailShoppingCart);
-            return true;
+            return new ResponseEntity<>("Thêm vào giỏ hàng thành công", HttpStatus.OK);
         }
     }
 

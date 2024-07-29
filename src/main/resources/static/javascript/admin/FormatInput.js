@@ -10,6 +10,7 @@ if (checkInfoMoneyPage) {
     }
 
     function onInput(value) {
+        if (value.trim() === '') return '';
         const formattedValue = formatToCurrency(value);
         document.getElementById('currencyInput').value = formattedValue;
         const totalPayment = parseInt(document.getElementById('totalPayment').value.replace(/[\D.]+/g, ''));
@@ -47,9 +48,6 @@ if (checkInfoMoneyPage) {
         const idInvoice = document.getElementById("idInvoice").value;
         const returnClientMoney = parseInt(document.getElementById("convert").value);
 
-        console.log(idInvoice);
-        console.log(returnClientMoney);
-
         const data = {
             idInvoice: idInvoice,
             returnClientMoney: returnClientMoney,
@@ -66,8 +64,7 @@ if (checkInfoMoneyPage) {
                 window.open("http://localhost:8080/mangostore/admin/sell", "_self");
             },
             error: function (e) {
-                alert("Thanh Toan That Bai");
-                console.log("ERROR: ", e);
+                dangerAlert("Thanh Toan That Bai");
             }
         });
     }

@@ -76,4 +76,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Object[]> findQuarterlyRevenueByYear(@Param("year") Integer year,
                                               @Param("startMonth") int startMonth,
                                               @Param("endMonth") int endMonth);
+
+    @Query(value = "select * from invoice where invoice_status in (2, 3, 4, 5)", nativeQuery = true)
+    List<Invoice> findAllOrder();
+
+    @Query(value = "select * from invoice where invoice_status in (2, 3, 4, 5) and code_invoice like %:codeInvoice%", nativeQuery = true)
+    List<Invoice> searchOrder(@Param("codeInvoice") String findByCode);
 }

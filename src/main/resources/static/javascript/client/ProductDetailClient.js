@@ -34,7 +34,7 @@ if (checkPageProductDetailClient) {
         const input = document.querySelector('.quantity-selector input[type="number"]');
         const currentValue = parseInt(input.value, 10);
         if (currentValue >= 50) {
-            dangerAlert('You can only purchase a maximum of 50 products/items');
+            dangerAlert('Bạn chỉ có thể mua tối đa 50 sản phẩm/món hàng');
         } else {
             input.value = currentValue + 1;
         }
@@ -123,7 +123,7 @@ if (checkPageProductDetailClient) {
     function AddToCart() {
         const checkLogin = document.getElementById('checkLogin').value;
         if (checkLogin === 'null') {
-            dangerAlert('Please Login to your account to Add To Cart');
+            dangerAlert('Vui lòng đăng nhập vào tài khoản của bạn để Thêm vào giỏ hàng');
         } else {
             const idProductDetail = document.getElementById('idProductDetail').value;
             const idProduct = document.getElementById('idProduct').value;
@@ -134,7 +134,7 @@ if (checkPageProductDetailClient) {
             let idColor = colorElements.length > 0 ? colorElements[0].dataset.value : 0;
             let idSize = sizeElements.length > 0 ? sizeElements[0].dataset.value : 0;
             if (quantityNew > availableQuantity) {
-                errorAlert('The added quantity must not exceed the actual quantity of the product');
+                errorAlert('Số lượng thêm không được vượt quá số lượng thực tế của sản phẩm');
             } else {
                 AddToCartAPI(idProductDetail, idProduct, idSize, idColor, quantityNew);
             }
@@ -144,7 +144,7 @@ if (checkPageProductDetailClient) {
     function AddToFavourite() {
         const checkLogin = document.getElementById('checkLogin').value;
         if (checkLogin === 'null') {
-            dangerAlert('Please Login to your account to Add To Favourite');
+            dangerAlert('Vui lòng đăng nhập vào tài khoản của bạn để thêm vào yêu thích');
         } else {
             const idProductDetail = document.getElementById('idProductDetail').value;
             const idProduct = document.getElementById('idProduct').value;
@@ -163,27 +163,30 @@ if (checkPageProductDetailClient) {
             idSize: idSize,
             idColor: idColor,
             quantity: quantityNew,
-        }
+        };
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8080' + '/api/mangostore/add-to-cart/client',
             data: JSON.stringify(data),
-            dataType: 'json',
             contentType: 'application/json',
             success: function (response) {
-                if (response) {
-                    successAlert('Add To Cart Successfully').then((result) => {
-                        if (result.value) {
-                            window.location.href = 'http://localhost:8080/mangostore/product/detail/' + idProductDetail;
-                        }
-                    });
-                } else {
-                    errorAlert("Login has expired, please log in again").then((result) => {
+                successAlert(response).then((result) => {
+                    if (result.value) {
+                        window.location.href = 'http://localhost:8080/mangostore/product/detail/' + idProductDetail;
+                    }
+                });
+            },
+            error: function (e) {
+                if (e.status === 400 && e.responseText === "1") {
+                    errorAlert("Đăng nhập đã hết hạn, vui lòng đăng nhập lại").then((result) => {
                         if (result.value) {
                             window.location.href = "http://localhost:8080/mangostore/home";
                         }
                     });
+                } else {
+                    dangerAlert(e.responseText);
                 }
+                console.clear();
             }
         });
     }
@@ -202,13 +205,13 @@ if (checkPageProductDetailClient) {
             contentType: 'application/json',
             success: function (response) {
                 if (response) {
-                    successAlert('Add To Favourite Successfully').then((result) => {
+                    successAlert('Thêm vào mục yêu thích thành công').then((result) => {
                         if (result.value) {
                             window.location.href = 'http://localhost:8080/mangostore/product/detail/' + idProductDetail;
                         }
                     });
                 } else {
-                    errorAlert("you already like that product").then((result) => {
+                    errorAlert("Bạn đã thích sản phẩm đó rồi").then((result) => {
                         if (result.value) {
                             window.location.href = "http://localhost:8080/mangostore/product/detail/" + idProductDetail;
                         }
@@ -216,8 +219,8 @@ if (checkPageProductDetailClient) {
                 }
             },
             error: function (error) {
-                errorAlert('An error occurred');
-                console.log(error);
+                errorAlert('Lỗi');
+                console.clear();
             }
         });
     }

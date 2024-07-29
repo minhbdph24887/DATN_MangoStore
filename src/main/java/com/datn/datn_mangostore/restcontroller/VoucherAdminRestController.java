@@ -18,12 +18,12 @@ public class VoucherAdminRestController {
     }
 
     @PostMapping(value = "rank/check-add")
-    public ResponseEntity<String> checkAddRank(@RequestBody NameRankRequest request){
+    public ResponseEntity<String> checkAddRank(@RequestBody NameRankRequest request) {
         return rankService.checkAddRank(request);
     }
 
     @PostMapping(value = "rank/check-update")
-    public ResponseEntity<String> checkUpdateRank(@RequestBody NameRankRequest request){
+    public ResponseEntity<String> checkUpdateRank(@RequestBody NameRankRequest request) {
         return rankService.checkUpdateRank(request);
     }
 }

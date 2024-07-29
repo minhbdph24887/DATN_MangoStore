@@ -2,7 +2,6 @@ package com.datn.datn_mangostore.controller;
 
 import com.datn.datn_mangostore.bean.Rank;
 import com.datn.datn_mangostore.bean.Voucher;
-import com.datn.datn_mangostore.repository.VoucherRepository;
 import com.datn.datn_mangostore.service.RankService;
 import com.datn.datn_mangostore.service.VoucherClientService;
 import com.datn.datn_mangostore.service.VoucherService;
@@ -12,8 +11,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/mangostore/admin/")

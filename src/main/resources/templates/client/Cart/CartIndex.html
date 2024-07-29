@@ -5,16 +5,17 @@
 <main class="checkQuantityProductDetail">
     <div class="container">
         <div class="row">
-            <div class="col-md-12"><h2>Shopping Cart Home Page</h2>
+            <div class="col-md-12">
+                <h2>Trang chủ Giỏ hàng</h2>
                 <div class="table-responsive">
                     <div class="header">
                         <table class="table table-hover table-condensed">
                             <thead>
                             <tr>
-                                <th style="width:35%">Product's name</th>
-                                <th style="width:11%">Price</th>
-                                <th style="width:15%">Quantity</th>
-                                <th style="width:12%" class="text-center">Into Money</th>
+                                <th style="width:35%">Tên sản phẩm</th>
+                                <th style="width:11%">Giá</th>
+                                <th style="width:15%">Số lượng</th>
+                                <th style="width:12%" class="text-center">Thành tiền</th>
                                 <th style="width:10%"></th>
                             </tr>
                             </thead>
@@ -54,7 +55,8 @@
                                                th:value="${listShoppingCartByAccount.quantity}" min="0"
                                                id="quantityInput"
                                                aria-label="Số lượng" readonly style="height: 38px; width: 80px;">
-                                        <form id="increaseFrom" th:action="@{/mangostore/cart/increase(id=${listShoppingCartByAccount.id})}"
+                                        <form id="increaseFrom"
+                                              th:action="@{/mangostore/cart/increase(id=${listShoppingCartByAccount.id})}"
                                               method="post">
                                             <button class="btn btn-outline-primary" type="button" style="height: 38px;"
                                                     th:attr="onclick='increaseQuantityForCart(' + ${listShoppingCartByAccount.productDetail.id} + ')'">
@@ -62,7 +64,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <p th:utext="${listShoppingCartByAccount.productDetail.quantity + ' Products Left'}"></p>
+                                    <p th:utext="${'Còn ' + listShoppingCartByAccount.productDetail.quantity + ' sản phẩm'}"></p>
                                 </td>
                                 <td data-th="Subtotal" class="text-center" style="width: 12%">
                                     [[${#numbers.formatDecimal(listShoppingCartByAccount.capitalSum, 0, 'COMMA', 0,
@@ -83,21 +85,21 @@
                             <tr>
                                 <td style="width: 40%">
                                     <a th:href="@{/mangostore/product}" class="btn btn-warning"><i
-                                            class="fa fa-angle-left"></i> Continue shopping</a>
+                                            class="fa fa-angle-left"></i> Tiếp tục mua sắm</a>
                                 </td>
                                 <td style="width: 40%" class="hidden-xs text-center">
-                                    <strong style="margin-left: 50px;">TotalAmount: [[*{totalShoppingCart}]]</strong>
+                                    <strong style="margin-left: 50px;">Tổng cộng: [[*{totalShoppingCart}]]</strong>
                                 </td>
                                 <td style="width: 30%">
                                     <th:block th:if="${listShoppingCartByAccount.isEmpty()}">
                                         <button class="btn btn-success btn-block"
-                                                style="width: 119px; margin-left: 115px;">Check Out
+                                                style="width: 123px; margin-left: 115px;">Thanh toán
                                             <i class="fa fa-angle-right"></i>
                                         </button>
                                     </th:block>
                                     <th:block th:unless=" ${listShoppingCartByAccount.isEmpty()}">
                                         <a th:href="@{/mangostore/cart/checkout}" class="btn btn-success btn-block"
-                                           style="width: 119px; margin-left: 115px;">Check Out <i
+                                           style="width: 123px; margin-left: 115px;">Thanh toán <i
                                                 class="fa fa-angle-right"></i></a>
                                     </th:block>
                                 </td>

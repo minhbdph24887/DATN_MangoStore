@@ -9,9 +9,9 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                 <div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher-client}">Index Voucher
-                            Client</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail Voucher</li>
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher-client}">Trang chủ Voucher
+                            khách hàng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Voucher khách hàng</li>
                     </ul>
                 </div>
                 <div class="col-lg-12 grid-margin stretch-card container">
@@ -20,33 +20,33 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="form-label">CodeVoucher</label>
+                                        <label class="form-label">Mã Voucher</label>
                                         <input type="text" class="form-control" name="codeVoucher"
                                                th:value="${voucherClient.codeVoucher}" readonly/>
                                     </div>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="form-group">
-                                        <label class="form-label">NameVoucher</label>
+                                        <label class="form-label">Tên Voucher</label>
                                         <input type="text" class="form-control" name="nameVoucher"
                                                th:value="${voucherClient.nameVoucher}" readonly/>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="form-label">Status</label>
+                                        <label class="form-label">Trạng thái</label>
                                         <th:block th:if="${voucherClient.voucherStatus == 1}">
-                                            <label class="badge badge-success form-control">InProgress</label>
+                                            <label class="badge badge-success form-control">Đang diễn ra</label>
                                         </th:block>
                                         <th:block th:if="${voucherClient.voucherStatus == 2}">
-                                            <label class="badge badge-info form-control">ComingSoon</label>
+                                            <label class="badge badge-info form-control">Sắp ra mắt</label>
                                         </th:block>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label class="form-label">ReducedValue</label>
+                                            <label class="form-label">Giá trị giảm</label>
                                             <div class="d-flex">
                                                 <div class="form-control"
                                                      th:text="${#numbers.formatDecimal(voucherClient.reducedValue , 0, 'COMMA', 0, 'POINT')}"
@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">StartDay</label>
+                                            <label class="form-label">Ngày bắt đầu</label>
                                             <input type="text" class="form-control" name="startDay"
                                                    th:value="${#temporals.format(voucherClient.startDay, 'yyyy-MM-dd')}"
                                                    readonly/>
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">EndDate</label>
+                                            <label class="form-label">Ngày kết thúc</label>
                                             <input type="text" class="form-control" name="endDate"
                                                    th:value="${#temporals.format(voucherClient.endDate, 'yyyy-MM-dd')}"
                                                    readonly/>

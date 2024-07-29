@@ -1,12 +1,10 @@
 package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.bean.Voucher;
 import com.datn.datn_mangostore.bean.VoucherClient;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.repository.VoucherClientRepository;
 import com.datn.datn_mangostore.repository.VoucherRepository;
 import com.datn.datn_mangostore.request.VoucherShopClientRequest;
@@ -22,18 +20,15 @@ import java.util.List;
 @Service
 public class VoucherShopServiceImpl implements VoucherShopService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final VoucherRepository voucherRepository;
     private final VoucherClientRepository voucherClientRepository;
     private final Gender gender;
 
     public VoucherShopServiceImpl(AccountRepository accountRepository,
-                                  RoleRepository roleRepository,
                                   VoucherRepository voucherRepository,
                                   VoucherClientRepository voucherClientRepository,
                                   Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.voucherRepository = voucherRepository;
         this.voucherClientRepository = voucherClientRepository;
         this.gender = gender;
@@ -42,19 +37,14 @@ public class VoucherShopServiceImpl implements VoucherShopService {
     @Override
     public String indexVoucherShop(Model model,
                                    HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email != null) {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
+            return "redirect:/mangostore/home";
+        } else {
+            List<Voucher> getAllVoucher = voucherRepository.getAllVoucherOnline();
+            model.addAttribute("listVoucher", getAllVoucher);
+            return "client/VoucherShop/IndexVoucherShopClient";
         }
-
-        List<Voucher> getAllVoucher = voucherRepository.getAllVoucherOnline();
-        model.addAttribute("listVoucher", getAllVoucher);
-        return "client/VoucherShop/IndexVoucherShopClient";
     }
 
     @Override

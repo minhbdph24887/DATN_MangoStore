@@ -26,6 +26,8 @@ public interface CategoryService {
 
     String restoreCategory(Long idCategory);
 
-    Integer findByCategoryCreateExit(String name );
-    Integer findByCategoryUpdateExit( String codeCategory ,String name);
+    Integer findByCategoryCreateExit(String name);
+
+    Integer findByCategoryUpdateExit(String codeCategory,
+                                     String name);
 }

@@ -27,9 +27,8 @@ public interface ColorService {
 
     String restoreColor(Long idColor);
 
-    //vinh3
-    Integer findByColorCreateExit(String name );
-    Integer findByColorUpdateExit( String codeColor ,String name);
+    Integer findByColorCreateExit(String name);
 
-
+    Integer findByColorUpdateExit(String codeColor,
+                                  String name);
 }

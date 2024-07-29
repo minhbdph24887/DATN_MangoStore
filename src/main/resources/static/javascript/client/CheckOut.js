@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             if (now.diff(invoiceCreationMoment, 'minutes') >= 30) {
                 if (!alertShown) {
                     alertShown = true;
-                    dangerAlert('The invoice has expired, please create a new invoice.').then((result) => {
+                    dangerAlert('Hóa đơn đã hết hạn, vui lòng tạo hóa đơn mới').then((result) => {
                         if (result.value) {
                             window.location.href = 'http://localhost:8080/mangostore/home';
                         }
@@ -39,7 +39,7 @@ if (checkButtonCheckOutPage) {
                     url: 'http://localhost:8080' + '/api/mangostore/cart/update-status?id=' + invoiceId,
                     dataType: 'json',
                     success: function (response) {
-                        successAlert('Order Success').then(response => {
+                        successAlert('Thanh toán hóa đơn thành công').then(response => {
                             if (response.value) {
                                 window.location.href = `/mangostore/home`;
                             }
@@ -47,7 +47,7 @@ if (checkButtonCheckOutPage) {
                     },
                     error: function (error) {
                         if (error.responseText === '1') {
-                            dangerAlert('The quantity in the product is not enough, please return to the cart').then(response => {
+                            dangerAlert('Số lượng trong sản phẩm không đủ, vui lòng quay lại giỏ hàng').then(response => {
                                 if (response.value) {
                                     window.location.href = `/mangostore/cart`;
                                 }
@@ -59,7 +59,28 @@ if (checkButtonCheckOutPage) {
                 window.location.href = `/mangostore/cart/banking-status?id=${invoiceId}`;
             }
         } else {
-            dangerAlert('Please select a payment method');
+            dangerAlert('Vui lòng chọn một phương thức thanh toán');
         }
+    }
+}
+
+const dataAddressClientPage = document.querySelector('.dataAddressClientPage');
+if (dataAddressClientPage) {
+    function submitAddressClient() {
+        const form = document.getElementById("formAddressClientList");
+        const isListEmpty = form.getAttribute("data-list-empty") === "true";
+
+        if (isListEmpty) {
+            dangerAlert("Vui lòng thêm địa chỉ");
+            return;
+        }
+
+        const idCheckedAddress = document.querySelector('input[name="id"]:checked');
+        if (!idCheckedAddress) {
+            dangerAlert("Vui lòng chọn địa chỉ làm mặc định");
+            return;
+        }
+
+        form.submit();
     }
 }

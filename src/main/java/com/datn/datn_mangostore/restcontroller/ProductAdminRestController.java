@@ -31,7 +31,6 @@ public class ProductAdminRestController {
     }
 
 
-
     @PostMapping(value = "product/add")
     public boolean addProduct(@RequestBody AddProductRequest request,
                               HttpSession session) {
@@ -39,7 +38,9 @@ public class ProductAdminRestController {
     }
 
     @PostMapping(value = "product-detail/add")
-    public Map<String, List<String>> saveProductDetailAPI(@RequestBody CreateProductRequest request, HttpSession session, HttpServletResponse response) throws IOException {
+    public Map<String, List<String>> saveProductDetailAPI(@RequestBody CreateProductRequest request,
+                                                          HttpSession session,
+                                                          HttpServletResponse response) throws IOException {
         return productDetailService.saveProductDetailAPI(request, session, response);
     }
 

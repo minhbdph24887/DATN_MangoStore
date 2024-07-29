@@ -9,30 +9,29 @@
                 <li class="nav-item">
                     <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
                        href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Active Client</a>
+                       aria-controls="tab1" aria-selected="true">Danh sách khách hàng hoạt động</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
                        aria-controls="tab2" role="tab"
-                       aria-selected="false">Client Inactive</a>
+                       aria-selected="false">Danh sách khách hàng ngừng hoạt động</a>
                 </li>
             </ul>
         </div>
         <div class="tab-content tab-content-basic">
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                </div>
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
+                            <h4 class="card-title">Danh sách khách hàng hoạt động</h4>
                             <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                    data-target="#myModal">Add Client
+                                    data-target="#myModal">Thêm khách hàng
                             </button>
                             <div class="modal fade" id="myModal" role="dialog" style="padding-left: 34px">
                                 <div class="modal-dialog" style="max-width: 80%; margin-left: 187px;">
                                     <div class="modal-content" style="height: 70vh;">
                                         <div class="modal-header" style="padding-bottom: 6px">
-                                            <h4 class="modal-title">Add Client</h4>
+                                            <h4 class="modal-title">Thêm khách hàng</h4>
                                         </div>
                                         <form id="formAddAccount" th:action="@{/mangostore/admin/list-client/add}"
                                               th:object="${addClient}"
@@ -43,21 +42,21 @@
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="form-label">FullName:</label>
+                                                                    <label class="form-label">Họ tên:</label>
                                                                     <input type="text"
                                                                            class="form-control"
                                                                            name="fullName" id="fullNameInput"
-                                                                           placeholder="Enter FullName">
+                                                                           placeholder="Mời nhập họ tên khách hàng">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="form-label">Number Phone:</label>
+                                                                    <label class="form-label">Số điện thoại:</label>
                                                                     <input type="text"
                                                                            class="form-control"
                                                                            name="numberPhone"
                                                                            id="numberPhoneInput"
-                                                                           placeholder="Enter Number Phone">
+                                                                           placeholder="Mời nhập số điện thoại khách hàng">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -67,23 +66,22 @@
                                                                            class="form-control"
                                                                            name="email"
                                                                            id="emailInput"
-                                                                           placeholder="Enter The Email">
+                                                                           placeholder="Mời nhập email khách hàng">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-7">
                                                                 <div class="form-group">
-                                                                    <label class="form-label">Birthday:</label>
+                                                                    <label class="form-label">Ngày sinh:</label>
                                                                     <input type="date"
                                                                            class="form-control"
                                                                            name="birthday"
-                                                                           id="birthdaytInput"
-                                                                           placeholder="Enter The Birthday">
+                                                                           id="birthdaytInput">
 
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-5">
                                                                 <div class="form-group">
-                                                                    <label class="form-label">Gender:</label>
+                                                                    <label class="form-label">Giới tính:</label>
                                                                     <div class="form-control">
                                                                         <label>
                                                                             <input type="radio"
@@ -96,30 +94,29 @@
                                                                             <input type="radio"
                                                                                    name="gender"
                                                                                    value="false"
-                                                                                   th:text="Nu">
+                                                                                   th:text="Nữ">
                                                                         </label>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="form-label">Password:</label>
+                                                                    <label class="form-label">Mật khẩu:</label>
                                                                     <input type="password"
                                                                            class="form-control"
                                                                            name="encryptionPassword"
                                                                            id="encryptionPassword"
-                                                                           placeholder="Enter Password"/>
+                                                                           placeholder="Mời nhập mật khẩu"/>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="form-label"> Enter the
-                                                                        password:</label>
+                                                                    <label class="form-label"> Nhập lại mật khẩu:</label>
                                                                     <input type="password"
                                                                            class="form-control"
                                                                            name="encryptionPassword"
                                                                            id="EnterPassword"
-                                                                           placeholder="Enter the Password"/>
+                                                                           placeholder="Mời nhập lại mật khẩu"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -135,7 +132,7 @@
                                                             <div class="form-group">
                                                                 <div class="media-body ml-4">
                                                                     <label class="btn btn-outline-primary">
-                                                                        Upload new photo
+                                                                        Tải ảnh mới lên
                                                                         <input type="file"
                                                                                class="account-settings-fileinput"
                                                                                id="imageInput"
@@ -144,7 +141,7 @@
                                                                     </label> &nbsp;
                                                                     <button type="button"
                                                                             class="btn btn-default md-btn-flat">
-                                                                        Reset
+                                                                        Làm mới
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -154,11 +151,11 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <input type="button"
-                                                               value="Save" onclick="addAccount()"
+                                                               value="Lưu lại" onclick="addAccount()"
                                                                class="btn btn-primary">
                                                         <button type="button" class="btn btn-default"
                                                                 data-dismiss="modal">
-                                                            Close
+                                                            Đóng lại
                                                         </button>
                                                     </div>
                                                 </div>
@@ -173,19 +170,19 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 117px">FullName</th>
-                                            <th style="width: 139px">NumberPhone</th>
+                                            <th style="width: 117px">Họ tên</th>
+                                            <th style="width: 139px">Số điện thoại</th>
                                             <th style="width: 172px">Email</th>
-                                            <th style="width: 100px">Birthday</th>
-                                            <th style="width: 100px">Gender</th>
-                                            <th style="width: 100px">Images</th>
-                                            <th style="width: 100px">Address</th>
-                                            <th style="width: 84px">Status</th>
+                                            <th style="width: 100px">Ngày sinh</th>
+                                            <th style="width: 100px">Giới tính</th>
+                                            <th style="width: 100px">Ảnh</th>
+                                            <th style="width: 100px">Địa chỉ</th>
+                                            <th style="width: 84px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="content" style="height: 245px">
+                                <div class="content" style="height: 400px">
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr th:each="listClient, stat : ${listClient}">
@@ -207,19 +204,19 @@
                                             </td>
                                             <td style="width: 100px" th:unless="${listClient.Images  != null}"></td>
                                             <th:block th:if="${listClient.addressClient == null}">
-                                                <td style="width: 100px">No Address</td>
+                                                <td style="width: 100px">Không có địa chỉ</td>
                                             </th:block>
                                             <th:block th:unless="${listClient.addressClient == null}">
                                                 <td style="width: 100px"
                                                     th:text="${listClient.addressClient.province}"></td>
                                             </th:block>
                                             <td style="width: 84px" th:if="${listClient.status == 1}">
-                                                <label class="badge badge-success">Active</label>
+                                                <label class="badge badge-success">Đang hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listClient.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Client is entity
+                                                Danh sách khách hàng đang hoạt động trống
                                             </td>
                                         </tr>
                                         </tbody>
@@ -235,26 +232,26 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List Client Inactive</h4>
+                            <h4 class="card-title">Danh sach khách hàng ngừng hoạt động</h4>
                             <div class="table-responsive">
                                 <div class="header">
                                     <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th style="width: 50px">#</th>
-                                            <th style="width: 110px">FullName</th>
-                                            <th style="width: 90px">NumberPhone</th>
+                                            <th style="width: 110px">Họ tên</th>
+                                            <th style="width: 90px">Số điện thoại</th>
                                             <th style="width: 172px">Email</th>
-                                            <th style="width: 100px">Birthday</th>
-                                            <th style="width: 100px">Gender</th>
-                                            <th style="width: 100px">Images</th>
-                                            <th style="width: 100px">Address</th>
-                                            <th style="width: 100px">Status</th>
+                                            <th style="width: 100px">Ngày sinh</th>
+                                            <th style="width: 100px">Giới tính</th>
+                                            <th style="width: 100px">Ảnh</th>
+                                            <th style="width: 100px">Địa chỉ</th>
+                                            <th style="width: 100px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="content" style="height: 330px">
+                                <div class="content" style="height: 452px">
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr th:each="listClientInactive, stat : ${listClientInactive}">
@@ -272,7 +269,7 @@
                                             <td style="width: 100px"
                                                 th:text="${#temporals.format(listClientInactive.birthday, 'dd/MM/yyyy')}"></td>
                                             <td style="width: 100px" th:if="${listClientInactive.gender != null}"
-                                                th:text="${listClientInactive.gender == true ? 'Nam' : 'Nu'}"></td>
+                                                th:text="${listClientInactive.gender == true ? 'Nam' : 'Nữ'}"></td>
                                             <td style="width: 100px"
                                                 th:unless="${listClientInactive.gender != null}"></td>
                                             <td style="width: 100px" th:if="${listClientInactive.images != null}">
@@ -282,19 +279,19 @@
                                             <td style="width: 100px"
                                                 th:unless="${listClientInactive.images != null}"></td>
                                             <th:block th:if="${listClientInactive.addressClient == null}">
-                                                <td style="width: 100px">No Address</td>
+                                                <td style="width: 100px">Không có địa chỉ</td>
                                             </th:block>
                                             <th:block th:unless="${listClientInactive.addressClient == null}">
                                                 <td style="width: 100px"
                                                     th:text="${listClientInactive.addressClient.province}"></td>
                                             </th:block>
                                             <td style="width: 100px" th:if="${listClientInactive.status == 0}">
-                                                <label class="badge badge-danger">Inactive</label>
+                                                <label class="badge badge-danger">Ngừng hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listClientInactive.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Client Inactive is entity
+                                                Danh sách khách hàng ngừng hoạt động trống
                                             </td>
                                         </tr>
                                         </tbody>

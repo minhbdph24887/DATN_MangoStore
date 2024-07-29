@@ -38,15 +38,20 @@ public interface ProductDetailService {
 
     String deleteProductDetail(Long idProductDetail);
 
-    String restoreProductDetail(Long aLong) ;
+    String restoreProductDetail(Long aLong);
 
-    String indexProductDetail(Model model, HttpSession session, String keyword, String materialId,
-                              String sizeId, String colorId, String originId, String categoryId, String sortBy,
+    String indexProductDetail(Model model,
+                              HttpSession session,
+                              String keyword,
+                              String materialId,
+                              String sizeId,
+                              String colorId,
+                              String originId,
+                              String categoryId,
+                              String sortBy,
                               Pageable pageable);
 
-
     boolean restoreProductDetailAPI(RestoreProductDetailRequest request);
-
 
 
 }

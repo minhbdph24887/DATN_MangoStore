@@ -2,11 +2,9 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Color;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.ColorRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.service.ColorService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -20,16 +18,13 @@ import java.util.List;
 @Service
 public class ColorServiceImpl implements ColorService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final ColorRepository colorRepository;
     private final Gender gender;
 
     public ColorServiceImpl(AccountRepository accountRepository,
-                            RoleRepository roleRepository,
                             ColorRepository colorRepository,
                             Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.colorRepository = colorRepository;
         this.gender = gender;
     }
@@ -38,49 +33,22 @@ public class ColorServiceImpl implements ColorService {
     public String indexColor(Model model,
                              HttpSession session,
                              String keyword) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Color> itemsColor = colorRepository.getAllColorByStatus1();
-                if (keyword != null) {
-                    itemsColor = colorRepository.searchColor(keyword);
-                    model.addAttribute("keyword", keyword);
-                }
-                model.addAttribute("listColor", itemsColor);
-
-                List<Color> itemsColorInactive = colorRepository.getAllColorByStatus0();
-                model.addAttribute("listColorInactive", itemsColorInactive);
-
-                model.addAttribute("addColor", new Color());
-                return "admin/color/IndexColor";
+            List<Color> itemsColor = colorRepository.getAllColorByStatus1();
+            if (keyword != null) {
+                itemsColor = colorRepository.searchColor(keyword);
+                model.addAttribute("keyword", keyword);
             }
+            model.addAttribute("listColor", itemsColor);
+
+            List<Color> itemsColorInactive = colorRepository.getAllColorByStatus0();
+            model.addAttribute("listColorInactive", itemsColorInactive);
+
+            model.addAttribute("addColor", new Color());
+            return "admin/color/IndexColor";
         }
     }
 
@@ -106,43 +74,16 @@ public class ColorServiceImpl implements ColorService {
     public String detailColor(Model model,
                               HttpSession session,
                               Long idColor) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Color> itemsColorInactive = colorRepository.getAllColorByStatus0();
+            model.addAttribute("listColorInactive", itemsColorInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Color> itemsColorInactive = colorRepository.getAllColorByStatus0();
-                model.addAttribute("listColorInactive", itemsColorInactive);
-
-                Color detailColor = colorRepository.findById(idColor).orElse(null);
-                model.addAttribute("detailColor", detailColor);
-                return "admin/color/DetailColor";
-            }
+            Color detailColor = colorRepository.findById(idColor).orElse(null);
+            model.addAttribute("detailColor", detailColor);
+            return "admin/color/DetailColor";
         }
     }
 
@@ -151,6 +92,7 @@ public class ColorServiceImpl implements ColorService {
                               HttpSession session,
                               Color color) {
         Color detailColor = colorRepository.findById(color.getId()).orElse(null);
+        assert detailColor != null;
         detailColor.setNameColor(color.getNameColor());
 
         String email = (String) session.getAttribute("loginEmail");
@@ -174,21 +116,19 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public String restoreColor(Long idColor) {
         Color detailColor = colorRepository.findById(idColor).orElse(null);
+        assert detailColor != null;
         detailColor.setStatus(1);
         colorRepository.save(detailColor);
         return "redirect:/mangostore/admin/color";
     }
 
-    //vinh3
-
     @Override
     public Integer findByColorCreateExit(String name) {
         Color color = colorRepository.findByNameExit(name);
         if (color != null) {
-            return 1; // Tồn tại
+            return 1;
         } else {
-            return 2; // Chưa có
-
+            return 2;
         }
     }
 
@@ -196,14 +136,13 @@ public class ColorServiceImpl implements ColorService {
     public Integer findByColorUpdateExit(String name, String codeColor) {
         Color colorByName = colorRepository.findByNameExit(name);
         if (colorByName != null) {
-            // Nếu tìm thấy màu có cùng name
             if (colorByName.getCodeColor().equals(codeColor)) {
-                return 1; // Màu tồn tại và codeColor trùng khớp (Update)
+                return 1;
             } else {
-                return 2; // Chỉ có name tồn tại, nhưng codeColor khác (Name đã tồn tại)
+                return 2;
             }
         } else {
-            return 3; // Name chưa tồn tại (Create mới)
+            return 3;
         }
     }
 }

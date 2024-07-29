@@ -22,8 +22,4 @@ public interface OriginRepository extends JpaRepository<Origin, Long> {
 
     @Query(value = "select * from origin where name_origin = :nameOrigin", nativeQuery = true)
     Origin findByNameExit(@Param("nameOrigin") String nameOrigin);
-
-    @Query(value = "select * from origin where code_origin = :codeOrigin", nativeQuery = true)
-    Origin findByCodeExit(@Param("codeOrigin") String codeOrigin);
-
 }

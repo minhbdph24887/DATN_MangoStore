@@ -26,8 +26,9 @@ public interface SellService {
 
     String cancelInvoice(Long idInvoice);
 
-    ResponseEntity<String> addVoucherForSellAPI(IdVoucherSellRequest request,
-                                                HttpSession session);
+    ResponseEntity<String> addVoucherListForSellAPI(VoucherSellRequest request);
+
+    ResponseEntity<String> addVoucherCodeForSellAPI(VoucherSellRequest request);
 
     ResponseEntity<String> addProductForSellAPI(IdProductRequest request,
                                                 HttpSession session);

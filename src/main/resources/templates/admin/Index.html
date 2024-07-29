@@ -4,11 +4,10 @@
 <body>
 <main class="chartPage sortDatePage">
     <div class="d-flex">
-        <p style="width: 112px; margin: 6px;">Filter By Year: </p>
+        <p style="width: 130px; margin: 6px;">Tìm kiếm theo năm: </p>
         <div class="me-2">
-            <select id="year" name="fillerByYears" style="width: 200px;" class="form-control" onchange="updateUrl()">
-                <!-- Các năm sẽ được thêm bằng JavaScript -->
-            </select>
+            <select id="year" name="fillerByYears" style="width: 200px;" class="form-control"
+                    onchange="updateUrl()"></select>
         </div>
         <p style="width: 112px; margin: 6px;">Tìm kiếm theo quý:</p>
         <select class="form-select me-2" id="fitterByPrecious" onchange="updateUrl()"
@@ -19,8 +18,8 @@
             <option value="quyIII">Qúy III</option>
             <option value="quyIV">Qúy IV</option>
         </select>
-        <a type="button" class="btn btn-primary" th:href="@{/mangostore/admin/home}" th:text="Refresh"
-           style="padding: 5px 10px;font-size: 12px;line-height: 1.5;"></a>
+        <a type="button" class="btn btn-primary" th:href="@{/mangostore/admin/home}"
+           style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Làm mới</a>
     </div>
     <div class="row">
         <div class="col-md-4 stretch-card grid-margin" style="height: 210px;">
@@ -28,7 +27,7 @@
                 <div class="card-body">
                     <img th:src="@{|/images/layout/circle.svg|}"
                          style="position: absolute; top: 0; right: 0; height: 100%;" alt="circle-image"/>
-                    <h4 class="font-weight-normal mb-3">Total Invoice Completed
+                    <h4 class="font-weight-normal mb-3">Tổng hóa đơn đã hoàn thành
                         <i class="bi bi-clipboard-data"></i>
                     </h4>
                     <h2 class="mb-5" th:text="${totalInvoiceCompleted}"></h2>
@@ -40,7 +39,7 @@
                 <div class="card-body">
                     <img th:src="@{|/images/layout/circle.svg|}"
                          style="position: absolute; top: 0; right: 0; height: 100%;" alt="circle-image"/>
-                    <h4 class="font-weight-normal mb-3">Total Amount Of Entire Invoice
+                    <h4 class="font-weight-normal mb-3">Tổng số tiền của toàn bộ hóa đơn
                         <i class="bi bi-clipboard-data"></i>
                     </h4>
                     <h2 class="mb-5"
@@ -53,7 +52,7 @@
                 <div class="card-body">
                     <img th:src="@{|/images/layout/circle.svg|}"
                          style="position: absolute; top: 0; right: 0; height: 100%;" alt="circle-image"/>
-                    <h4 class="font-weight-normal mb-3">Total Canceled Invoice
+                    <h4 class="font-weight-normal mb-3">Tổng số hóa đơn bị hủy
                         <i class="bi bi-clipboard-data"></i>
                     </h4>
                     <h2 class="mb-5" th:text="${totalInvoiceCancel}"></h2>
@@ -65,7 +64,7 @@
         <div class="col-md-7 stretch-card grid-margin" style="height: 505px;">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Monthly Revenue Chart</h4>
+                    <h4 class="card-title">Biểu đồ doanh thu hàng tháng</h4>
                     <canvas id="monthly-revenue-chart"></canvas>
                 </div>
             </div>
@@ -73,7 +72,7 @@
         <div class="col-md-5 stretch-card grid-margin" style="height: 505px;">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Top Best Selling Products</h4>
+                    <h4 class="card-title">Top sản phẩm bán chạy nhất</h4>
                     <div class="contentCheckOut" style="height: 380px">
                         <th:block th:each="productData : ${topSellingProducts}">
                             <table>

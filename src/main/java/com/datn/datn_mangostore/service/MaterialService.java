@@ -26,7 +26,9 @@ public interface MaterialService {
 
     String restoreMaterial(Long idMaterial);
 
-    Integer findByMaterialCreateExit(String name );
-    Integer findByMaterialUpdateExit( String codeMaterial ,String name);
+    Integer findByMaterialCreateExit(String name);
+
+    Integer findByMaterialUpdateExit(String codeMaterial,
+                                     String name);
 
 }

@@ -49,4 +49,18 @@ public class OrderController {
     public String updateInvoiceStatus(@PathVariable("idInvoice") Long idInvoice) {
         return orderService.updateInvoiceStatusAdmin(idInvoice);
     }
+
+    @GetMapping(value = "order-all")
+    public String orderAllForManager(Model model,
+                                     HttpSession session,
+                                     @Param("findByCode") String findByCode) {
+        return orderService.orderAllForManager(model, session, findByCode);
+    }
+
+    @GetMapping(value = "order-all/detail/{id}")
+    public String orderAllDetailForManager(Model model,
+                                           HttpSession session,
+                                           @PathVariable("id") Long idInvoice) {
+        return orderService.orderAllDetailForManager(model, session, idInvoice);
+    }
 }

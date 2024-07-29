@@ -16,42 +16,33 @@ if (addAccountPage) {
         const currentYear = new Date().getFullYear();
         const age = currentYear - year;
         if (fullName === '') {
-            dangerAlert('Please Enter Full Name');
-            return false;
+            dangerAlert('Họ tên không được để trống');
         } else if (numberPhone === '') {
-            dangerAlert('Please Enter Number Phone');
-            return false;
+            dangerAlert('Số điện thoại không được để trống');
         } else if (!phoneRegex.test(numberPhone)) {
-            dangerAlert('Phone Format Is Incorrect');
-            return false;
+            dangerAlert('Số điện thoại không đúng định dạng');
         } else if (email === '') {
-            dangerAlert("Please Enter email");
-            return false;
+            dangerAlert("Email không được để trống");
         } else if (!emailRegex.test(email)) {
-            dangerAlert("Email Format Incorrect");
-            return false;
+            dangerAlert("Email không đúng định dạng");
         } else if (date === '') {
-            dangerAlert("Please Enter birthday");
-            return false;
+            dangerAlert("Ngày sinh không được để trống");
         } else if (date !== '' && age < 18) {
-            dangerAlert("Age must be greater than 18 ");
-            return false;
+            dangerAlert("Bạn phải trên 18 tuổi");
         } else if (pass === "") {
-            dangerAlert("Please Enter password");
-            return false;
+            dangerAlert("Mật khẩu không được để trống");
         } else if (!passRegex.test(pass)) {
-            dangerAlert("Password Format Incorrect");
-            return false;
+            dangerAlert("Mật khẩu không đúng đinh dạng");
+        } else if (Enterpass === '') {
+            dangerAlert("Mật khẩu nhập lại không được để trống")
         } else if (!EnterpassRegex.test(Enterpass)) {
-            dangerAlert("Please Enter password");
-            return false;
+            dangerAlert("Nhập lại mật khẩu không đúng định dạng");
         } else if (pass !== Enterpass) {
-            dangerAlert("Enterpass  the same Pass");
-            return false;
+            dangerAlert("Mật khẩu với nhâp lại mật khẩu không trùng khớp");
         } else {
             const data = {
                 numberPhone: numberPhone,
-                email: email
+                email: email,
             }
             $.ajax({
                 type: 'POST',
@@ -65,9 +56,9 @@ if (addAccountPage) {
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Phone number is already in used');
+                        dangerAlert('Số điện thoại đã tồn tại');
                     } else if (e.responseText === "2") {
-                        dangerAlert('Email has been used');
+                        dangerAlert('Email đã tồn tại');
                     }
                 }
             });
@@ -83,39 +74,35 @@ if (updateAccountPage) {
         const email = document.getElementById('emailInput').value;
         const pass = document.getElementById("encryptionPassword").value;
         const Enterpass = document.getElementById("EnterPassword").value;
+        const statusAccount = document.getElementById('statusAccount').value;
+
         const phoneRegex = /^[0-9]{10}$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const passRegex = /^[a-zA-Z0-9]{8,16}$/;
         const EnterpassRegex = /^[a-zA-Z0-9]{8,16}$/;
         if (fullName === '') {
-            dangerAlert('Please Enter Full Name');
-            return false;
+            dangerAlert('Họ tên không được để trống');
         } else if (numberPhone === '') {
-            dangerAlert('Please Enter Number Phone');
-            return false;
+            dangerAlert('Số điện thoại không được để trống');
         } else if (!phoneRegex.test(numberPhone)) {
-            dangerAlert('Phone Format Is Incorrect');
-            return false;
+            dangerAlert('Số điện thoại không đúng định dạng');
         } else if (email === '') {
-            dangerAlert("Please Enter email");
-            return false;
+            dangerAlert("Email không được để trống");
         } else if (!emailRegex.test(email)) {
-            dangerAlert("Email Format Incorrect");
-            return false;
+            dangerAlert("Email không đúng định dạng");
         } else if (!passRegex.test(pass) && pass !== '') {
-            dangerAlert("Password Format Incorrect");
-            return false;
+            dangerAlert("Mật khẩu không đúng đinh dạng");
         } else if (!EnterpassRegex.test(Enterpass) && Enterpass !== '') {
-            dangerAlert("Please Enter password");
-            return false;
+            dangerAlert("Nhập lại mật khẩu không đúng đinh dạng");
         } else if (pass !== Enterpass) {
-            dangerAlert("Enterpass the same Pass");
-            return false;
+            dangerAlert("Mật khẩu với nhâp lại mật khẩu không trùng khớp");
         } else {
+
             const data = {
                 idUpdate: idUpdate,
                 numberPhone: numberPhone,
-                email: email
+                email: email,
+                statusAccount: statusAccount,
             }
             $.ajax({
                 type: 'POST',
@@ -128,10 +115,13 @@ if (updateAccountPage) {
                     confirmAlertForm('Bạn có muốn sửa không', 'Sửa thành công', formUpdate);
                 },
                 error: function (e) {
+                    console.clear();
                     if (e.responseText === "1") {
-                        dangerAlert('Phone number is already in used');
+                        dangerAlert('Số điện thoại đã được sử dụng');
                     } else if (e.responseText === "2") {
-                        dangerAlert('Email has been used');
+                        dangerAlert('Email đã được sử dụng');
+                    } else if (e.responseText === "3") {
+                        dangerAlert('Hiện tại còn đúng 1 tài khoản có quyền ADMIN, bạn không thể trạng thái tài khoản');
                     }
                 }
             });
@@ -142,13 +132,32 @@ if (updateAccountPage) {
 }
 const deleteAccountPage = document.querySelector('.deleteAccountPage');
 if (deleteAccountPage) {
-    function deleteAccount() {
+    function deleteAccount(event) {
+        event.preventDefault();
         const idAccount = document.getElementById("idStaff").value;
-        const url = 'http://localhost:8080/mangostore/admin/list-staff/delete/' + idAccount
-        confirmAlertLink(event, 'Bạn có muốn xóa không', 'Xóa thành công', url);
-
+        const data = {
+            idAddAccount: idAccount,
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080' + '/api/mangostore/admin/account/check-delete',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function () {
+                const url = 'http://localhost:8080/mangostore/admin/list-staff/delete/' + idAccount
+                confirmAlertLink(event, 'Bạn có muốn xóa không', 'Xóa thành công', url);
+            },
+            error: function (e) {
+                console.clear();
+                if (e.responseText === '1') {
+                    dangerAlert('Hiện tại còn đúng 1 tài khoản có quyền ADMIN, bạn không thể xóa');
+                }
+            }
+        });
     }
 }
+
 const restorePage = document.querySelector('.restorePage');
 if (restorePage) {
     function restoreStaff(button) {
@@ -160,8 +169,8 @@ if (restorePage) {
 
 }
 const deleteClientPage = document.querySelector('.deleteClientPage');
-if(deleteClientPage){
-    function deleteClient(){
+if (deleteClientPage) {
+    function deleteClient() {
         const idClient = document.getElementById("idStaff").value;
         const url = 'http://localhost:8080/mangostore/admin/list-client/delete/' + idClient
         confirmAlertLink(event, 'Bạn có muốn xóa không', 'Xóa thành công', url);

@@ -2,11 +2,9 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Category;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.CategoryRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.service.CategoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -20,16 +18,13 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     private final Gender gender;
 
     public CategoryServiceImpl(AccountRepository accountRepository,
-                               RoleRepository roleRepository,
                                CategoryRepository categoryRepository,
                                Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.categoryRepository = categoryRepository;
         this.gender = gender;
     }
@@ -38,49 +33,22 @@ public class CategoryServiceImpl implements CategoryService {
     public String indexCategory(Model model,
                                 HttpSession session,
                                 String keyword) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Category> itemsCategory = categoryRepository.getAllCategoryByStatus1();
-                if (keyword != null) {
-                    itemsCategory = categoryRepository.searchCategory(keyword);
-                    model.addAttribute("keyword", keyword);
-                }
-                model.addAttribute("listCategory", itemsCategory);
-
-                List<Category> itemsCategoryInactive = categoryRepository.getAllCategoryByStatus0();
-                model.addAttribute("listCategoryInactive", itemsCategoryInactive);
-
-                model.addAttribute("addCategory", new Category());
-                return "admin/category/IndexCategory";
+            List<Category> itemsCategory = categoryRepository.getAllCategoryByStatus1();
+            if (keyword != null) {
+                itemsCategory = categoryRepository.searchCategory(keyword);
+                model.addAttribute("keyword", keyword);
             }
+            model.addAttribute("listCategory", itemsCategory);
+
+            List<Category> itemsCategoryInactive = categoryRepository.getAllCategoryByStatus0();
+            model.addAttribute("listCategoryInactive", itemsCategoryInactive);
+
+            model.addAttribute("addCategory", new Category());
+            return "admin/category/IndexCategory";
         }
     }
 
@@ -106,43 +74,16 @@ public class CategoryServiceImpl implements CategoryService {
     public String detailCategory(Model model,
                                  HttpSession session,
                                  Long idCategory) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Category> itemsCategoryInactive = categoryRepository.getAllCategoryByStatus0();
+            model.addAttribute("listCategoryInactive", itemsCategoryInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Category> itemsCategoryInactive = categoryRepository.getAllCategoryByStatus0();
-                model.addAttribute("listCategoryInactive", itemsCategoryInactive);
-
-                Category detailCategory = categoryRepository.findById(idCategory).orElse(null);
-                model.addAttribute("detailCategory", detailCategory);
-                return "admin/category/DetailCategory";
-            }
+            Category detailCategory = categoryRepository.findById(idCategory).orElse(null);
+            model.addAttribute("detailCategory", detailCategory);
+            return "admin/category/DetailCategory";
         }
     }
 
@@ -158,7 +99,6 @@ public class CategoryServiceImpl implements CategoryService {
         Account detailAccount = accountRepository.detailAccountByEmail(email);
         detailCategory.setNameUserUpdate(detailAccount.getFullName());
         detailCategory.setDateUpdate(LocalDateTime.parse(gender.getCurrentDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd : HH:mm:ss")));
-
 
         categoryRepository.save(detailCategory);
         return "redirect:/mangostore/admin/category";
@@ -186,9 +126,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Integer findByCategoryCreateExit(String name) {
         Category category = categoryRepository.findByNameExit(name);
         if (category != null) {
-            return 1; // Tồn tại
+            return 1;
         } else {
-            return 2; // Chưa có
+            return 2;
         }
     }
 
@@ -196,16 +136,13 @@ public class CategoryServiceImpl implements CategoryService {
     public Integer findByCategoryUpdateExit(String name, String codeCategory) {
         Category categoryByName = categoryRepository.findByNameExit(name);
         if (categoryByName != null) {
-            // Nếu tìm thấy danh mục có cùng name
             if (categoryByName.getCodeCategory().equals(codeCategory)) {
-                return 1; // Danh mục tồn tại và codeCategory trùng khớp (Update)
+                return 1;
             } else {
-                return 2; // Chỉ có name tồn tại, nhưng codeCategory khác (Name đã tồn tại)
+                return 2;
             }
         } else {
-            return 3; // Name chưa tồn tại (Create mới)
+            return 3;
         }
     }
-
-
 }

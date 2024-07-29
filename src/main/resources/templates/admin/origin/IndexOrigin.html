@@ -9,12 +9,12 @@
                 <li class="nav-item">
                     <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
                        href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Active Origin</a>
+                       aria-controls="tab1" aria-selected="true">Nhà sản xuất đang hoạt động</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
                        aria-controls="tab2" role="tab"
-                       aria-selected="false">Origin Inactive</a>
+                       aria-selected="false">Nhà sản xuất ngừng hoạt động</a>
                 </li>
             </ul>
         </div>
@@ -22,23 +22,23 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                 <div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Index Origin</li>
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ nhà sản xuất</li>
                     </ul>
                 </div>
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List Origin Active</h4>
+                            <h4 class="card-title">Danh sách nhà sản xuất đang hoạt động</h4>
                             <div class="row">
                                 <div class="col-sm-3">
                                     <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                            data-target="#myModal">Add Origin
+                                            data-target="#myModal">Thêm nhà sản xuất
                                     </button>
                                 </div>
                                 <div class="col-sm-7 form-group" style="margin-left: 100px;">
                                     <form action="/mangostore/admin/origin" method="get">
                                         <input type="text" name="keyword" class="form-control" th:value="${keyword}"
-                                               placeholder="Search Name Origin"/>
+                                               placeholder="Tìm kiếm tên nhà sản xuất"/>
                                     </form>
                                 </div>
                             </div>
@@ -47,20 +47,19 @@
                                     <div class="modal-content">
                                         <div class="modal-body">
                                             <form id="addOriginForm" th:action="@{/mangostore/admin/origin/add}" th:object="${addOrigin}" method="post" onsubmit="return confirmAndSubmitOrigin(event)">
-                                                <h3 class="mb-4">Add Origin</h3>
+                                                <h3 class="mb-4">Thêm nhà sản xuất</h3>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> Name Origin : </label>
-                                                            <input type="text" class="form-control" name="nameOrigin" placeholder="Enter Name Origin">
+                                                            <label class="form-label"> Tên nhà sản xuất : </label>
+                                                            <input type="text" class="form-control" name="nameOrigin" placeholder="Mời nhập tên nhà sản xuất">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
 
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <input type="submit" value="Save" class="btn btn-primary">
-                                                            <div class="submitting"></div>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
+                                                            <input type="submit" value="Lưu lại" class="btn btn-primary">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -76,18 +75,18 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 114px">CodeOrigin</th>
-                                            <th style="width: 110px">NameOrigin</th>
-                                            <th style="width: 100px">UserCreate</th>
-                                            <th style="width: 100px">UserUpdate</th>
-                                            <th style="width: 100px">DateCreate</th>
-                                            <th style="width: 100px">DateUpdate</th>
-                                            <th style="width: 84px">Status</th>
+                                            <th style="width: 114px">Mã nhà sản xuất</th>
+                                            <th style="width: 110px">Tên nhà sản xuất</th>
+                                            <th style="width: 100px">Người tạo</th>
+                                            <th style="width: 100px">Người cập nhật</th>
+                                            <th style="width: 100px">Ngày tạo</th>
+                                            <th style="width: 100px">Ngày cập nhật</th>
+                                            <th style="width: 84px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="content" style="height: 245px">
+                                <div class="content" style="height: 333px">
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr th:each="listOrigin, stat : ${listOrigin}">
@@ -106,12 +105,12 @@
                                             <td style="width: 100px"
                                                 th:text="${#temporals.format(listOrigin.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
                                             <td style="width: 84px" th:if="${listOrigin.status == 1}">
-                                                <label class="badge badge-success">Is Active</label>
+                                                <label class="badge badge-success">Đang hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listOrigin.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Origin is entity
+                                                Danh sách nhà sản xuất trống
                                             </td>
                                         </tr>
                                         </tbody>
@@ -128,25 +127,25 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List Origin Inactive</h4>
+                            <h4 class="card-title">Danh sách nhà sản xuất ngừng hoạt động</h4>
                             <div class="table-responsive">
                                 <div class="header">
                                     <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 114px">CodeOrigin</th>
-                                            <th style="width: 110px">NameOrigin</th>
-                                            <th style="width: 100px">UserCreate</th>
-                                            <th style="width: 100px">UserUpdate</th>
-                                            <th style="width: 100px">DateCreate</th>
-                                            <th style="width: 100px">DateUpdate</th>
-                                            <th style="width: 84px">Status</th>
+                                            <th style="width: 114px">Mã nhà sản xuất</th>
+                                            <th style="width: 110px">Tên nhà sản xuất</th>
+                                            <th style="width: 100px">Người tạo</th>
+                                            <th style="width: 100px">Người cập nhật</th>
+                                            <th style="width: 100px">Ngày tạo</th>
+                                            <th style="width: 100px">Ngày cập nhật</th>
+                                            <th style="width: 84px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="content" style="height: 395px">
+                                <div class="content" style="height: 452px">
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr th:each="listOriginInactive, stat : ${listOriginInactive}">
@@ -167,12 +166,12 @@
                                             <td style="width: 100px"
                                                 th:text="${#temporals.format(listOriginInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
                                             <td style="width: 84px" th:if="${listOriginInactive.status == 0}">
-                                                <label class="badge badge-danger">Stop Working</label>
+                                                <label class="badge badge-danger">Ngừng hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listOriginInactive.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Origin Inactive is entity
+                                                Danh sách nhà sản xuất ngừng hoạt động trống
                                             </td>
                                         </tr>
                                         </tbody>

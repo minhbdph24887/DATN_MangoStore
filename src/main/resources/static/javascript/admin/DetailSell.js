@@ -2,7 +2,7 @@ const checkNumberPhone = document.querySelector('.checkNumberPhonePage');
 if (checkNumberPhone) {
     $(document).ready(function () {
         const $select2 = $('.select2-search-example').select2({
-            placeholder: "NumberClient",
+            placeholder: "Số điện thoại khách hàng",
             allowClear: true
         });
 
@@ -19,30 +19,32 @@ if (checkNumberPhone) {
         const idInvoice = document.getElementById('idInvoiceInputNumber').value;
         const optionClientSelect = document.getElementById("optionClient");
         const selectedOptionValue = optionClientSelect.value;
-        const data = {
-            idInvoice: idInvoice,
-            idClient: selectedOptionValue,
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost:8080' + '/api/mangostore/admin/sell/add-client',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (response) {
-                window.location.href = 'http://localhost:8080/mangostore/admin/sell/edit?id=' + idInvoice;
-            },
-            error: function (e) {
-                if (e.responseText === '1') {
-                    dangerAlert('You cannot create an invoice with yourself as a customer')
-                } else {
-                    errorAlert('An error occurred');
-                    console.log(e);
-                }
+        if (selectedOptionValue === '') {
+            dangerAlert('Vui lòng thêm khách hàng vào hoá đơn');
+        } else {
+            const data = {
+                idInvoice: idInvoice,
+                idClient: selectedOptionValue,
             }
-        });
 
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080' + '/api/mangostore/admin/sell/add-client',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (response) {
+                    window.location.href = 'http://localhost:8080/mangostore/admin/sell/edit?id=' + idInvoice;
+                },
+                error: function (e) {
+                    if (e.responseText === '1') {
+                        dangerAlert('Bạn không thể tạo hóa đơn với tư cách là khách hàng')
+                    } else {
+                        errorAlert('An error occurred');
+                    }
+                }
+            });
+        }
     }
 
 
@@ -55,15 +57,15 @@ if (checkNumberPhone) {
         const phoneRegex = /^[0-9]{10}$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (nameClient === '') {
-            dangerAlert('Please Enter Name Client');
+            dangerAlert('Tên khách hàng không được để trống ');
         } else if (numberPhone === '') {
-            dangerAlert('Please Enter Number Phone');
+            dangerAlert('Số điện thoại khách hàng không được để trống');
         } else if (!phoneRegex.test(numberPhone)) {
-            dangerAlert('Number Phone Format Is Incorrect');
+            dangerAlert('Số điện thoại không đúng định dạng');
         } else if (emailClient === '') {
-            dangerAlert('Please Enter Email');
+            dangerAlert('Vui lòng nhập email');
         } else if (!emailRegex.test(emailClient)) {
-            dangerAlert('Email Format Is Incorrect');
+            dangerAlert('Email không đúng định dạng');
         } else {
             const data = {
                 nameClient: nameClient,
@@ -82,12 +84,11 @@ if (checkNumberPhone) {
                 },
                 error: function (e) {
                     if (e.responseText === '1') {
-                        dangerAlert('Number Phone already exists');
+                        dangerAlert('Số điện thoại đã tồn tại');
                     } else if (e.responseText === '2') {
-                        dangerAlert('Email already exists');
+                        dangerAlert('Email đã tồn tại');
                     } else {
-                        errorAlert('An error occurred');
-                        console.log(e);
+                        errorAlert('Lỗi');
                     }
                 }
             });
@@ -104,34 +105,89 @@ if (checkNumberPhone) {
     }
 }
 
+const comboboxVoucherPage = document.querySelector('.comboboxVoucherPage');
+if (comboboxVoucherPage) {
+    function showDropdown() {
+        document.getElementById('comboboxDropdown').classList.add('show');
+    }
+
+    function hideDropdown() {
+        setTimeout(function () {
+            document.getElementById('comboboxDropdown').classList.remove('show');
+        }, 200);
+    }
+}
+
 const checkVoucher = document.querySelector('.checkVoucherPage');
 if (checkVoucher) {
     function updateVoucherForSell() {
-        const voucherSelect = document.getElementById('voucherSelect');
-        const selectedValue = voucherSelect.value;
-
-        if (selectedValue === "") {
-            dangerAlert("Please Choose The Voucher");
-        } else {
-            const idInvoice = document.getElementById('idInvoiceInput').value;
-            const data = {
-                idInvoice: idInvoice,
-                idVoucher: selectedValue,
+        const codeVoucher = document.getElementById('codeVoucherInput').value;
+        const idInvoice = document.getElementById('idInvoiceInput').value;
+        const totalInvoiceAmount = parseFloat(document.getElementById('totalInvoiceAmount').value.replace(/,/g, ''));
+        if (codeVoucher === '') {
+            const checkInputVoucherList = document.querySelector('input[name="idVoucher"]:checked');
+            if (checkInputVoucherList) {
+                const id = checkInputVoucherList.value;
+                const minimumPrice = parseFloat(document.getElementById('minimumPrice' + id).value.replace(/,/g, ''));
+                if (isNaN(totalInvoiceAmount)) {
+                    dangerAlert('Vui lòng chọn sản phẩm để sử dụng voucher');
+                } else if (totalInvoiceAmount < minimumPrice) {
+                    dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
+                } else {
+                    const data = {
+                        idInvoice: idInvoice,
+                        idVoucherCombobox: id,
+                    }
+                    const url = 'http://localhost:8080/api/mangostore/admin/sell/add-voucher-list';
+                    addVoucherAPI(url, data);
+                }
+            } else {
+                dangerAlert('Vui lòng chọn Voucher');
             }
+        } else {
+            const voucherPattern = /^[A-Z0-9]{10}$/;
+            if (!voucherPattern.test(codeVoucher)) {
+                dangerAlert('Mã Voucher không hợp lệ');
+            } else if (isNaN(totalInvoiceAmount)) {
+                dangerAlert('Vui lòng thêm sản phẩm để sử dụng voucher');
+            } else {
+                const idCustomer = document.getElementById('idCustomer').value;
+                const data = {
+                    idInvoice: idInvoice,
+                    idCustomer: idCustomer,
+                    codeVoucher: codeVoucher,
+                    totalPayment: totalInvoiceAmount,
+                }
+                const url = 'http://localhost:8080/api/mangostore/admin/sell/add-voucher-code';
+                addVoucherAPI(url, data);
+            }
+        }
+
+        function addVoucherAPI(url, data) {
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080' + '/api/mangostore/admin/sell/add-voucher',
+                url: url,
                 data: JSON.stringify(data),
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (response) {
-                    window.location.href = 'http://localhost:8080/mangostore/admin/sell/edit?id=' + idInvoice;
+                    window.location.href = 'http://localhost:8080/mangostore/admin/sell/edit?id=' + data.idInvoice;
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Please select a product to use the voucher');
+                        dangerAlert('Hóa đơn không tồn tại');
                     } else if (e.responseText === "2") {
-                        dangerAlert('This voucher cannot be used with this receipt');
+                        dangerAlert('Voucher không tồn tại');
+                    } else if (e.responseText === "3") {
+                        dangerAlert('Voucher này đã hết vui lòng chọn voucher khác');
+                    } else if (e.responseText === "4") {
+                        dangerAlert('Vui lòng thêm thông tin vào hóa đơn');
+                    } else if (e.responseText === "5") {
+                        dangerAlert('Voucher không tồn tại');
+                    } else if (e.responseText === "6") {
+                        dangerAlert('Voucher này không thể sử dụng với hóa đơn này');
+                    } else if (e.responseText === "7") {
+                        dangerAlert('Mức rank của bạn không thể sử dụng voucher này');
                     }
                     console.clear();
                 }
@@ -146,9 +202,9 @@ if (addProductDetailPage) {
         const idProductDetail = button.getAttribute('data-id');
         const quantityNew = document.getElementById('quantityNewInput' + idProductDetail).value;
         if (quantityNew <= 0) {
-            dangerAlert('quantity does not exist, please re-enter');
-        }else if(quantityNew > 50){
-            dangerAlert('You can only purchase a maximum of 50 products/items');
+            dangerAlert('Số lượng không hợp lệ, vui lòng nhập lại');
+        } else if (quantityNew > 50) {
+            dangerAlert('Bạn chỉ có thể mua tối đa 50 sản phẩm/món hàng');
         } else {
             const idInvoice = document.getElementById('idInvoiceForAddProduct' + idProductDetail).value;
             const idProduct = document.getElementById('idProductDetailForSell' + idProductDetail).value;
@@ -164,11 +220,13 @@ if (addProductDetailPage) {
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (response) {
-                    successAlert('Add Product Successfully');
+                    successAlert('Thêm sản phẩm thành công');
                 },
                 error: function (e) {
                     if (e.responseText === '1') {
-                        dangerAlert('Insufficient quantity');
+                        dangerAlert('Không đủ số lượng');
+                    } else if (e.responseText === '2') {
+                        dangerAlert('bạn đã thêm vượt quá 50 sản phẩm/món hàng rồi');
                     }
                     console.clear();
                 }
@@ -215,9 +273,9 @@ if (updateQuantityInvoiceDetailPage) {
             },
             error: function (e) {
                 if (e.responseText === '1') {
-                    dangerAlert('The quantity added must not exceed the quantity in stock');
-                }else if(e.responseText === '2'){
-                    dangerAlert('You can only purchase a maximum of 50 products/items');
+                    dangerAlert('Số lượng thêm vào không được vượt quá số lượng tồn');
+                } else if (e.responseText === '2') {
+                    dangerAlert('Bạn chỉ có thể mua tối đa 50 sản phẩm/món hàng');
                 }
                 console.clear();
             }
@@ -243,7 +301,7 @@ if (updateStatusInvoicePage) {
             data: JSON.stringify(data),
             dataType: "json",
             success: function (responseData) {
-                successAlert('Payment success').then(rest => {
+                successAlert('Thanh toán thành công').then(rest => {
                     if (rest.value) {
                         window.open("http://localhost:8080/mangostore/admin/sell", "_self");
                     }
@@ -251,13 +309,12 @@ if (updateStatusInvoicePage) {
             },
             error: function (e) {
                 if (e.responseText === '1') {
-                    dangerAlert('The quantity of a certain product has run out')
+                    dangerAlert('Số lượng của một sản phẩm nhất định đã hết')
                 } else if (e.responseText === '2') {
-                    dangerAlert('An error occurred while exporting the pdf invoice');
+                    dangerAlert('Đã xảy ra lỗi khi xuất hóa đơn pdf');
                 } else {
-                    errorAlert('Payment failed');
+                    errorAlert('Thanh toán thật bại');
                 }
-                console.log(e)
             }
         });
     }

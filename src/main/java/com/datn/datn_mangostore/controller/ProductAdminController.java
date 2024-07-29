@@ -66,7 +66,6 @@ public class ProductAdminController {
     }
 
 
-
     @GetMapping("/product-detail")
     public String indexProductDetail(Model model, HttpSession session,
                                      @RequestParam(name = "keyword", required = false) String keyword,
@@ -78,7 +77,6 @@ public class ProductAdminController {
                                      @RequestParam(name = "sortBy", required = false) String sortBy,
                                      @RequestParam(name = "page", defaultValue = "0") int page,
                                      @RequestParam(name = "size", defaultValue = "10") int size) {
-
         Pageable pageable = PageRequest.of(page, size);
         return productDetailService.indexProductDetail(model, session, keyword, materialId, sizeId, colorId, originId, categoryId, sortBy, pageable);
     }
@@ -313,7 +311,6 @@ public class ProductAdminController {
     public String restoreColor(@PathVariable("id") Long idColor) {
         return colorService.restoreColor(idColor);
     }
-
 
 
 }

@@ -72,7 +72,7 @@ if (createProductDetailPage) {
 
                     const deleteCell = row.insertCell(4);
                     const deleteButton = document.createElement("button");
-                    deleteButton.textContent = "Delete";
+                    deleteButton.textContent = "Xóa";
                     deleteButton.className = "btn btn-danger delete-button";
                     deleteButton.onclick = function () {
                         deleteRow(this);
@@ -100,92 +100,125 @@ if (createProductDetailPage) {
         const resultArray = [];
         const tableRows = document.querySelectorAll('#result tbody tr');
         let isValid = true;
+        let errorMessage = '';
 
         tableRows.forEach(function (row) {
             const size = row.cells[5].textContent;
             const color = row.cells[6].textContent;
             const quantityInput = row.cells[1].querySelector("input").value;
-            const importPrice = parseFloat(row.cells[2].querySelector(".outputImportPrice").value);
-            const price = parseFloat(row.cells[3].querySelector(".outputPrice").value);
+            const importPriceStr = row.cells[2].querySelector(".outputImportPrice").value;
+            const priceStr = row.cells[3].querySelector(".outputPrice").value;
 
             const quantity = parseInt(quantityInput, 10);
+            const importPrice = parseFloat(importPriceStr);
+            const price = parseFloat(priceStr);
 
-            if (quantity <= 0 || importPrice <= 0 || price <= 0 || isNaN(importPrice) || isNaN(price)) {
-                dangerAlert('Vui lòng điền đầy đủ thông tin bắt buộc.');
+            if (quantityInput.trim() === '') {
+                errorMessage = 'Số lượng không được để trống';
+                isValid = false;
+            } else if (isNaN(quantity)) {
+                errorMessage = 'Số lượng phải là số hợp lệ';
+                isValid = false;
+            } else if (quantity <= 0) {
+                errorMessage = 'Số lượng không thể nhỏ hơn hoặc bằng 0';
+                isValid = false;
+            } else if (importPriceStr.trim() === '') {
+                errorMessage = 'Giá nhập không được để trống';
+                isValid = false;
+            } else if (isNaN(importPrice)) {
+                errorMessage = 'Giá nhập phải là số hợp lệ';
+                isValid = false;
+            } else if (importPrice <= 0) {
+                errorMessage = 'Giá nhập không thể nhỏ hơn hoặc bằng 0';
+                isValid = false;
+            } else if (priceStr.trim() === '') {
+                errorMessage = 'Giá bán không được để trống';
+                isValid = false;
+            } else if (isNaN(price)) {
+                errorMessage = 'Giá bán phải là số hợp lệ';
+                isValid = false;
+            } else if (price <= 0) {
+                errorMessage = 'Giá bán không thể nhỏ hơn hoặc bằng 0';
+                isValid = false;
+            } else if (importPrice > price) {
+                errorMessage = 'Giá nhập không thể lớn hơn giá bán';
                 isValid = false;
             }
 
-            const variantData = {
-                size: size,
-                color: color,
-                quantity: quantity,
-                importPrice: importPrice,
-                price: price
-            };
-            resultArray.push(variantData);
+            if (isValid) {
+                const variantData = {
+                    size: size,
+                    color: color,
+                    quantity: quantity,
+                    importPrice: importPrice,
+                    price: price
+                };
+                resultArray.push(variantData);
+            }
         });
 
-        return isValid ? resultArray : null;
+        return {isValid, data: resultArray, errorMessage};
     }
 
     function addProductDetailAPI() {
-        Swal.fire({
-            title: "Bạn có muốn lưu những thay đổi?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Lưu",
-            denyButtonText: `Không lưu`
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const idProduct = document.getElementById("idProduct").value;
-                const idMaterial = document.getElementById("material").value;
-                const idOrigin = document.getElementById("origin").value;
-                const idCategory = document.getElementById("category").value;
-                const describe = document.getElementById("describeInput").value;
-                const variantRequests = getDataFromTable();
-
-                // Kiểm tra từng trường thông tin để hiển thị thông báo lỗi riêng lẻ
-                if (!idProduct || !idMaterial || !idOrigin || !idCategory || !describe || !variantRequests) {
-                    dangerAlert('Vui lòng điền đầy đủ thông tin bắt buộc.');
-                    return;
-                }
-
-                const data = {
-                    idProduct: idProduct,
-                    idMaterial: idMaterial,
-                    idOrigin: idOrigin,
-                    idCategory: idCategory,
-                    describe: describe,
-                    variantRequests: variantRequests,
-                };
-
-                console.log(data);
-
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "http://localhost:8080/api/mangostore/admin/product-detail/add",
-                    data: JSON.stringify(data),
-                    dataType: 'json',
-                    success: function (responseData) {
-                        let addedDetails = responseData.added.join(', ');
-
-                        if (responseData.added.length > 0) {
-                            Swal.fire("Thêm thành công ").then(() => {
-                                window.open("http://localhost:8080/mangostore/admin/product-detail", "_self");
-                            });
-                        } else {
-                            Swal.fire("Không có sản phẩm nào được thêm mới vì trùng lặp.", "", "info");
-                        }
-                    },
-                    error: function (e) {
-                        Swal.fire("Lỗi!", "Không thể lưu thay đổi", "error");
+        const validationResult = getDataFromTable();
+        if (validationResult.isValid) {
+            Swal.fire({
+                title: "Bạn có muốn lưu những thay đổi?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Lưu",
+                denyButtonText: `Không lưu`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const idProduct = document.getElementById("idProduct").value;
+                    const idMaterial = document.getElementById("material").value;
+                    const idOrigin = document.getElementById("origin").value;
+                    const idCategory = document.getElementById("category").value;
+                    const describe = document.getElementById("describeInput").value;
+                    const variantRequests = validationResult.data;
+                    if (!idProduct || !idMaterial || !idOrigin || !idCategory || !describe) {
+                        dangerAlert('Vui lòng điền đầy đủ thông tin bắt buộc.');
+                        return;
                     }
-                });
-            } else if (result.isDenied) {
-                Swal.fire("Những thay đổi không được lưu", "", "info");
-            }
-        });
+
+                    const data = {
+                        idProduct: idProduct,
+                        idMaterial: idMaterial,
+                        idOrigin: idOrigin,
+                        idCategory: idCategory,
+                        describe: describe,
+                        variantRequests: variantRequests,
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "http://localhost:8080/api/mangostore/admin/product-detail/add",
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        success: function (responseData) {
+                            let addedDetails = responseData.added.join(', ');
+
+                            if (responseData.added.length > 0) {
+                                Swal.fire("Thêm thành công ").then(() => {
+                                    window.open("http://localhost:8080/mangostore/admin/product-detail", "_self");
+                                });
+                            } else {
+                                Swal.fire("Không có sản phẩm nào được thêm mới vì trùng lặp.", "", "info");
+                            }
+                        },
+                        error: function (e) {
+                            Swal.fire("Lỗi!", "Không thể lưu thay đổi", "error");
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire("Những thay đổi không được lưu", "", "info");
+                }
+            });
+        } else {
+            dangerAlert(validationResult.errorMessage);
+        }
     }
 }
 

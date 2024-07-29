@@ -22,11 +22,13 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.ui.Model;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +53,7 @@ public class Gender {
     private final RankRepository rankRepository;
     private final ResourceLoader resourceLoader;
     private final InvoiceDetailRepository invoiceDetailRepository;
+    private final RoleRepository roleRepository;
 
     public Gender(AccountRepository accountRepository,
                   JavaMailSender mailSender,
@@ -62,7 +65,8 @@ public class Gender {
                   ShoppingCartRepository shoppingCartRepository,
                   RankRepository rankRepository,
                   ResourceLoader resourceLoader,
-                  InvoiceDetailRepository invoiceDetailRepository) {
+                  InvoiceDetailRepository invoiceDetailRepository,
+                  RoleRepository roleRepository) {
         this.accountRepository = accountRepository;
         this.mailSender = mailSender;
         this.invoiceRepository = invoiceRepository;
@@ -74,6 +78,7 @@ public class Gender {
         this.rankRepository = rankRepository;
         this.resourceLoader = resourceLoader;
         this.invoiceDetailRepository = invoiceDetailRepository;
+        this.roleRepository = roleRepository;
     }
 
     public String generateVerificationCode() {
@@ -329,9 +334,18 @@ public class Gender {
                 .setTextAlignment(TextAlignment.CENTER);
         document.add(invoiceTitle);
 
-        Account detailAccount = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
-        assert detailAccount != null;
-        document.add(new Paragraph("Tên người mua hàng: " + detailAccount.getFullName()));
+        document.add(new Paragraph("Mã hóa đơn: " + invoice.getCodeInvoice()));
+        Account detailAccount = null;
+        if (invoice.getIdCustomer() != null) {
+            detailAccount = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
+        }
+
+        if (detailAccount != null) {
+            document.add(new Paragraph("Tên người mua hàng: " + detailAccount.getFullName()));
+        } else {
+            document.add(new Paragraph("Tên người mua hàng: Không có thông tin khách hàng"));
+        }
+
         document.add(new Paragraph("Địa chỉ: FPT PolyTechnic College Kieu Mai Campus, Kieu Mai Street, Phuc Dien, Tu Liem District, Hanoi City"));
         document.add(new Paragraph("Ngày thanh toán: " + invoice.getInvoicePaymentDate().format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"))));
         document.add(new Paragraph("Tên người bán hàng: " + invoice.getAccount().getFullName()));
@@ -343,7 +357,7 @@ public class Gender {
         table.addHeaderCell("Tên Sản Phẩm");
         table.addHeaderCell("Đơn Vị Tính");
         table.addHeaderCell("Số Lượng");
-        table.addHeaderCell("Đơn Gia");
+        table.addHeaderCell("Đơn Giá");
         table.addHeaderCell("Thành Tiền");
 
         List<InvoiceDetail> findAllInvoiceDetailByInvoice = invoiceDetailRepository.findAllByIdInvoiceOffline(invoice.getId());
@@ -373,16 +387,22 @@ public class Gender {
             reducedVoucher = invoice.getVoucher().getReducedValue();
         }
         int discountAmount = reducedVoucher + invoice.getCustomerPoints() * 1000;
-        document.add(new Paragraph("Số Tiền Được Giảm(Điểm Quy Đổi + Tiền Giảm Voucher): " + currencyFormat.format(discountAmount)));
+        document.add(new Paragraph("Số Tiền Được Giảm (Điểm Quy Đổi + Tiền Giảm Voucher): " + currencyFormat.format(discountAmount)));
         document.add(new Paragraph("Tổng tiền thanh toán: " + currencyFormat.format(invoice.getTotalPayment())));
 
         Table signatureTable = new Table(UnitValue.createPercentArray(new float[]{1, 1}));
         signatureTable.setWidth(UnitValue.createPercentValue(100));
 
         Cell buyerCell = new Cell()
-                .add(new Paragraph("Người mua hàng").setFont(font))
-                .add(new Paragraph("\n(Ký, ghi rõ họ tên)\n\n\n\n" + detailAccount.getFullName()).setFont(font))
-                .setTextAlignment(TextAlignment.CENTER)
+                .add(new Paragraph("Người mua hàng").setFont(font));
+
+        if (detailAccount != null) {
+            buyerCell.add(new Paragraph("\n(Ký, ghi rõ họ tên)\n\n\n\n" + detailAccount.getFullName()).setFont(font));
+        } else {
+            buyerCell.add(new Paragraph("\n(Ký, ghi rõ họ tên)\n\n\n\n"));
+        }
+
+        buyerCell.setTextAlignment(TextAlignment.CENTER)
                 .setBorder(Border.NO_BORDER);
 
         Cell sellerCell = new Cell()
@@ -396,6 +416,67 @@ public class Gender {
 
         document.add(new Paragraph("\n\n"));
         document.add(signatureTable);
+
         document.close();
+    }
+
+    public Account checkMenuAdmin(Model model,
+                                  HttpSession session) {
+        String email = (String) session.getAttribute("loginEmail");
+        if (email == null) {
+            return null;
+        } else {
+            Account detailAccount = accountRepository.detailAccountByEmail(email);
+            if (detailAccount == null) {
+                return null;
+            } else {
+                if (detailAccount.getStatus() == 0) {
+                    session.invalidate();
+                    return null;
+                } else {
+                    model.addAttribute("profile", detailAccount);
+
+                    LocalDateTime checkDate = LocalDateTime.now();
+                    int hour = checkDate.getHour();
+                    if (hour >= 5 && hour < 10) {
+                        model.addAttribute("dates", "Buổi sáng");
+                    } else if (hour >= 10 && hour < 13) {
+                        model.addAttribute("dates", "Buổi trưa");
+                    } else if (hour >= 13 && hour < 18) {
+                        model.addAttribute("dates", "Buổi chiều");
+                    } else {
+                        model.addAttribute("dates", "Buổi tối");
+                    }
+
+                    Role detailRole = roleRepository.getRoleByEmail(email);
+                    if (detailRole.getName().equals("ADMIN")) {
+                        model.addAttribute("checkIndexAccount", true);
+                        model.addAttribute("checkMenuAdmin", true);
+                        model.addAttribute("addProfile", new Account());
+                        model.addAttribute("addClient", new Account());
+                    } else {
+                        model.addAttribute("checkIndexAccount", false);
+                        model.addAttribute("checkMenuAdmin", false);
+                    }
+                    return detailAccount;
+                }
+            }
+        }
+    }
+
+    public Account checkMenuClient(Model model,
+                                   HttpSession session) {
+        String email = (String) session.getAttribute("loginEmail");
+        if (email == null) {
+            return null;
+        } else {
+            Account detailAccount = accountRepository.detailAccountByEmail(email);
+            model.addAttribute("profile", detailAccount);
+            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
+            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
+                model.addAttribute("checkAuthentication", detailRoleByEmail);
+            }
+            return detailAccount;
+        }
     }
 }

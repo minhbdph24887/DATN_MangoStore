@@ -2,11 +2,9 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Origin;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.OriginRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.service.OriginService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -20,16 +18,13 @@ import java.util.List;
 @Service
 public class OriginServiceImpl implements OriginService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final OriginRepository originRepository;
     private final Gender gender;
 
     public OriginServiceImpl(AccountRepository accountRepository,
-                             RoleRepository roleRepository,
                              OriginRepository originRepository,
                              Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.originRepository = originRepository;
         this.gender = gender;
     }
@@ -38,49 +33,22 @@ public class OriginServiceImpl implements OriginService {
     public String indexOrigin(Model model,
                               HttpSession session,
                               String keyword) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Origin> itemsOrigin = originRepository.getAllOriginByStatus1();
-                if (keyword != null) {
-                    itemsOrigin = originRepository.searchOrigin(keyword);
-                    model.addAttribute("keyword", keyword);
-                }
-                model.addAttribute("listOrigin", itemsOrigin);
-
-                List<Origin> itemsOriginInactive = originRepository.getAllOriginByStatus0();
-                model.addAttribute("listOriginInactive", itemsOriginInactive);
-
-                model.addAttribute("addOrigin", new Origin());
-                return "admin/origin/IndexOrigin";
+            List<Origin> itemsOrigin = originRepository.getAllOriginByStatus1();
+            if (keyword != null) {
+                itemsOrigin = originRepository.searchOrigin(keyword);
+                model.addAttribute("keyword", keyword);
             }
+            model.addAttribute("listOrigin", itemsOrigin);
+
+            List<Origin> itemsOriginInactive = originRepository.getAllOriginByStatus0();
+            model.addAttribute("listOriginInactive", itemsOriginInactive);
+
+            model.addAttribute("addOrigin", new Origin());
+            return "admin/origin/IndexOrigin";
         }
     }
 
@@ -107,43 +75,16 @@ public class OriginServiceImpl implements OriginService {
     public String detailOrigin(Model model,
                                HttpSession session,
                                Long idOrigin) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Origin> itemsOriginInactive = originRepository.getAllOriginByStatus0();
+            model.addAttribute("listOriginInactive", itemsOriginInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Origin> itemsOriginInactive = originRepository.getAllOriginByStatus0();
-                model.addAttribute("listOriginInactive", itemsOriginInactive);
-
-                Origin detailOrigin = originRepository.findById(idOrigin).orElse(null);
-                model.addAttribute("detailOrigin", detailOrigin);
-                return "admin/origin/DetailOrigin";
-            }
+            Origin detailOrigin = originRepository.findById(idOrigin).orElse(null);
+            model.addAttribute("detailOrigin", detailOrigin);
+            return "admin/origin/DetailOrigin";
         }
     }
 
@@ -152,6 +93,7 @@ public class OriginServiceImpl implements OriginService {
                                HttpSession session,
                                Origin origin) {
         Origin detailOrigin = originRepository.findById(origin.getId()).orElse(null);
+        assert detailOrigin != null;
         detailOrigin.setNameOrigin(origin.getNameOrigin());
 
         String email = (String) session.getAttribute("loginEmail");
@@ -176,6 +118,7 @@ public class OriginServiceImpl implements OriginService {
     @Override
     public String restoreOrigin(Long idOrigin) {
         Origin detailOrigin = originRepository.findById(idOrigin).orElse(null);
+        assert detailOrigin != null;
         detailOrigin.setStatus(1);
         originRepository.save(detailOrigin);
         return "redirect:/mangostore/admin/origin";
@@ -185,9 +128,9 @@ public class OriginServiceImpl implements OriginService {
     public Integer findByOriginCreateExit(String name) {
         Origin origin = originRepository.findByNameExit(name);
         if (origin != null) {
-            return 1; // Tồn tại
+            return 1;
         } else {
-            return 2; // Chưa có
+            return 2;
         }
     }
 
@@ -195,15 +138,13 @@ public class OriginServiceImpl implements OriginService {
     public Integer findByOriginUpdateExit(String name, String codeOrigin) {
         Origin originByName = originRepository.findByNameExit(name);
         if (originByName != null) {
-            // Nếu tìm thấy nguồn gốc có cùng name
             if (originByName.getCodeOrigin().equals(codeOrigin)) {
-                return 1; // Nguồn gốc tồn tại và codeOrigin trùng khớp (Update)
+                return 1;
             } else {
-                return 2; // Chỉ có name tồn tại, nhưng codeOrigin khác (Name đã tồn tại)
+                return 2;
             }
         } else {
-            return 3; // Name chưa tồn tại (Create mới)
+            return 3;
         }
     }
-
 }

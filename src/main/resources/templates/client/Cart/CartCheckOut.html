@@ -2,52 +2,52 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
       th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
 <body>
-<main class="checkOutPage addAddressClient checkAddVoucher checkButtonCheckOut">
+<main class="checkOutPage dataAddressClientPage addAddressClient checkAddVoucher checkButtonCheckOut">
     <div class="container">
-        <h2 class="title">View Checkout</h2>
+        <h2 class="title">Giao điện thanh toán</h2>
         <div class="row" style="--bs-gutter-y: -3rem;">
             <div class="col-md-5 col-lg-4 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">List Of Products</span>
+                    <span class="text-primary">Danh sách sản phẩm</span>
                 </h4>
                 <ul class="list-group mb-3">
                     <input type="hidden" id="idInvoiceInput" th:value="${shoppingCart.id}"/>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
-                            <h6 class="my-0">Total Amount:</h6>
+                            <h6 class="my-0">Tổng cộng:</h6>
                         </div>
                         <span class="text-muted"
                               th:text="${#numbers.formatDecimal(shoppingCart.getTotalInvoiceAmount(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
-                            <h6 class="my-0">Invoice Creation Date:</h6>
+                            <h6 class="my-0">Ngày tạo hóa đơn:</h6>
                         </div>
                         <span class="text-muted" id="checkCreateInvoice"
                               th:text="${#temporals.format(shoppingCart.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
-                            <h6 class="my-0">Conversion Point:</h6>
+                            <h6 class="my-0">Điểm quy đổi:</h6>
                         </div>
                         <th:block th:if="${conversionPoint != null}">
                             <span class="text-muted"
                                   th:text="${#numbers.formatDecimal(conversionPoint, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                         </th:block>
                         <th:block th:unless="${conversionPoint != null}">
-                            <span class="text-muted">No Data</span>
+                            <span class="text-muted">Không có dữ liệu</span>
                         </th:block>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
-                            <h6 class="my-0">Shipping Money:</h6>
+                            <h6 class="my-0">Tiền vận chuyển:</h6>
                         </div>
                         <span class="text-muted"
                               th:text="${#numbers.formatDecimal(shoppingCart.getShippingMoney(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
-                            <h6 class="my-0">Reduced Voucher:</h6>
+                            <h6 class="my-0">Giá trị Voucher:</h6>
                         </div>
                         <th:block th:if="${shoppingCart.getVoucherClient() != null}">
                             <span class="text-muted"
@@ -55,7 +55,7 @@
                         </th:block>
                         <th:block
                                 th:if="${shoppingCart.getVoucherClient() == null and shoppingCart.getVoucher() == null}">
-                            <span class="text-muted">No Data</span>
+                            <span class="text-muted">Không có dữ liệu</span>
                         </th:block>
                         <th:block th:if="${shoppingCart.getVoucher() != null}">
                             <span class="text-muted"
@@ -63,7 +63,7 @@
                         </th:block>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>Total Payment:</span>
+                        <span>Tổng tiền thanh toán:</span>
                         <strong th:text="${#numbers.formatDecimal(shoppingCart.getTotalPayment(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></strong>
                     </li>
                 </ul>
@@ -87,34 +87,34 @@
                         <th:block
                                 th:if="${shoppingCart.getVoucherClient() == null and shoppingCart.getVoucher() == null}">
                             <label>
-                                <input type="text" class="form-control" value="No use voucher"
+                                <input type="text" class="form-control" value="Không có sử dụng voucher"
                                        style="width: 240px; height: 47px;" readonly>
                             </label>
                         </th:block>
                         <button type="submit" class="btn btn-info" data-bs-toggle="modal"
-                                data-bs-target="#addVoucher">Choose
+                                data-bs-target="#addVoucher">Chọn
                         </button>
                     </div>
                 </div>
 
                 <div class="card p-2">
-                    <h5>Payment Methods</h5>
+                    <h5>Phương thức thanh toán</h5>
                     <div class="form-check">
                         <input type="radio" name="payment" class="form-check-input" id="cod" style="width: 21px;">
-                        <label class="form-check-label" for="cod">Pay After Receive (COD)</label>
+                        <label class="form-check-label" for="cod">Thanh toán sau khi nhận (COD)</label>
                     </div>
 
                     <div class="form-check">
                         <input type="radio" name="payment" class="form-check-input" id="banking" style="width: 21px;">
-                        <label class="form-check-label" for="banking">Always Transfer Money (Banking)</label>
+                        <label class="form-check-label" for="banking">Chuyển khoản ngay (Banking)</label>
                     </div>
                 </div>
             </div>
             <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Invoice Information</h4>
+                <h4 class="mb-3">Thông tin hóa đơn</h4>
                 <div class="row g-3">
                     <div class="col-12">
-                        <label class="form-label">Delivery Address:</label>
+                        <label class="form-label">Địa chỉ giao hàng:</label>
                         <div class="input-group">
                             <th:block th:if="${profile.getAddressClient() != null}">
                                 <th:block th:each="addressClientStatus : ${addressClientStatus}">
@@ -132,32 +132,32 @@
                             <th:block th:unless="${profile.getAddressClient() != null}">
                                 <table style="width: 552px;">
                                     <tr>
-                                        <td>No Address</td>
+                                        <td>Không có địa chỉ</td>
                                     </tr>
                                 </table>
                             </th:block>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#myModal1" style="margin-left: 40px; height: 50px;">
-                                Select Address
+                                Chọn địa chỉ
                             </button>
                         </div>
                     </div>
                 </div>
                 <br>
                 <form th:action="@{/mangostore/cart/client-point/add}" method="post">
-                    <label class="form-label">Customer Points:</label>
+                    <label class="form-label">Điểm khách hàng:</label>
                     <div class="d-flex">
                         <label>
                             <input type="text" class="form-control me-2" th:value="${pointClient + ' point'}"
                                    style="width: 275px; height: 48px;"
                                    readonly>
                         </label>
-                        <button type="submit" class="btn btn-secondary">Apply</button>
+                        <button type="submit" class="btn btn-secondary">Áp dụng</button>
                     </div>
-                    <span>* 1 point = 1,000 VND</span>
+                    <span>* 1 điểm = 1,000 VND</span>
                 </form>
                 <br>
-                <h5>List of products in the invoice</h5>
+                <h5>Danh sách sản phẩm trên hóa đơn</h5>
                 <div class="content" style="height: 324px">
                     <th:block th:each="listProductByIdInvoice : ${listProductByIdInvoice}">
                         <table>
@@ -188,14 +188,13 @@
                 </div>
                 <div class="row gy-3 d-flex justify-content-between">
                     <div class="col-md-6">
-                        <a th:href="@{/mangostore/cart}" class="btn btn-default btn-lg me-2" style="width: 315px;">Back
-                            To
-                            Cart</a>
+                        <a th:href="@{/mangostore/cart}" class="btn btn-default btn-lg me-2" style="width: 315px;">Trờ
+                            về giỏ hàng</a>
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-success btn-lg" type="submit" style="width: 353px;"
-                                th:data-invoice-id="${shoppingCart.getId()}" onclick="handlePaymentSelection()">Continue
-                            to checkout
+                                th:data-invoice-id="${shoppingCart.getId()}" onclick="handlePaymentSelection()">Thanh
+                            toán hóa đơn
                         </button>
                     </div>
                 </div>
@@ -207,16 +206,17 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">List Address Client</h4>
+                    <h4 class="modal-title">Danh sách địa chỉ</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/mangostore/cart/client-address/update-status}" method="post">
+                    <form id="formAddressClientList" th:action="@{/mangostore/cart/client-address/update-status}"
+                          method="post" th:data-list-empty="${listAddressClient.empty}">
                         <div th:if="${listAddressClient.empty}">
-                            <h5>No customer address</h5>
+                            <h5>Không có địa chỉ</h5>
                         </div>
                         <div th:unless="${listAddressClient.empty}">
-                            <h5>List Address</h5>
+                            <h5>Danh sách địa chỉ</h5>
                             <div class="contentCheckOut" style="height: 418px; justify-content: start">
                                 <table>
                                     <tbody th:each="getAllAddressClient : ${listAddressClient}">
@@ -232,7 +232,7 @@
                                                             [[*{getAllAddressClient.nameClient + ' || ' +
                                                             getAllAddressClient.phoneNumber}]]
                                                             <span th:if="${getAllAddressClient.status == 1}"
-                                                                  class="default-label">Default</span>
+                                                                  class="default-label">Mặc định</span>
                                                         </p>
                                                     </div>
                                                 </label>
@@ -246,7 +246,7 @@
                                                     th:data-district="${getAllAddressClient.district}"
                                                     th:data-commune="${getAllAddressClient.commune}"
                                                     th:data-specificaddress="${getAllAddressClient.specificAddress}">
-                                                Edit AddressClient
+                                                Sửa
                                             </button>
                                         </td>
                                     </tr>
@@ -261,12 +261,13 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Apply</button>
+                            <button type="button" class="btn btn-success" onclick="submitAddressClient()">Áp dụng
+                            </button>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#myModal2">
-                                + Add address
+                                + Thêm địa chỉ
                             </button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng lại</button>
                         </div>
                     </form>
                 </div>
@@ -278,7 +279,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content apiAddress">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Address</h4>
+                    <h4 class="modal-title">Thêm địa chỉ</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -287,35 +288,35 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="nameClientInput" class="form-label">Name Client:</label>
+                                    <label for="nameClientInput" class="form-label">Tên khách hàng:</label>
                                     <input type="text" id="nameClientInput" class="form-control" name="nameClient"
-                                           placeholder="Enter Name Client">
+                                           placeholder="Vui lòng nhập tên khách hàng">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="numberPhoneInput" class="form-label">Number Phone:</label>
+                                    <label for="numberPhoneInput" class="form-label">Số điện thoại:</label>
                                     <input type="text" id="numberPhoneInput" class="form-control" name="phoneNumber"
-                                           placeholder="Enter Phone Number">
+                                           placeholder="Vui lòng nhập số điện thoại">
                                 </div>
                             </div>
 
                             <div class="row">
-                                <span>What is your address?</span>
+                                <span>Bạn đang ở đâu ?</span>
                                 <div class="col-md-4">
-                                    <label class="form-label">Province:</label>
+                                    <label class="form-label">Tỉnh:</label>
                                     <select name="province" class="form-select form-select-sm mb-3 city-select"
                                             aria-label=".form-select-sm">
                                         <option value="" selected>Chọn tỉnh thành</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">District:</label>
+                                    <label class="form-label">Quận:</label>
                                     <select name="district" class="form-select form-select-sm mb-3 district-select"
                                             aria-label=".form-select-sm">
                                         <option value="" selected>Chọn quận huyện</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Commune:</label>
+                                    <label class="form-label">Xã:</label>
                                     <select name="commune" class="form-select form-select-sm ward-select"
                                             aria-label=".form-select-sm">
                                         <option value="" selected>Chọn phường xã</option>
@@ -325,26 +326,26 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="specificAddress" class="form-label">Specific Address:</label>
+                                    <label for="specificAddress" class="form-label">Địa chỉ cụ thể:</label>
                                     <textarea id="specificAddress" class="form-control" name="specificAddress"
-                                              placeholder="Enter a specific address"></textarea>
+                                              placeholder="Vui lòng nhập địa chỉ cụ thể"></textarea>
                                 </div>
 
                                 <div class="col-md-12">
                                     <br>
                                     <label><input type="radio" name="status" value="1" checked style="width: 21px;"/>
-                                        set as default address</label>
+                                        đặt làm địa chỉ mặc định</label>
                                     <br>
-                                    <label><input type="radio" name="status" value="0" style="width: 21px;"/> do not
-                                        select as default address</label>
+                                    <label><input type="radio" name="status" value="0" style="width: 21px;"/> không đặt
+                                        làm địa chỉ mặc định</label>
                                     <br>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="AddAddressClient()">Save</button>
+                            <button type="button" class="btn btn-primary" onclick="AddAddressClient()">Lưu lại</button>
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                    data-bs-target="#myModal1">Close
+                                    data-bs-target="#myModal1">Đóng lại
                             </button>
                         </div>
                     </form>
@@ -357,7 +358,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content apiAddress">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Address</h4>
+                    <h4 class="modal-title">Cập nhật địa chỉ</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -367,21 +368,21 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="editNameClientInput" class="form-label">Name Client:</label>
+                                    <label for="editNameClientInput" class="form-label">Tên khách hàng:</label>
                                     <input type="text" id="editNameClientInput" class="form-control" name="nameClient"
-                                           placeholder="Enter Name Client">
+                                           placeholder="Vui lòng nhập tên khách hàng">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="editNumberPhoneInput" class="form-label">Number Phone:</label>
+                                    <label for="editNumberPhoneInput" class="form-label">Số điện thoại:</label>
                                     <input type="text" id="editNumberPhoneInput" class="form-control" name="phoneNumber"
-                                           placeholder="Enter Phone Number">
+                                           placeholder="Vui lòng nhập số điện thoại">
                                 </div>
                             </div>
 
                             <div class="row">
-                                <span>What is your address?</span>
+                                <span>Bạn đang ở đâu ?</span>
                                 <div class="col-md-4">
-                                    <label class="form-label">Province:</label>
+                                    <label class="form-label">Tỉnh:</label>
                                     <select name="province"
                                             class="form-select form-select-sm mb-3 edit-city-select city-select"
                                             aria-label=".form-select-sm">
@@ -389,7 +390,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">District:</label>
+                                    <label class="form-label">Quận:</label>
                                     <select name="district"
                                             class="form-select form-select-sm mb-3 edit-district-select district-select"
                                             aria-label=".form-select-sm">
@@ -397,7 +398,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Commune:</label>
+                                    <label class="form-label">Xã:</label>
                                     <select name="commune"
                                             class="form-select form-select-sm edit-ward-select ward-select"
                                             aria-label=".form-select-sm">
@@ -408,16 +409,17 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="editSpecificAddress" class="form-label">Specific Address:</label>
+                                    <label for="editSpecificAddress" class="form-label">Địa chỉ cụ thể:</label>
                                     <textarea id="editSpecificAddress" class="form-control" name="specificAddress"
-                                              placeholder="Enter a specific address"></textarea>
+                                              placeholder="Vui lòng nhập địa chỉ cụ thể"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="updateAddressClient()">Save</button>
+                            <button type="button" class="btn btn-primary" onclick="updateAddressClient()">Lưu lại
+                            </button>
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                    data-bs-target="#myModal1">Close
+                                    data-bs-target="#myModal1">Đóng lại
                             </button>
                         </div>
                     </form>
@@ -430,16 +432,16 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">List Voucher</h4>
+                    <h4 class="modal-title">Danh sách Voucher</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addVoucherClient" th:action="@{/mangostore/cart/client-voucher/add}" method="post">
                         <div th:if="${listVoucherClient.empty}">
-                            <h5>No customer voucher</h5>
+                            <h5>Không có voucher</h5>
                         </div>
                         <div th:unless="${listVoucherClient.empty}">
-                            <h5>List Voucher</h5>
+                            <h5>Danh sách Voucher</h5>
                             <div class="contentCheckOut" style="height: 418px">
                                 <th:block th:each="getAllVoucherClient : ${listVoucherClient}">
                                     <table>
@@ -461,13 +463,13 @@
                                                                             th:text="${getAllVoucherClient.nameVoucher}"
                                                                             style="margin-right: 325px; width: 200px;"></h5>
                                                                         <p class="card-text"
-                                                                           th:text="${'Minimum order: ' + #numbers.formatDecimal(getAllVoucherClient.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                                           th:text="${'Đơn hàng tối thiểu: ' + #numbers.formatDecimal(getAllVoucherClient.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                                            style="margin-right: 184px; white-space: nowrap;"></p>
                                                                         <input type="hidden"
                                                                                th:id="'minimumPrice' + ${getAllVoucherClient.id}"
                                                                                th:value="${getAllVoucherClient.minimumPrice}">
                                                                         <p class="card-text"
-                                                                           th:text="${'Decrease to: ' + #numbers.formatDecimal(getAllVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                                           th:text="${'Giảm tới: ' + #numbers.formatDecimal(getAllVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                                            style="margin-right: 184px; white-space: nowrap;"></p>
                                                                     </div>
                                                                 </div>
@@ -493,14 +495,13 @@
                         <div class="modal-footer">
                             <div class="form-group me-2">
                                 <input type="text" class="form-control" id="codeVoucherInput"
-                                       placeholder="Please Enter Code Voucher" style="width: 347px;">
+                                       placeholder="Vui lòng nhập mã voucher" style="width: 347px;">
                             </div>
                             <input type="hidden" id="totalPayment" th:value="${shoppingCart.getTotalPayment()}">
                             <button type="button" class="btn btn-success"
-                                    onclick="addVoucherForInvoice()">
-                                Apply
+                                    onclick="addVoucherForInvoice()">Áp dụng
                             </button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng lại</button>
                         </div>
                     </form>
                 </div>

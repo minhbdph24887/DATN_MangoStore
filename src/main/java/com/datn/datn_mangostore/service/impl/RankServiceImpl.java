@@ -2,11 +2,9 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Rank;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.RankRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.request.NameRankRequest;
 import com.datn.datn_mangostore.service.RankService;
 import jakarta.servlet.http.HttpSession;
@@ -14,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,16 +21,15 @@ import java.util.List;
 @Service
 public class RankServiceImpl implements RankService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final RankRepository rankRepository;
     private final Gender gender;
     private static final String regex = "^(?=.*[^a-z]).{10}$";
 
 
-    public RankServiceImpl(AccountRepository accountRepository, RoleRepository roleRepository
-            , RankRepository rankRepository, Gender gender) {
+    public RankServiceImpl(AccountRepository accountRepository,
+                           RankRepository rankRepository,
+                           Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.rankRepository = rankRepository;
         this.gender = gender;
     }
@@ -43,53 +38,26 @@ public class RankServiceImpl implements RankService {
     public String indexRank(Model model,
                             HttpSession session,
                             String keyword) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
+            List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
+            if (keyword != null) {
+                if (keyword.matches(regex)) {
+                    itemsRank = rankRepository.searchRankByCode(keyword);
                 } else {
-                    model.addAttribute("dates", "Evening");
+                    itemsRank = rankRepository.searchRankByName(keyword);
                 }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
-                if (keyword != null) {
-                    if (keyword.matches(regex)) {
-                        itemsRank = rankRepository.searchRankByCode(keyword);
-                    } else {
-                        itemsRank = rankRepository.searchRankByName(keyword);
-                    }
-                    model.addAttribute("keyword", keyword);
-                }
-                model.addAttribute("listRank", itemsRank);
-
-                List<Rank> itemsRankInactive = rankRepository.getAllRankByStatus0();
-                model.addAttribute("listRankInactive", itemsRankInactive);
-
-                model.addAttribute("addRank", new Rank());
-                return "admin/rank/IndexRank";
+                model.addAttribute("keyword", keyword);
             }
+            model.addAttribute("listRank", itemsRank);
+
+            List<Rank> itemsRankInactive = rankRepository.getAllRankByStatus0();
+            model.addAttribute("listRankInactive", itemsRankInactive);
+
+            model.addAttribute("addRank", new Rank());
+            return "admin/rank/IndexRank";
         }
     }
 
@@ -118,43 +86,16 @@ public class RankServiceImpl implements RankService {
     public String detailRank(Model model,
                              HttpSession session,
                              Long idRank) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Rank> itemsRankInactive = rankRepository.getAllRankByStatus0();
+            model.addAttribute("listRankInactive", itemsRankInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Rank> itemsRankInactive = rankRepository.getAllRankByStatus0();
-                model.addAttribute("listRankInactive", itemsRankInactive);
-
-                Rank detailRank = rankRepository.findById(idRank).orElse(null);
-                model.addAttribute("detailRank", detailRank);
-                return "admin/rank/DetailRank";
-            }
+            Rank detailRank = rankRepository.findById(idRank).orElse(null);
+            model.addAttribute("detailRank", detailRank);
+            return "admin/rank/DetailRank";
         }
     }
 

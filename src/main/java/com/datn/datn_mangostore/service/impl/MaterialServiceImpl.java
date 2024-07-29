@@ -2,11 +2,9 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Material;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.MaterialRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.service.MaterialService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -20,17 +18,14 @@ import java.util.List;
 @Service
 public class MaterialServiceImpl implements MaterialService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final MaterialRepository materialRepository;
     private final Gender gender;
 
     public MaterialServiceImpl(AccountRepository accountRepository,
                                MaterialRepository materialRepository,
-                               RoleRepository roleRepository,
                                Gender gender) {
         this.accountRepository = accountRepository;
         this.materialRepository = materialRepository;
-        this.roleRepository = roleRepository;
         this.gender = gender;
     }
 
@@ -38,49 +33,22 @@ public class MaterialServiceImpl implements MaterialService {
     public String indexMaterial(Model model,
                                 HttpSession session,
                                 String keyword) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Material> itemsMaterial = materialRepository.getAllMaterialByStatus1();
-                if (keyword != null) {
-                    itemsMaterial = materialRepository.searchMaterial(keyword);
-                    model.addAttribute("keyword", keyword);
-                }
-                model.addAttribute("listMaterial", itemsMaterial);
-
-                List<Material> itemsMaterialInactive = materialRepository.getAllMaterialByStatus0();
-                model.addAttribute("listMaterialInactive", itemsMaterialInactive);
-
-                model.addAttribute("addMaterial", new Material());
-                return "admin/material/IndexMaterial";
+            List<Material> itemsMaterial = materialRepository.getAllMaterialByStatus1();
+            if (keyword != null) {
+                itemsMaterial = materialRepository.searchMaterial(keyword);
+                model.addAttribute("keyword", keyword);
             }
+            model.addAttribute("listMaterial", itemsMaterial);
+
+            List<Material> itemsMaterialInactive = materialRepository.getAllMaterialByStatus0();
+            model.addAttribute("listMaterialInactive", itemsMaterialInactive);
+
+            model.addAttribute("addMaterial", new Material());
+            return "admin/material/IndexMaterial";
         }
     }
 
@@ -107,43 +75,16 @@ public class MaterialServiceImpl implements MaterialService {
     public String detailMaterial(Model model,
                                  HttpSession session,
                                  Long idMaterial) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Material> itemsMaterialInactive = materialRepository.getAllMaterialByStatus0();
+            model.addAttribute("listMaterialInactive", itemsMaterialInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Material> itemsMaterialInactive = materialRepository.getAllMaterialByStatus0();
-                model.addAttribute("listMaterialInactive", itemsMaterialInactive);
-
-                Material detailMaterial = materialRepository.findById(idMaterial).orElse(null);
-                model.addAttribute("detailMaterial", detailMaterial);
-                return "admin/material/DetailMaterial";
-            }
+            Material detailMaterial = materialRepository.findById(idMaterial).orElse(null);
+            model.addAttribute("detailMaterial", detailMaterial);
+            return "admin/material/DetailMaterial";
         }
     }
 
@@ -152,14 +93,13 @@ public class MaterialServiceImpl implements MaterialService {
                                  HttpSession session,
                                  Material material) {
         Material detailMaterial = materialRepository.findById(material.getId()).orElse(null);
+        assert detailMaterial != null;
         detailMaterial.setNameMaterial(material.getNameMaterial());
 
         String email = (String) session.getAttribute("loginEmail");
         Account detailAccount = accountRepository.detailAccountByEmail(email);
         detailMaterial.setNameUserUpdate(detailAccount.getFullName());
         detailMaterial.setDateUpdate(LocalDateTime.parse(gender.getCurrentDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd : HH:mm:ss")));
-
-
         materialRepository.save(detailMaterial);
         return "redirect:/mangostore/admin/material";
     }
@@ -176,22 +116,19 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String restoreMaterial(Long idMaterial) {
         Material detailMaterial = materialRepository.findById(idMaterial).orElse(null);
+        assert detailMaterial != null;
         detailMaterial.setStatus(1);
         materialRepository.save(detailMaterial);
         return "redirect:/mangostore/admin/material";
     }
 
-
-    //vinh3
-
     @Override
     public Integer findByMaterialCreateExit(String name) {
         Material material = materialRepository.findByNameExit(name);
         if (material != null) {
-            return 1; // Tồn tại
+            return 1;
         } else {
-            return 2; // Chưa có
-
+            return 2;
         }
     }
 
@@ -199,14 +136,13 @@ public class MaterialServiceImpl implements MaterialService {
     public Integer findByMaterialUpdateExit(String name, String codeMaterial) {
         Material materialByName = materialRepository.findByNameExit(name);
         if (materialByName != null) {
-            // Nếu tìm thấy chất liệu có cùng name
             if (materialByName.getCodeMaterial().equals(codeMaterial)) {
-                return 1; // Chất liệu tồn tại và codeMaterial trùng khớp (Update)
+                return 1;
             } else {
-                return 2; // Chỉ có name tồn tại, nhưng codeMaterial khác (Name đã tồn tại)
+                return 2;
             }
         } else {
-            return 3; // Name chưa tồn tại (Create mới)
+            return 3;
         }
     }
 }

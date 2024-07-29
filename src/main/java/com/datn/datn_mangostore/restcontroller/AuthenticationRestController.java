@@ -1,9 +1,12 @@
 package com.datn.datn_mangostore.restcontroller;
 
-import com.datn.datn_mangostore.request.IdAccountRequest;
+import com.datn.datn_mangostore.request.IdAuthenticationRequest;
 import com.datn.datn_mangostore.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/mangostore/admin/authentication/")
@@ -15,7 +18,7 @@ public class AuthenticationRestController {
     }
 
     @PostMapping(value = "check-update")
-    public ResponseEntity<String> checkUpdateAuthentication(@RequestBody IdAccountRequest request) {
+    public ResponseEntity<String> checkUpdateAuthentication(@RequestBody IdAuthenticationRequest request) {
         return authenticationService.checkUpdateAuthentication(request);
     }
 }

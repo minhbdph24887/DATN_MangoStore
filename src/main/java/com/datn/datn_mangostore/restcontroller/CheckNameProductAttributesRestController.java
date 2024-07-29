@@ -1,7 +1,6 @@
 package com.datn.datn_mangostore.restcontroller;
 
 import com.datn.datn_mangostore.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +8,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/mangostore/admin/")
 public class CheckNameProductAttributesRestController {
-// vinh3
+    private final ColorService colorService;
+    private final ProductService productService;
+    private final MaterialService materialService;
+    private final SizeService sizeService;
+    private final CategoryService categoryService;
+    private final OriginService originService;
 
-    @Autowired
-    private ColorService colorService;
+    public CheckNameProductAttributesRestController(ColorService colorService,
+                                                    ProductService productService,
+                                                    MaterialService materialService,
+                                                    SizeService sizeService,
+                                                    CategoryService categoryService,
+                                                    OriginService originService) {
+        this.colorService = colorService;
+        this.productService = productService;
+        this.materialService = materialService;
+        this.sizeService = sizeService;
+        this.categoryService = categoryService;
+        this.originService = originService;
+    }
 
     @GetMapping("/colorsExistCreat/{name}")
     public ResponseEntity<Integer> checkColorExistence(@PathVariable String name) {
@@ -26,7 +41,6 @@ public class CheckNameProductAttributesRestController {
                 return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -41,36 +55,32 @@ public class CheckNameProductAttributesRestController {
         try {
             Integer result = colorService.findByColorUpdateExit(name, codeColor);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Màu tồn tại và codeColor trùng khớp (Update)
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Chỉ có name tồn tại, nhưng codeColor khác (Name đã tồn tại)
+                return ResponseEntity.ok(2);
             } else if (result == 3) {
-                return ResponseEntity.ok(3); // Name chưa tồn tại (Create mới)
+                return ResponseEntity.ok(3);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @Autowired
-    private MaterialService materialService;
 
     @GetMapping("/materialsExistCreate/{name}")
     public ResponseEntity<Integer> checkMaterialExistence(@PathVariable String name) {
         try {
             Integer result = materialService.findByMaterialCreateExit(name);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Chất liệu tồn tại
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Chất liệu không tồn tại
+                return ResponseEntity.ok(2);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -83,37 +93,31 @@ public class CheckNameProductAttributesRestController {
         try {
             Integer result = materialService.findByMaterialUpdateExit(name, codeMaterial);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Chất liệu tồn tại và codeMaterial trùng khớp (Update)
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Chỉ có name tồn tại, nhưng codeMaterial khác (Name đã tồn tại)
+                return ResponseEntity.ok(2);
             } else if (result == 3) {
-                return ResponseEntity.ok(3); // Name chưa tồn tại (Create mới)
+                return ResponseEntity.ok(3);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-    @Autowired
-    private SizeService sizeService;
 
     @GetMapping("/sizesExistCreate/{name}")
     public ResponseEntity<Integer> checkSizeExistence(@PathVariable String name) {
         try {
             Integer result = sizeService.findBySizeCreateExit(name);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Kích thước tồn tại
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Kích thước không tồn tại
+                return ResponseEntity.ok(2);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -126,36 +130,31 @@ public class CheckNameProductAttributesRestController {
         try {
             Integer result = sizeService.findBySizeUpdateExit(name, codeSize);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Kích thước tồn tại và codeSize trùng khớp (Update)
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Chỉ có name tồn tại, nhưng codeSize khác (Name đã tồn tại)
+                return ResponseEntity.ok(2);
             } else if (result == 3) {
-                return ResponseEntity.ok(3); // Name chưa tồn tại (Create mới)
+                return ResponseEntity.ok(3);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @Autowired
-    private CategoryService categoryService;
 
     @GetMapping("/categoriesExistCreate/{name}")
     public ResponseEntity<Integer> checkCategoryExistence(@PathVariable String name) {
         try {
             Integer result = categoryService.findByCategoryCreateExit(name);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Danh mục tồn tại
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Danh mục không tồn tại
+                return ResponseEntity.ok(2);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -168,36 +167,31 @@ public class CheckNameProductAttributesRestController {
         try {
             Integer result = categoryService.findByCategoryUpdateExit(name, codeCategory);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Danh mục tồn tại và codeCategory trùng khớp (Update)
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Chỉ có name tồn tại, nhưng codeCategory khác (Name đã tồn tại)
+                return ResponseEntity.ok(2);
             } else if (result == 3) {
-                return ResponseEntity.ok(3); // Name chưa tồn tại (Create mới)
+                return ResponseEntity.ok(3);
             } else {
-                return ResponseEntity.ok(0); // Trường hợp khác (nếu cần thiết)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về lỗi 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @Autowired
-    private OriginService originService;
 
     @GetMapping("/originsExistCreate/{name}")
     public ResponseEntity<Integer> checkOriginExistence(@PathVariable String name) {
         try {
             Integer result = originService.findByOriginCreateExit(name);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Origin exists
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Origin does not exist
+                return ResponseEntity.ok(2);
             } else {
-                return ResponseEntity.ok(0); // Other cases (if needed)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Handle exception and return 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -210,37 +204,31 @@ public class CheckNameProductAttributesRestController {
         try {
             Integer result = originService.findByOriginUpdateExit(name, codeOrigin);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Origin exists and codeOrigin matches (Update)
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Only name exists, but codeOrigin is different (Name already exists)
+                return ResponseEntity.ok(2);
             } else if (result == 3) {
-                return ResponseEntity.ok(3); // Name does not exist (Create new)
+                return ResponseEntity.ok(3);
             } else {
-                return ResponseEntity.ok(0); // Other cases (if needed)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Handle exception and return 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-    @Autowired
-    private ProductService productService;
 
     @GetMapping("/productsExistCreate/{name}")
     public ResponseEntity<Integer> checkProductExistence(@PathVariable String name) {
         try {
             Integer result = productService.findByProductCreateExit(name);
             if (result == 1) {
-                return ResponseEntity.ok(1); // Product exists
+                return ResponseEntity.ok(1);
             } else if (result == 2) {
-                return ResponseEntity.ok(2); // Product does not exist
+                return ResponseEntity.ok(2);
             } else {
-                return ResponseEntity.ok(0); // Other cases (if needed)
+                return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Handle exception and return 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -262,7 +250,6 @@ public class CheckNameProductAttributesRestController {
                 return ResponseEntity.ok(0);
             }
         } catch (Exception e) {
-            // Handle exception and return 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

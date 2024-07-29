@@ -27,8 +27,10 @@ public interface ProductService {
 
     String restoreProduct(Long aLong);
 
-    Integer findByProductCreateExit(String name );
-    Integer findByProductUpdateExit( String codeProduct ,String name);
+    Integer findByProductCreateExit(String name);
+
+    Integer findByProductUpdateExit(String codeProduct,
+                                    String name);
 
 }
 

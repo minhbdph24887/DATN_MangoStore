@@ -25,7 +25,6 @@ import java.util.Optional;
 @Service
 public class CartServiceImpl implements CartService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartDetailRepository shoppingCartDetailRepository;
     private final InvoiceRepository invoiceRepository;
@@ -37,7 +36,6 @@ public class CartServiceImpl implements CartService {
     private final ProductDetailRepository productDetailRepository;
 
     public CartServiceImpl(AccountRepository accountRepository,
-                           RoleRepository roleRepository,
                            ShoppingCartRepository shoppingCartRepository,
                            ShoppingCartDetailRepository shoppingCartDetailRepository,
                            InvoiceRepository invoiceRepository,
@@ -45,9 +43,9 @@ public class CartServiceImpl implements CartService {
                            InvoiceDetailRepository invoiceDetailRepository,
                            AddressClientRepository addressClientRepository,
                            VoucherClientRepository voucherClientRepository,
-                           VoucherRepository voucherRepository, ProductDetailRepository productDetailRepository) {
+                           VoucherRepository voucherRepository,
+                           ProductDetailRepository productDetailRepository) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.shoppingCartRepository = shoppingCartRepository;
         this.shoppingCartDetailRepository = shoppingCartDetailRepository;
         this.invoiceRepository = invoiceRepository;
@@ -62,17 +60,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public String indexCart(Model model,
                             HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
-
             ShoppingCart detailShoppingCart = shoppingCartRepository.findByIdAccount(detailAccount.getId());
             List<ShoppingCartDetail> listShoppingCartByAccount = shoppingCartDetailRepository.getAllShoppingCart(detailShoppingCart.getId());
             model.addAttribute("listShoppingCartByAccount", listShoppingCartByAccount);
@@ -162,16 +153,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public String viewCheckOut(Model model,
                                HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
             ShoppingCart shoppingCart = shoppingCartRepository.findByIdAccount(detailAccount.getId());
             Invoice checkInvoiceByAccount = invoiceRepository.findInvoiceByIdAccount(detailAccount.getId());
             if (checkInvoiceByAccount != null) {
@@ -439,29 +424,6 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ResponseEntity<String> updateCashInvoice(Long idInvoice) {
-        List<InvoiceDetail> getAllInvoiceDetail = invoiceDetailRepository.findAllByIdInvoice(idInvoice);
-        boolean hasError = false;
-
-        for (InvoiceDetail detail : getAllInvoiceDetail) {
-            ProductDetail productDetail = productDetailRepository.findById(detail.getProductDetail().getId()).orElse(null);
-            if (productDetail == null) {
-                continue;
-            }
-
-            int quantityNew = productDetail.getQuantity() - detail.getQuantity();
-            if (quantityNew < 0) {
-                hasError = true;
-                break;
-            } else {
-                productDetail.setQuantity(quantityNew);
-                productDetailRepository.save(productDetail);
-            }
-        }
-
-        if (hasError) {
-            return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
-        }
-
         Invoice detailInvoice = invoiceRepository.findById(idInvoice).orElse(null);
         if (detailInvoice == null) {
             return new ResponseEntity<>("Invoice not found", HttpStatus.NOT_FOUND);

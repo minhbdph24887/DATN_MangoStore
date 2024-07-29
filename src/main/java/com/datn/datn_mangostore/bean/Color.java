@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "color")
@@ -21,8 +20,6 @@ public class Color {
     @DateTimeFormat(pattern = "yyyy-MM-dd : HH:mm:ss")
     private LocalDateTime dateUpdate;
     private Integer status;
-    @OneToMany(mappedBy = "color")
-    List<ProductDetail> productDetails;
 
     public Color(Long id,
                  String codeColor,

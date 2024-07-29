@@ -10,22 +10,22 @@ if (addAddressClientPage) {
 
         const phoneRegex = /^[0-9]{10}$/;
         if (nameClient === '') {
-            dangerAlert('Please Enter The Name Client');
+            dangerAlert('Vui Lòng Nhập Tên Khách Hàng');
         } else if (numberClient === '') {
-            dangerAlert('Please Enter The Number Client');
+            dangerAlert('Vui Lòng Nhập Số Khách Hàng');
         } else if (!phoneRegex.test(numberClient)) {
-            dangerAlert('Phone Format Is Incorrect');
+            dangerAlert('Định dạng điện thoại không chính xác');
         } else if (city === '') {
-            dangerAlert('Please Choose The Province');
+            dangerAlert('Vui Lòng Chọn Tỉnh');
         } else if (district === '') {
-            dangerAlert('Please Choose The District');
+            dangerAlert('Vui lòng chọn Quận');
         } else if (ward === '') {
-            dangerAlert('Please Choose The Commune');
+            dangerAlert('Vui lòng chọn xã');
         } else if (specificAddress === '') {
-            dangerAlert('Please Enter The Specific Address');
+            dangerAlert('Vui lòng nhập địa chỉ cụ thể');
         } else {
             const addressClientForm = document.getElementById('addressClientForm');
-            confirmAlertForm('Do You Want Add Address Client?', 'Add Address Client Successfully', addressClientForm);
+            confirmAlertForm('Bạn có muốn thêm địa chỉ khách hàng ?', 'Thêm địa chỉ khách hàng thành công', addressClientForm);
         }
     }
 
@@ -71,22 +71,22 @@ if (addAddressClientPage) {
 
         const phoneRegex = /^[0-9]{10}$/;
         if (editNameClient === '') {
-            dangerAlert('Please Enter The Name Client');
+            dangerAlert('Vui Lòng Nhập Tên Khách Hàng');
         } else if (editNumberPhone === '') {
-            dangerAlert('Please Enter The Number Client');
+            dangerAlert('Vui Lòng Nhập Số Khách Hàng');
         } else if (!phoneRegex.test(editNumberPhone)) {
-            dangerAlert('Phone Format Is Incorrect');
+            dangerAlert('Định dạng điện thoại không chính xác');
         } else if (city === '') {
-            dangerAlert('Please Choose The Province');
+            dangerAlert('Vui Lòng Chọn Tỉnh');
         } else if (district === '') {
-            dangerAlert('Please Choose The District');
+            dangerAlert('Vui lòng chọn Quận');
         } else if (ward === '') {
-            dangerAlert('Please Choose The Commune');
+            dangerAlert('Vui lòng chọn xã');
         } else if (editSpecificAddress === '') {
-            dangerAlert('Please Enter The Specific Address');
+            dangerAlert('Vui lòng nhập địa chỉ cụ thể');
         } else {
             const editAddressForm = document.getElementById('editAddressForm');
-            confirmAlertForm('Do You Want Update Address Client?', 'Update Address Client Successfully', editAddressForm);
+            confirmAlertForm('Bạn có muốn cập nhật địa chỉ khách hàng ?', 'Cập nhật địa chỉ khách hàng thành công', editAddressForm);
         }
     }
 }

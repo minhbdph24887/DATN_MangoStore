@@ -5,7 +5,7 @@
 <main class="voucherShopPage">
     <div class="container">
         <div style="height: 660px;">
-            <h5 style="margin-right: 1020px; width: 231px;">List Voucher Shop</h5>
+            <h5 style="margin-right: 1020px; width: 350px;">Danh sách Voucher tại cửa hàng</h5>
             <th:block th:unless="${listVoucher.isEmpty()}">
                 <div class="container">
                     <div class="table-responsive">
@@ -30,14 +30,14 @@
                                         <div style="margin-right: 285px; text-align: center; margin-top: 3px;">
                                             <div class="card-body">
                                                 <p class="card-text"
-                                                   th:text="${'Decrease to: ' + #numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                   th:text="${'Giảm xuống: ' + #numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                    style="margin-right: 83px; white-space: nowrap;"></p>
                                                 <p class="card-text"
-                                                   th:text="${'Minimum order: ' + #numbers.formatDecimal(listVoucher.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                   th:text="${'Đơn hàng tối thiểu: ' + #numbers.formatDecimal(listVoucher.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                    style="margin-right: 83px; white-space: nowrap;"></p>
                                                 <p class="card-text">
                                                     <small class="text-muted" th:text="${listVoucher.validity}"
-                                                           style="margin-right: 131px;"></small>
+                                                           style="margin-right: 117px;"></small>
                                                 </p>
                                             </div>
                                         </div>
@@ -61,8 +61,8 @@
             </th:block>
             <th:block th:if="${listVoucher.isEmpty()}">
                 <div class="alert alert-danger">
-                    <strong>Notification!</strong> Currently, the shop's Vouchers are no longer required to wait until a
-                    new voucher is available.
+                    <strong>Thông báo!</strong> Hiện tại Voucher của quán không còn, vui lòng đợi cho đến khi có voucher
+                    mới.
                 </div>
             </th:block>
         </div>

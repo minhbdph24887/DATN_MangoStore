@@ -56,7 +56,9 @@ public class SecurityConfig {
                 .loginPage("/oauth2/authorization/google")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                    public void onAuthenticationSuccess(HttpServletRequest request,
+                                                        HttpServletResponse response,
+                                                        Authentication authentication) throws IOException, ServletException {
                         loginService.checkLoginGoogleAccount(response, authentication);
                     }
                 }));

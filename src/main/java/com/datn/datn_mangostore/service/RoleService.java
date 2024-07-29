@@ -1,7 +1,6 @@
 package com.datn.datn_mangostore.service;
 
 import com.datn.datn_mangostore.bean.Role;
-import com.datn.datn_mangostore.request.DataRequest;
 import com.datn.datn_mangostore.request.RoleRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +25,6 @@ public interface RoleService {
 
     String addRole(BindingResult result,
                    Role addRole);
+
     ResponseEntity<String> checkAddRole(RoleRequest request);
 }

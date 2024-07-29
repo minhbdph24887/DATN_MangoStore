@@ -1,6 +1,6 @@
 .select2-container--default .select2-selection--single {
-    height: 100px; /* Chiều cao của combobox */
-    width: 100%; /* Chiều rộng tối đa của combobox */
+    height: 100px;
+    width: 100%;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
@@ -10,7 +10,41 @@
 
 .select2-container .select2-selection--single .select2-selection__rendered img {
     display: block;
-    width: 30px; /* Chiều rộng mới của hình ảnh */
-    height: 30px; /* Chiều cao mới của hình ảnh */
-    margin: 0 auto 10px; /* Canh giữa hình ảnh và thêm khoảng cách phía dưới */
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 10px;
+}
+
+.combobox-container {
+    position: relative;
+    display: inline-block;
+}
+
+.combobox-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.combobox-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    display: none;
+}
+
+.combobox-dropdown.show {
+    display: block;
+}
+
+.combobox-dropdown option {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.combobox-dropdown option:hover {
+    background-color: #f1f1f1;
 }

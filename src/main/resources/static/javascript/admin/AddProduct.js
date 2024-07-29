@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             function readAndPreview(file) {
                 if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
-                    return alert(file.name + " is not an image");
+                    return dangerAlert(file.name + " Không tồn tại");
                 }
                 const reader = new FileReader();
                 reader.onload = function () {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const cardBody = document.createElement('div');
                     cardBody.className = 'card-body p-2';
                     const removeButton = document.createElement('button');
-                    removeButton.innerText = 'Remove';
+                    removeButton.innerText = 'Xóa';
                     removeButton.className = 'btn btn-danger btn-sm mt-1 remove-btn';
                     cardBody.appendChild(image);
                     cardBody.appendChild(removeButton);
@@ -61,38 +61,32 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('#myFile').addEventListener("change", previewImages);
 
         async function createProduct(event) {
-
-
             const nameProductInput = document.getElementById('nameProductInput').value.trim();
-
-
             if (nameProductInput === '') {
-                dangerAlert('Please Enter The Name Product');
+                dangerAlert('Tên sản phẩm không được để trống');
                 return;
             } else if (listImages.length === 0) {
-                dangerAlert('Please add photos to the product');
+                dangerAlert('Vui lòng thêm ảnh sản phẩm');
                 return;
             } else if (imagesActive === '') {
-                dangerAlert('Please select the image of the product');
+                dangerAlert('Vui lòng chọn ảnh chính của sản phẩm');
                 return;
             }
 
             try {
-                // Check if the product name already exists
                 const response = await fetch('/api/mangostore/admin/productsExistCreate/' + nameProductInput);
                 if (response.ok) {
                     const data = await response.json();
 
-                    if (data === 2) { // If product does not exist, prompt to save changes
+                    if (data === 2) {
                         Swal.fire({
-                            title: "Do you want to save changes?",
+                            title: "Bạn có muốn lưu sản phẩm ?",
                             showDenyButton: true,
                             showCancelButton: true,
-                            confirmButtonText: "Save",
-                            denyButtonText: "Don't save"
+                            confirmButtonText: "Lưu",
+                            denyButtonText: "Không lưu"
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // Proceed with form submission
                                 const data = {
                                     nameProduct: nameProductInput,
                                     listImages: listImages,
@@ -106,33 +100,28 @@ document.addEventListener('DOMContentLoaded', function () {
                                     data: JSON.stringify(data),
                                     dataType: 'json',
                                     success: function (responseData) {
-                                        Swal.fire("Saved!", "", "success").then(() => {
+                                        Swal.fire("Lưu thành công!", "", "success").then(() => {
                                             window.open("http://localhost:8080/mangostore/admin/product", "_self");
                                         });
                                     },
                                     error: function (e) {
-                                        console.log("ERROR: ", e);
-                                        Swal.fire("Error", "Creating product failed!", "error");
+                                        Swal.fire("Lỗi", "Tạo sản phẩm không thành công!", "error");
                                     }
                                 });
                             } else if (result.isDenied) {
-                                Swal.fire("Changes are not saved", "", "info");
+                                Swal.fire("Những thay đổi không được lưu", "", "info");
                             }
                         });
                     } else {
-                        // If product already exists, show a warning
-                        Swal.fire("Product name already exists", "", "warning");
+                        Swal.fire("Tên sản phẩm đã tồn tại", "", "warning");
                     }
                 } else {
-                    throw new Error('Product check failed');
+                    throw new Error('Kiểm tra sản phẩm không thành công');
                 }
             } catch (error) {
-                console.error('Error checking product existence:', error);
-                Swal.fire("Error", "Failed to check product existence", "error");
+                Swal.fire("Lỗi", "Không kiểm tra được sự tồn tại của sản phẩm", "error");
             }
         }
-
-        // Gắn hàm createProduct vào đối tượng window để có thể truy cập từ HTML
         window.createProduct = createProduct;
     }
 });
@@ -151,16 +140,12 @@ if (checkUpdateProductPage) {
             if (!clickedCard) return;
 
             const imageFile = clickedCard.querySelector('.product-image').getAttribute('src');
-            const status = imageFile.includes('status=1'); // Đoạn logic để xác định status của ảnh, sử dụng tên file để phân biệt
-
+            const status = imageFile.includes('status=1');
             if (status) {
-                // Nếu ảnh có status = 0, làm nổi bật
                 clickedCard.classList.add('selected-image');
-                imagesActive = imageFile; // Lưu lại đường dẫn ảnh vào imagesActive
+                imagesActive = imageFile;
             } else {
-                // Nếu người dùng chọn ảnh khác
-                imagesActive = ""; // Xóa dữ liệu trong imagesActive
-                // Xóa lớp 'selected-image' từ tất cả các card khác
+                imagesActive = "";
                 imageContainer.querySelectorAll('.card').forEach(card => {
                     card.classList.remove('selected-image');
                 });
@@ -169,7 +154,7 @@ if (checkUpdateProductPage) {
 
         function previewImages(event) {
             const preview = document.querySelector('#imagePreview');
-            preview.innerHTML = ''; // Xóa các ảnh đã hiển thị trước đó
+            preview.innerHTML = '';
 
             if (event.target.files) {
                 [].forEach.call(event.target.files, readAndPreview);
@@ -177,7 +162,7 @@ if (checkUpdateProductPage) {
 
             function readAndPreview(file) {
                 if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
-                    return alert(file.name + " is not an image");
+                    return dangerAlert(file.name + " không phải là hình ảnh");
                 }
                 const reader = new FileReader();
                 reader.onload = function () {
@@ -191,7 +176,7 @@ if (checkUpdateProductPage) {
                     const cardBody = document.createElement('div');
                     cardBody.className = 'card-body p-2';
                     const removeButton = document.createElement('button');
-                    removeButton.innerText = 'Remove';
+                    removeButton.innerText = 'Xóa';
                     removeButton.className = 'btn btn-danger btn-sm mt-1 remove-btn';
                     cardBody.appendChild(image);
                     cardBody.appendChild(removeButton);
@@ -206,7 +191,7 @@ if (checkUpdateProductPage) {
                         });
                         card.classList.add('selected');
                         removeButton.disabled = true;
-                        imagesActive = file.name; // Đặt lại imagesActive khi người dùng chọn ảnh từ tập tin mới
+                        imagesActive = file.name;
                     };
 
                     removeButton.onclick = function (event) {
@@ -228,20 +213,14 @@ if (checkUpdateProductPage) {
         newImagesInput.addEventListener("change", previewImages);
         document.querySelector('#newImagesInput').addEventListener("change", previewImages);
 
-        // Event listener to handle delete button clicks for existing images
         document.addEventListener('click', function (event) {
             if (event.target.classList.contains('delete-image-btn')) {
                 const imageId = event.target.getAttribute('data-image-id');
                 const imageFileName = event.target.getAttribute('data-image-file');
-
-                // Add image ID to deletedImageIds array
                 deletedImageIds.push(imageId);
-                console.log('Deleted Image ID:', imageId);
-
-                // Remove image from UI
                 const deletedImage = document.querySelector(`.product-image[src*="${imageFileName}"]`);
                 if (deletedImage) {
-                    deletedImage.parentNode.parentNode.remove(); // Assuming card is the parent of card-body
+                    deletedImage.parentNode.parentNode.remove();
                 }
             }
         });
@@ -249,12 +228,11 @@ if (checkUpdateProductPage) {
 }
 
 async function updateProduct(event) {
-
     const nameProductInput = document.querySelector('input[name="nameProduct"]').value.trim();
     const idProduct = document.querySelector('input[name="id"]').value.trim();
 
     if (nameProductInput === '') {
-        dangerAlert('Please Enter The Name Product');
+        dangerAlert('Vui lòng nhập tên sản phẩm');
         return;
     }
 
@@ -267,26 +245,21 @@ async function updateProduct(event) {
     };
 
     try {
-        // Check if the product name already exists
         const url = '/api/mangostore/admin/productsExistUpdate/' + encodeURIComponent(nameProductInput) + '?id=' + encodeURIComponent(idProduct);
         const response = await fetch(url);
         if (response.ok) {
             const responseData = await response.json();
-
             if (responseData === 2 && idProduct !== '') {
-                // If product already exists and idProduct is different, show a warning
-                Swal.fire("Product name already exists", "", "warning");
+                Swal.fire("Tên sản phẩm đã tồn tại", "", "warning");
             } else {
-                // If product does not exist or is the same, prompt to save changes
                 Swal.fire({
-                    title: "Do you want to save changes?",
+                    title: "Bạn có muốn cập nhật sản phẩm ?",
                     showDenyButton: true,
                     showCancelButton: true,
-                    confirmButtonText: "Save",
-                    denyButtonText: "Don't save"
+                    confirmButtonText: "Cập nhật",
+                    denyButtonText: "Không cập nhật"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Proceed with form submission
                         $.ajax({
                             type: "POST",
                             contentType: "application/json",
@@ -294,25 +267,23 @@ async function updateProduct(event) {
                             data: JSON.stringify(data),
                             dataType: 'json',
                             success: function (responseData) {
-                                Swal.fire("Saved!", "", "success").then(() => {
+                                Swal.fire("Cập nhật thành công!", "", "success").then(() => {
                                     window.open("http://localhost:8080/mangostore/admin/product", "_self");
                                 });
                             },
                             error: function (e) {
-                                console.log("ERROR: ", e);
-                                Swal.fire("Error", "Updating product failed!", "error");
+                                Swal.fire("Lỗi", "Cập nhật sản phẩm không thành công!", "error");
                             }
                         });
                     } else if (result.isDenied) {
-                        Swal.fire("Changes are not saved", "", "info");
+                        Swal.fire("Những thay đổi không được lưu", "", "info");
                     }
                 });
             }
         } else {
-            throw new Error('Product check failed');
+            throw new Error('Kiểm tra sản phẩm không thành công');
         }
     } catch (error) {
-        console.error('Error checking product existence:', error);
-        Swal.fire("Error", "Failed to check product existence", "error");
+        Swal.fire("Lỗi", "Không kiểm tra được sự tồn tại của sản phẩm", "error");
     }
 }

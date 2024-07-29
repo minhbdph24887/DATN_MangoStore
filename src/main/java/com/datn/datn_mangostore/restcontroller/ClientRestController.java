@@ -18,7 +18,7 @@ public class ClientRestController {
     }
 
     @PostMapping(value = "profile/check-update")
-    public ResponseEntity<String> checkUpdateProfile(@RequestBody ProfileRequest request){
+    public ResponseEntity<String> checkUpdateProfile(@RequestBody ProfileRequest request) {
         return clientService.checkUpdateProfile(request);
     }
 }

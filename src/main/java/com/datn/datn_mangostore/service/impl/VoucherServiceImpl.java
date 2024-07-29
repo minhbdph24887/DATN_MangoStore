@@ -2,12 +2,10 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Rank;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.bean.Voucher;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.RankRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.repository.VoucherRepository;
 import com.datn.datn_mangostore.request.RestoreVoucherRequest;
 import com.datn.datn_mangostore.request.VoucherRequest;
@@ -17,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,19 +25,17 @@ import java.util.List;
 @Service
 public class VoucherServiceImpl implements VoucherService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final VoucherRepository voucherRepository;
     private final RankRepository rankRepository;
     private final Gender gender;
     private static final String regex = "^(?=.*[A-Z])(?=.*\\d).{10}$";
 
     public VoucherServiceImpl(AccountRepository accountRepository,
-                              RoleRepository roleRepository,
                               VoucherRepository voucherRepository,
                               RankRepository rankRepository,
                               Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
+
         this.voucherRepository = voucherRepository;
         this.rankRepository = rankRepository;
         this.gender = gender;
@@ -51,56 +45,29 @@ public class VoucherServiceImpl implements VoucherService {
     public String indexVoucher(Model model,
                                HttpSession session,
                                String voucherActive) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
+            List<Voucher> itemsVoucher = voucherRepository.getAllVoucherByStatus1And2();
+            if (voucherActive != null) {
+                if (voucherActive.matches(regex)) {
+                    itemsVoucher = voucherRepository.searchVoucherByCode(voucherActive, 1);
                 } else {
-                    model.addAttribute("dates", "Evening");
+                    itemsVoucher = voucherRepository.searchVoucherByName(voucherActive, 1);
                 }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Voucher> itemsVoucher = voucherRepository.getAllVoucherByStatus1And2();
-                if (voucherActive != null) {
-                    if (voucherActive.matches(regex)) {
-                        itemsVoucher = voucherRepository.searchVoucherByCode(voucherActive, 1);
-                    } else {
-                        itemsVoucher = voucherRepository.searchVoucherByName(voucherActive, 1);
-                    }
-                    model.addAttribute("voucherActive", voucherActive);
-                }
-                model.addAttribute("listVoucher", itemsVoucher);
-
-                List<Voucher> itemsVoucherInactive = voucherRepository.getAllVoucherByStatus0();
-                model.addAttribute("listVoucherInactive", itemsVoucherInactive);
-
-                model.addAttribute("addVoucher", new Voucher());
-
-                List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
-                model.addAttribute("listRank", itemsRank);
-                return "admin/voucher/IndexVoucher";
+                model.addAttribute("voucherActive", voucherActive);
             }
+            model.addAttribute("listVoucher", itemsVoucher);
+
+            List<Voucher> itemsVoucherInactive = voucherRepository.getAllVoucherByStatus0();
+            model.addAttribute("listVoucherInactive", itemsVoucherInactive);
+
+            model.addAttribute("addVoucher", new Voucher());
+
+            List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
+            model.addAttribute("listRank", itemsRank);
+            return "admin/voucher/IndexVoucher";
         }
     }
 
@@ -147,46 +114,19 @@ public class VoucherServiceImpl implements VoucherService {
     public String detailVoucher(Model model,
                                 HttpSession session,
                                 Long idVoucher) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Voucher> itemsVoucherInactive = voucherRepository.getAllVoucherByStatus0();
+            model.addAttribute("listVoucherInactive", itemsVoucherInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
+            List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
+            model.addAttribute("listRank", itemsRank);
 
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Voucher> itemsVoucherInactive = voucherRepository.getAllVoucherByStatus0();
-                model.addAttribute("listVoucherInactive", itemsVoucherInactive);
-
-                List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
-                model.addAttribute("listRank", itemsRank);
-
-                Voucher detailVoucher = voucherRepository.findById(idVoucher).orElse(null);
-                model.addAttribute("detailVoucher", detailVoucher);
-                return "admin/voucher/DetailVoucher";
-            }
+            Voucher detailVoucher = voucherRepository.findById(idVoucher).orElse(null);
+            model.addAttribute("detailVoucher", detailVoucher);
+            return "admin/voucher/DetailVoucher";
         }
     }
 

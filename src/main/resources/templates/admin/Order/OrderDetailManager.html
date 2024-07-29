@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
       th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
 <body>
-<main class="updateInvoiceStatusPage">
+<main>
     <div>
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/order/list}">Trang chủ hóa đơn</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/order-all}">Trang chủ tất cả hóa đơn</a></li>
             <li class="breadcrumb-item active" aria-current="page">Hóa đơn</li>
         </ul>
     </div>
@@ -47,7 +47,15 @@
                                 <div class="form-group" style="display: flex; align-items: center;">
                                     <label class="control-label col-sm-3" style="margin: 0;">Người tạo hóa đơn:</label>
                                     <div class="col-sm-9" style="margin: 0;">
-                                        <p class="form-control-static" th:text="${detailAccountByInvoice.fullName}"
+                                        <p class="form-control-static" th:text="${detailCustomByInvoice.fullName}"
+                                           style="margin: 0; color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center;">
+                                    <label class="control-label col-sm-3" style="margin: 0;">Nhân viên tiếp nhận hóa đơn
+                                        hóa đơn:</label>
+                                    <div class="col-sm-9" style="margin: 0;">
+                                        <p class="form-control-static" th:text="${detailStaffByInvoice.fullName}"
                                            style="margin: 0; color: red"></p>
                                     </div>
                                 </div>
@@ -166,11 +174,6 @@
                                 </div>
                             </div>
                         </div>
-                        <th:block th:if="${detailInvoice.invoiceStatus != 5}">
-                            <button class="btn btn-outline-success" th:data-id="${detailInvoice.id}"
-                                    onclick="updateStatusInvoice(event)">Xác nhận đơn hàng
-                            </button>
-                        </th:block>
                     </div>
                     <div class="col-md-5">
                         <div style="height: 426px;">

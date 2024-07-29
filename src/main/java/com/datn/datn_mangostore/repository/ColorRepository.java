@@ -23,11 +23,6 @@ public interface ColorRepository extends JpaRepository<Color, Long> {
     @Query(value = "select * from color where name_color= :nameColor and status= 1", nativeQuery = true)
     Color findByName(@Param("nameColor") String nameColor);
 
-    //    vinh3
     @Query(value = "select * from color where name_color= :nameColor ", nativeQuery = true)
     Color findByNameExit(@Param("nameColor") String nameColor);
-
-    @Query(value = "select * from color where code_color= :codeColor ", nativeQuery = true)
-    Color findByCodeExit(@Param("codeColor") String codeColor);
-
 }

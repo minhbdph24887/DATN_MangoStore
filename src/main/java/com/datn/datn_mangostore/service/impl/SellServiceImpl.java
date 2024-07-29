@@ -62,40 +62,13 @@ public class SellServiceImpl implements SellService {
     @Override
     public String indexSellAdmin(Model model,
                                  HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Invoice> itemsInvoice = invoiceRepository.getAllInvoiceByAccount(detailAccount.getId());
-                model.addAttribute("listInvoiceByAccount", itemsInvoice);
-                return "admin/Sell/IndexSell";
-            }
+            List<Invoice> itemsInvoice = invoiceRepository.getAllInvoiceByAccount(detailAccount.getId());
+            model.addAttribute("listInvoiceByAccount", itemsInvoice);
+            return "admin/Sell/IndexSell";
         }
     }
 
@@ -126,86 +99,58 @@ public class SellServiceImpl implements SellService {
     public String editInvoice(Long idInvoice,
                               Model model,
                               HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
+            List<Invoice> itemsInvoice = invoiceRepository.getAllInvoiceByAccount(detailAccount.getId());
+            model.addAttribute("listInvoiceByAccount", itemsInvoice);
+            model.addAttribute("idInvoice", idInvoice);
+
+            Invoice detailInvoice = invoiceRepository.findById(idInvoice).orElse(null);
+            model.addAttribute("detailInvoice", detailInvoice);
+            assert detailInvoice != null;
+
+            List<Account> findAllAccount = accountRepository.getAllAccountByStatus1();
+            model.addAttribute("listAccount", findAllAccount);
+            if (detailInvoice.getIdCustomer() != null) {
+                Account detailAccountByIdAccount = accountRepository.findById(detailInvoice.getIdCustomer()).orElse(null);
+                assert detailAccountByIdAccount != null;
+                model.addAttribute("nameClient", detailAccountByIdAccount.getFullName());
+                model.addAttribute("pointClient", detailAccountByIdAccount.getAccumulatedPoints());
+
+                List<Voucher> itemsVoucherOffline = voucherRepository.findVoucherByVoucherFrom(detailAccountByIdAccount.getRank().getId());
+                model.addAttribute("listVoucherClient", itemsVoucherOffline);
             } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Invoice> itemsInvoice = invoiceRepository.getAllInvoiceByAccount(detailAccount.getId());
-                model.addAttribute("listInvoiceByAccount", itemsInvoice);
-                model.addAttribute("idInvoice", idInvoice);
-
-                Invoice detailInvoice = invoiceRepository.findById(idInvoice).orElse(null);
-                model.addAttribute("detailInvoice", detailInvoice);
-
-                assert detailInvoice != null;
-
-                List<Account> findAllAccount = accountRepository.getAllAccountByStatus1();
-                model.addAttribute("listAccount", findAllAccount);
-                if (detailInvoice.getIdCustomer() != null) {
-                    Account detailAccountByIdAccount = accountRepository.findById(detailInvoice.getIdCustomer()).orElse(null);
-                    assert detailAccountByIdAccount != null;
-                    model.addAttribute("nameClient", detailAccountByIdAccount.getFullName());
-                    model.addAttribute("pointClient", detailAccountByIdAccount.getAccumulatedPoints());
-
-                    List<Voucher> itemsVoucherOffline = voucherRepository.findVoucherByVoucherFrom(detailAccountByIdAccount.getRank().getId());
-                    model.addAttribute("listVoucherClient", itemsVoucherOffline);
-                } else {
-                    List<Voucher> itemsVoucherOffline = voucherRepository.getAllVoucherByStatus1();
-                    model.addAttribute("listVoucherClient", itemsVoucherOffline);
-                }
-
-                if (detailInvoice.getVoucher() != null) {
-                    Voucher getReducedValue = voucherRepository.findById(detailInvoice.getVoucher().getId()).orElse(null);
-                    assert getReducedValue != null;
-                    model.addAttribute("discountVouchers", getReducedValue.getReducedValue());
-                }
-
-                if (detailInvoice.getTotalInvoiceAmount() != null) {
-                    model.addAttribute("totalInvoice", detailInvoice.getTotalInvoiceAmount());
-                }
-
-                if (detailInvoice.getTotalPayment() != null) {
-                    model.addAttribute("totalPayment", detailInvoice.getTotalPayment());
-                }
-
-                if (detailInvoice.getCustomerPoints() != null) {
-                    Integer customerPoints = detailInvoice.getCustomerPoints() * 1000;
-                    model.addAttribute("customerPoints", customerPoints);
-                }
-
-                List<ProductDetail> finAllProductDetail = productDetailRepository.getAllProductDetailByStatus1();
-                model.addAttribute("listAllProductDetail", finAllProductDetail);
-
-                List<InvoiceDetail> itemsInvoiceDetailByIdInvoice = invoiceDetailRepository.getAllInvoiceDetailByIdInvoice(detailInvoice.getId());
-                model.addAttribute("listInvoiceDetail", itemsInvoiceDetailByIdInvoice);
-                return "admin/Sell/DetailInvoiceSell";
+                List<Voucher> itemsVoucherOffline = voucherRepository.getAllVoucherByStatus1();
+                model.addAttribute("listVoucherClient", itemsVoucherOffline);
             }
+
+            if (detailInvoice.getVoucher() != null) {
+                Voucher getReducedValue = voucherRepository.findById(detailInvoice.getVoucher().getId()).orElse(null);
+                assert getReducedValue != null;
+                model.addAttribute("discountVouchers", getReducedValue.getReducedValue());
+            }
+
+            if (detailInvoice.getTotalInvoiceAmount() != null) {
+                model.addAttribute("totalInvoice", detailInvoice.getTotalInvoiceAmount());
+            }
+
+            if (detailInvoice.getTotalPayment() != null) {
+                model.addAttribute("totalPayment", detailInvoice.getTotalPayment());
+            }
+
+            if (detailInvoice.getCustomerPoints() != null) {
+                Integer customerPoints = detailInvoice.getCustomerPoints() * 1000;
+                model.addAttribute("customerPoints", customerPoints);
+            }
+
+            List<ProductDetail> finAllProductDetail = productDetailRepository.getAllProductDetailByStatus1();
+            model.addAttribute("listAllProductDetail", finAllProductDetail);
+
+            List<InvoiceDetail> itemsInvoiceDetailByIdInvoice = invoiceDetailRepository.getAllInvoiceDetailByIdInvoice(detailInvoice.getId());
+            model.addAttribute("listInvoiceDetail", itemsInvoiceDetailByIdInvoice);
+            return "admin/Sell/DetailInvoiceSell";
         }
     }
 
@@ -265,27 +210,60 @@ public class SellServiceImpl implements SellService {
     }
 
     @Override
-    public ResponseEntity<String> addVoucherForSellAPI(IdVoucherSellRequest request,
-                                                       HttpSession session) {
-        Invoice detailInvoice = invoiceRepository.findById(request.getIdInvoice()).orElse(null);
-        assert detailInvoice != null;
-        if (detailInvoice.getTotalInvoiceAmount() == null) {
+    public ResponseEntity<String> addVoucherListForSellAPI(VoucherSellRequest request) {
+        Invoice detailInvoice = invoiceRepository.findById(Long.parseLong(request.getIdInvoice())).orElse(null);
+        if (detailInvoice == null) {
             return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
-        } else {
-            Integer customerPoints = detailInvoice.getCustomerPoints() * 1000;
-            Voucher detailVoucher = voucherRepository.findById(request.getIdVoucher()).orElse(null);
-            assert detailVoucher != null;
-
-            if (detailInvoice.getTotalPayment() < detailVoucher.getMinimumPrice()) {
-                return new ResponseEntity<>("2", HttpStatus.BAD_REQUEST);
-            } else {
-                detailInvoice.setVoucher(detailVoucher);
-                int newTotalPayment = detailInvoice.getTotalInvoiceAmount() - detailVoucher.getReducedValue() - customerPoints;
-                detailInvoice.setTotalPayment(Math.max(newTotalPayment, 0));
-                invoiceRepository.save(detailInvoice);
-                return new ResponseEntity<>("0", HttpStatus.OK);
-            }
         }
+        Integer customerPoints = detailInvoice.getCustomerPoints() * 1000;
+        Voucher detailVoucher = voucherRepository.findById(Long.parseLong(request.getIdVoucherCombobox())).orElse(null);
+        if (detailVoucher == null) {
+            return new ResponseEntity<>("2", HttpStatus.BAD_REQUEST);
+        }
+        if (detailVoucher.getQuantity() == 0) {
+            return new ResponseEntity<>("3", HttpStatus.BAD_REQUEST);
+        }
+        detailInvoice.setVoucher(detailVoucher);
+        int newTotalPayment = detailInvoice.getTotalInvoiceAmount() - detailVoucher.getReducedValue() - customerPoints;
+        detailInvoice.setTotalPayment(Math.max(newTotalPayment, 0));
+        invoiceRepository.save(detailInvoice);
+        return new ResponseEntity<>("0", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> addVoucherCodeForSellAPI(VoucherSellRequest request) {
+        Invoice detailInvoice = invoiceRepository.findById(Long.parseLong(request.getIdInvoice())).orElse(null);
+        if (detailInvoice == null) {
+            return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
+        }
+        Account invoiceCustom = accountRepository.findById(Long.parseLong(request.getIdCustomer())).orElse(null);
+        if (invoiceCustom == null) {
+            return new ResponseEntity<>("4", HttpStatus.BAD_REQUEST);
+        }
+        Integer customerPoints = detailInvoice.getCustomerPoints() * 1000;
+
+        Voucher detailVoucherByCode = voucherRepository.findVoucherByCodeVoucher(request.getCodeVoucher());
+        if (detailVoucherByCode == null) {
+            return new ResponseEntity<>("5", HttpStatus.BAD_REQUEST);
+        }
+
+        if (detailVoucherByCode.getRank() != null && invoiceCustom.getRank().getId() < detailVoucherByCode.getRank().getId()) {
+            return new ResponseEntity<>("7", HttpStatus.BAD_REQUEST);
+        }
+
+        if (detailVoucherByCode.getMinimumPrice() > Integer.parseInt(request.getTotalPayment())) {
+            return new ResponseEntity<>("6", HttpStatus.BAD_REQUEST);
+        }
+
+        if (detailVoucherByCode.getQuantity() == 0) {
+            return new ResponseEntity<>("3", HttpStatus.BAD_REQUEST);
+        }
+
+        detailInvoice.setVoucher(detailVoucherByCode);
+        int newTotalPayment = detailInvoice.getTotalInvoiceAmount() - detailVoucherByCode.getReducedValue() - customerPoints;
+        detailInvoice.setTotalPayment(Math.max(newTotalPayment, 0));
+        invoiceRepository.save(detailInvoice);
+        return new ResponseEntity<>("0", HttpStatus.OK);
     }
 
     @Override
@@ -302,14 +280,12 @@ public class SellServiceImpl implements SellService {
         }
 
         int reducedVoucher = detailInvoice.getVoucher() != null ? detailInvoice.getVoucher().getReducedValue() : 0;
-
         if (request.getNewQuantity() > detailProduct.getQuantity()) {
             return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
         } else {
             InvoiceDetail detailInvoiceDetail = invoiceDetailRepository.findByIdInvoiceAndProductDetails(request.getIdProductDetail(), request.getIdInvoice());
 
             if (detailInvoiceDetail == null) {
-                // Create new InvoiceDetail
                 InvoiceDetail invoiceDetail = new InvoiceDetail();
                 invoiceDetail.setProductDetail(detailProduct);
                 invoiceDetail.setInvoice(detailInvoice);
@@ -319,7 +295,6 @@ public class SellServiceImpl implements SellService {
                 invoiceDetail.setCapitalSum(request.getNewQuantity() * detailProduct.getPrice());
                 invoiceDetailRepository.save(invoiceDetail);
 
-                // Update Invoice
                 int totalInvoiceAmount = detailInvoice.getTotalInvoiceAmount() != null ? detailInvoice.getTotalInvoiceAmount() : 0;
                 totalInvoiceAmount += request.getNewQuantity() * detailProduct.getPrice();
                 detailInvoice.setTotalInvoiceAmount(totalInvoiceAmount);
@@ -329,22 +304,24 @@ public class SellServiceImpl implements SellService {
                 detailInvoice.setTotalPayment(Math.max(newPayment, 0));
                 invoiceRepository.save(detailInvoice);
             } else {
-                // Update existing InvoiceDetail
                 int newQuantityUpdate = detailInvoiceDetail.getQuantity() + request.getNewQuantity();
-                int newCapitalSum = newQuantityUpdate * detailProduct.getPrice();
-                detailInvoiceDetail.setQuantity(newQuantityUpdate);
-                detailInvoiceDetail.setCapitalSum(newCapitalSum);
-                invoiceDetailRepository.save(detailInvoiceDetail);
+                if (newQuantityUpdate > 50) {
+                    return new ResponseEntity<>("2", HttpStatus.BAD_REQUEST);
+                } else {
+                    int newCapitalSum = newQuantityUpdate * detailProduct.getPrice();
+                    detailInvoiceDetail.setQuantity(newQuantityUpdate);
+                    detailInvoiceDetail.setCapitalSum(newCapitalSum);
+                    invoiceDetailRepository.save(detailInvoiceDetail);
 
-                // Update Invoice
-                int totalInvoiceAmount = detailInvoice.getTotalInvoiceAmount() != null ? detailInvoice.getTotalInvoiceAmount() : 0;
-                totalInvoiceAmount += request.getNewQuantity() * detailProduct.getPrice();
-                detailInvoice.setTotalInvoiceAmount(totalInvoiceAmount);
+                    int totalInvoiceAmount = detailInvoice.getTotalInvoiceAmount() != null ? detailInvoice.getTotalInvoiceAmount() : 0;
+                    totalInvoiceAmount += request.getNewQuantity() * detailProduct.getPrice();
+                    detailInvoice.setTotalInvoiceAmount(totalInvoiceAmount);
 
-                int customPoints = detailInvoice.getCustomerPoints() * 1000;
-                int newPayment = totalInvoiceAmount - reducedVoucher - customPoints;
-                detailInvoice.setTotalPayment(Math.max(newPayment, 0));
-                invoiceRepository.save(detailInvoice);
+                    int customPoints = detailInvoice.getCustomerPoints() * 1000;
+                    int newPayment = totalInvoiceAmount - reducedVoucher - customPoints;
+                    detailInvoice.setTotalPayment(Math.max(newPayment, 0));
+                    invoiceRepository.save(detailInvoice);
+                }
             }
             return new ResponseEntity<>("0", HttpStatus.OK);
         }
@@ -414,7 +391,6 @@ public class SellServiceImpl implements SellService {
     public String deleteProduct(Long idInvoiceDetail) {
         InvoiceDetail invoiceDetail = invoiceDetailRepository.findById(idInvoiceDetail).orElse(null);
         assert invoiceDetail != null;
-        // Xóa InvoiceDetail
         invoiceDetailRepository.delete(invoiceDetail);
 
         int totalInvoiceAmount = invoiceDetail.getInvoice().getTotalInvoiceAmount() - invoiceDetail.getCapitalSum();
@@ -465,7 +441,7 @@ public class SellServiceImpl implements SellService {
             }
         }
 
-        if(invoice.getIdCustomer() != null){
+        if (invoice.getIdCustomer() != null) {
             Account detailAccount = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
             assert detailAccount != null;
             if (invoice.getCustomerPoints() != 0) {
@@ -511,13 +487,32 @@ public class SellServiceImpl implements SellService {
             }
             accountRepository.save(detailAccount);
             gender.updateRankByAccumulatedPointsAccount(detailAccount);
-        }else{
+        } else {
             invoice.setInvoicePaymentDate(LocalDateTime.parse(gender.getCurrentDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd : HH:mm:ss")));
             invoice.setReturnClientMoney(request.getReturnClientMoney());
             invoice.setPayments("cash");
             Integer leftoverMoney = request.getReturnClientMoney() - invoice.getTotalPayment();
             invoice.setLeftoverMoney(leftoverMoney);
             invoice.setInvoiceStatus(5);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss dd-MM-yyyy");
+            String formattedDate = invoice.getInvoicePaymentDate().format(formatter);
+
+            String directoryPath = "src/main/resources/static/bill";
+            Path path = Paths.get(directoryPath);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+
+            String pdfFileName = invoice.getCodeInvoice() + "_" + invoice.getNameInvoice() + "_" + formattedDate + ".pdf";
+            String pdfPath = directoryPath + "/" + pdfFileName;
+
+            try {
+                gender.createInvoicePDF(pdfPath, invoice);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("2", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
             invoiceRepository.save(invoice);
         }
 

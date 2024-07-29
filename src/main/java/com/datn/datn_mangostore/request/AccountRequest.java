@@ -3,12 +3,11 @@ package com.datn.datn_mangostore.request;
 public class AccountRequest {
     private String idAddAccount;
 
-    public String getIdAccount() {
+    public String getIdAddAccount() {
         return idAddAccount;
     }
 
-    public void setIdAccount(String idAccount) {
-        this.idAddAccount = idAccount;
+    public void setIdAddAccount(String idAddAccount) {
+        this.idAddAccount = idAddAccount;
     }
-
 }

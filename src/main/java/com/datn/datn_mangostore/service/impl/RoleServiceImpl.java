@@ -2,6 +2,7 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Role;
+import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.request.RoleRequest;
@@ -13,56 +14,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
+    private final Gender gender;
 
-    public RoleServiceImpl(AccountRepository accountRepository, RoleRepository roleRepository) {
+    public RoleServiceImpl(AccountRepository accountRepository,
+                           RoleRepository roleRepository,
+                           Gender gender) {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
+        this.gender = gender;
     }
 
     @Override
-    public String getAllRoleByStatus1(Model model, HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+    public String getAllRoleByStatus1(Model model,
+                                      HttpSession session) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Role> itemsRole = roleRepository.getAllRole();
+            model.addAttribute("listRole", itemsRole);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
+            List<Role> itemsRoleInactive = roleRepository.getAllRoleByStatus0();
+            model.addAttribute("listRoleInactive", itemsRoleInactive);
 
-                List<Role> itemsRole = roleRepository.getAllRole();
-                model.addAttribute("listRole", itemsRole);
-
-                List<Role> itemsRoleInactive = roleRepository.getAllRoleByStatus0();
-                model.addAttribute("listRoleInactive", itemsRoleInactive);
-
-
-                model.addAttribute("addRole", new Role());
-
-                model.addAttribute("checkMenuAdmin", true);
-                return "admin/role/IndexRole";
-            }
+            model.addAttribute("addRole", new Role());
+            return "admin/role/IndexRole";
         }
     }
 
@@ -70,53 +52,36 @@ public class RoleServiceImpl implements RoleService {
     public String restoreRole(Long idRole) {
 
         Role detailRole = roleRepository.findById(idRole).orElse(null);
+        assert detailRole != null;
         detailRole.setStatus(1);
         roleRepository.save(detailRole);
         return "redirect:/mangostore/admin/role";
     }
 
     @Override
-    public String detailRole(Model model, HttpSession session, Long idRole) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+    public String detailRole(Model model,
+                             HttpSession session,
+                             Long idRole) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Role> itemsRoleInactive = roleRepository.getAllRoleByStatus0();
+            model.addAttribute("listRoleInactive", itemsRoleInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
+            Role detailRole = roleRepository.findById(idRole).orElse(null);
+            model.addAttribute("detailRole", detailRole);
 
-                List<Role> itemsRoleInactive = roleRepository.getAllRoleByStatus0();
-                model.addAttribute("listRoleInactive", itemsRoleInactive);
-
-                Role detailRole = roleRepository.findById(idRole).orElse(null);
-                model.addAttribute("detailRole", detailRole);
-
-                List<Account> itemsAccount = accountRepository.getAllAccountByRole(idRole);
-                model.addAttribute("listAccountByRole", itemsAccount);
-
-                model.addAttribute("checkMenuAdmin", true);
-                return "admin/role/DetailRole";
-            }
+            List<Account> itemsAccount = accountRepository.getAllAccountByRole(idRole);
+            model.addAttribute("listAccountByRole", itemsAccount);
+            return "admin/role/DetailRole";
         }
     }
 
     @Override
-    public String updateRole(BindingResult result, Long idRole, Role role) {
+    public String updateRole(BindingResult result,
+                             Long idRole,
+                             Role role) {
         Role detailRole = roleRepository.findById(role.getId()).orElse(null);
         assert detailRole != null;
         detailRole.setNote(role.getNote());
@@ -135,7 +100,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public String addRole(BindingResult result, Role addRole) {
+    public String addRole(BindingResult result,
+                          Role addRole) {
         Role newRole = new Role();
         newRole.setName(addRole.getName());
         newRole.setNote(addRole.getNote());
@@ -151,7 +117,6 @@ public class RoleServiceImpl implements RoleService {
             return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("0", HttpStatus.OK);
-
         }
     }
 }

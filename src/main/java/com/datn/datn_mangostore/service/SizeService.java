@@ -26,6 +26,8 @@ public interface SizeService {
 
     String restoreSize(Long idSize);
 
-    Integer findBySizeCreateExit(String name );
-    Integer findBySizeUpdateExit( String codeSize ,String name);
+    Integer findBySizeCreateExit(String name);
+
+    Integer findBySizeUpdateExit(String codeSize,
+                                 String name);
 }

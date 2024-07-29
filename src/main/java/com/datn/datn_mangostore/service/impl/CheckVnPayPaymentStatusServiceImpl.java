@@ -6,8 +6,6 @@ import com.datn.datn_mangostore.repository.*;
 import com.datn.datn_mangostore.service.CheckVnPayPaymentStatusService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,7 +35,8 @@ public class CheckVnPayPaymentStatusServiceImpl implements CheckVnPayPaymentStat
                                               AccountRepository accountRepository,
                                               VoucherClientRepository voucherClientRepository,
                                               ShoppingCartRepository shoppingCartRepository,
-                                              ShoppingCartDetailRepository shoppingCartDetailRepository, VoucherRepository voucherRepository) {
+                                              ShoppingCartDetailRepository shoppingCartDetailRepository,
+                                              VoucherRepository voucherRepository) {
         this.gender = gender;
         this.invoiceRepository = invoiceRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
@@ -64,16 +63,16 @@ public class CheckVnPayPaymentStatusServiceImpl implements CheckVnPayPaymentStat
                     ProductDetail productDetail = productDetailRepository.findById(detail.getProductDetail().getId()).orElse(null);
                     assert productDetail != null;
                     int quantityNew = productDetail.getQuantity() - detail.getQuantity();
-                    if(quantityNew < 0){
+                    if (quantityNew < 0) {
                         hasErrorInvoiceAdmin = true;
                         break;
-                    }else {
+                    } else {
                         productDetail.setQuantity(quantityNew);
                         productDetailRepository.save(productDetail);
                     }
                 }
 
-                if(hasErrorInvoiceAdmin){
+                if (hasErrorInvoiceAdmin) {
                     return "redirect:/mangostore/admin/sell/edit?id=" + idInvoice;
                 }
 
@@ -140,24 +139,6 @@ public class CheckVnPayPaymentStatusServiceImpl implements CheckVnPayPaymentStat
 
                 Account detailAccount = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
                 assert detailAccount != null;
-
-                List<InvoiceDetail> getAllInvoiceDetail = invoiceDetailRepository.findAllByIdInvoice(idInvoiceClient);
-                for (InvoiceDetail detail : getAllInvoiceDetail) {
-                    ProductDetail productDetail = productDetailRepository.findById(detail.getProductDetail().getId()).orElse(null);
-                    assert productDetail != null;
-                    int quantityNew = productDetail.getQuantity() - detail.getQuantity();
-                    if(quantityNew < 0){
-                        hasErrorInvoiceClient = true;
-                        break;
-                    }else{
-                        productDetail.setQuantity(quantityNew);
-                        productDetailRepository.save(productDetail);
-                    }
-                }
-
-                if (hasErrorInvoiceClient) {
-                    return "redirect:/mangostore/cart/checkout";
-                }
 
                 Account detailAccountToShoppingCart = accountRepository.findById(invoice.getIdCustomer()).orElse(null);
                 assert detailAccountToShoppingCart != null;

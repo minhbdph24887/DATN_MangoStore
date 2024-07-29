@@ -48,17 +48,17 @@ if (detailProfilePage) {
         const phoneRegex = /^[0-9]{10}$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (nameClient === '') {
-            dangerAlert('Please Enter The Name Client');
+            dangerAlert('Tên khách hàng không được để trống');
         } else if (!phoneRegex.test(numberPhone) && numberPhone !== '') {
-            dangerAlert('Phone Format Is Incorrect');
+            dangerAlert('Số điện thoại không đúng định dạng');
         } else if (email === '') {
-            dangerAlert('Please Enter The Email');
+            dangerAlert('Vui lòng nhập email');
         } else if (!emailRegex.test(email) && email !== '') {
-            dangerAlert('Email Format Is Incorrect');
+            dangerAlert('Email không đúng định dạng');
         } else if (!selectedGenderMethod) {
-            dangerAlert('Please Choose Gender');
+            dangerAlert('Vui long chọn giới tính');
         } else if (!validateBirthday(birthday)) {
-            dangerAlert('You must be at least 8 years old');
+            dangerAlert('Bạn phải trên 8 tuổi');
         } else {
             const data = {
                 id: idProfile,
@@ -74,17 +74,17 @@ if (detailProfilePage) {
                 contentType: 'application/json',
                 success: function (response) {
                     const fromUpdateProfile = document.getElementById('fromUpdateProfile');
-                    confirmAlertForm('Do You Want to Update Profile', 'Update Profile Successfully', fromUpdateProfile);
+                    confirmAlertForm('Bạn có muốn cập nhật ?', 'Cập nhật thành công', fromUpdateProfile);
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Phone number is already in used');
+                        dangerAlert('Số điện thoại đã được sử dụng');
                     } else if (e.responseText === "2") {
-                        dangerAlert('Email has been used');
+                        dangerAlert('Email đã được sử dụng');
                     } else {
-                        errorAlert('An error occurred.');
+                        errorAlert('Lỗi.');
                     }
-                    console.log(e);
+                    console.clear();
                 }
             });
         }

@@ -1,7 +1,6 @@
 package com.datn.datn_mangostore.restcontroller;
 
 import com.datn.datn_mangostore.service.ColorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class check {
-    @Autowired
-    private ColorService colorService;
+    private final ColorService colorService;
+
+    public check(ColorService colorService) {
+        this.colorService = colorService;
+    }
 
     @GetMapping("/colorsExistCreat/{name}")
     public ResponseEntity<Integer> checkColorExistence(@PathVariable String name) {

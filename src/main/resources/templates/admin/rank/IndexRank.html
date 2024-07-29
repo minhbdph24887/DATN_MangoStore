@@ -9,12 +9,12 @@
                 <li class="nav-item">
                     <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
                        href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Rank Active</a>
+                       aria-controls="tab1" aria-selected="true">Rank đang hoạt động</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
                        aria-controls="tab2" role="tab"
-                       aria-selected="false">Rank Inactive</a>
+                       aria-selected="false">Rank ngừng hoạt động</a>
                 </li>
             </ul>
         </div>
@@ -22,23 +22,23 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                 <div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Index Rank</li>
+                        <li class="breadcrumb-item active" aria-current="page">Trang chủ Rank</li>
                     </ul>
                 </div>
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List Rank Active</h4>
+                            <h4 class="card-title">Danh sách rank đang hoạt động</h4>
                             <div class="row">
                                 <div class="col-sm-3">
                                     <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                            data-target="#myModal">Add Rank
+                                            data-target="#myModal">Thêm Rank
                                     </button>
                                 </div>
                                 <div class="col-sm-7">
                                     <form>
                                         <input type="text" name="keyword" class="form-control" th:value="${keyword}"
-                                               placeholder="Search Name Rank Or Code Rank"/>
+                                               placeholder=" Tìm kiếm rank theo tên hoặc mã rank"/>
                                     </form>
                                 </div>
                             </div>
@@ -48,15 +48,15 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 109px">CodeRank</th>
-                                            <th style="width: 117px">NameRank</th>
-                                            <th style="width: 100px">MinimumScore</th>
-                                            <th style="width: 100px">MaximumScore</th>
-                                            <th style="width: 100px">UserCreate</th>
-                                            <th style="width: 100px">UserUpdate</th>
-                                            <th style="width: 100px">DateCreate</th>
-                                            <th style="width: 100px">DateUpdate</th>
-                                            <th style="width: 100px">Status</th>
+                                            <th style="width: 109px">Mã Rank</th>
+                                            <th style="width: 117px">Tên Rank</th>
+                                            <th style="width: 100px">Điểm tối thiểu</th>
+                                            <th style="width: 100px">Điểm tối đa</th>
+                                            <th style="width: 100px">Người tạo</th>
+                                            <th style="width: 100px">Người cập nhật</th>
+                                            <th style="width: 100px">Ngày tạo</th>
+                                            <th style="width: 100px">Ngày cập nhật</th>
+                                            <th style="width: 100px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -85,15 +85,12 @@
                                             <td style="width: 100px"
                                                 th:text="${#temporals.format(listRank.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
                                             <td style="width: 100px" th:if="${listRank.status == 1}">
-                                                <label class="badge badge-success">Active</label>
-                                            </td>
-                                            <td style="width: 100px" th:if="${listRank.status == 0}">
-                                                <label class="badge badge-danger">Inactive</label>
+                                                <label class="badge badge-success">Đang hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listRank.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Rank is entity
+                                                Danh sách rank đang hoạt động trống
                                             </td>
                                         </tr>
                                         </tbody>
@@ -110,35 +107,37 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List Rank Inactive</h4>
+                            <h4 class="card-title">Danh sách rank ngừng hoạt động</h4>
                             <div class="table-responsive">
                                 <div class="header">
                                     <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 109px">CodeRank</th>
-                                            <th style="width: 117px">NameRank</th>
-                                            <th style="width: 100px">MinimumScore</th>
-                                            <th style="width: 100px">MaximumScore</th>
-                                            <th style="width: 100px">UserCreate</th>
-                                            <th style="width: 100px">UserUpdate</th>
-                                            <th style="width: 100px">DateCreate</th>
-                                            <th style="width: 100px">DateUpdate</th>
-                                            <th style="width: 100px">Status</th>
+                                            <th style="width: 109px">Mã Rank</th>
+                                            <th style="width: 117px">Tên Rank</th>
+                                            <th style="width: 100px">Điểm tối thiểu</th>
+                                            <th style="width: 100px">Điểm tối đa</th>
+                                            <th style="width: 100px">Người tạo</th>
+                                            <th style="width: 100px">Người cập nhật</th>
+                                            <th style="width: 100px">Ngày tạo</th>
+                                            <th style="width: 100px">Ngày cập nhật</th>
+                                            <th style="width: 100px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="content" style="height: 377px">
+                                <div class="content" style="height: 452px">
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr th:each="listRankInactive, stat : ${listRankInactive}">
                                             <td style="width: 30px" th:text="${stat.count}"></td>
                                             <td style="width: 109px">
-                                                <button type="button" class="btn btn-outline-info" th:data-id="${listRankInactive.id}"
+                                                <button type="button" class="btn btn-outline-info"
+                                                        th:data-id="${listRankInactive.id}"
                                                         onclick="restoreRank(this)"
-                                                        style="text-decoration: none">[[*{listRankInactive.codeRank}]]</button>
+                                                        style="text-decoration: none">[[*{listRankInactive.codeRank}]]
+                                                </button>
                                             </td>
                                             <td style="width: 117px;word-break: break-all"
                                                 th:text="${listRankInactive.nameRank}"></td>
@@ -155,12 +154,12 @@
                                             <td style="width: 100px"
                                                 th:text="${#temporals.format(listRankInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
                                             <td style="width: 100px" th:if="${listRankInactive.status == 0}">
-                                                <label class="badge badge-danger">Stop Working</label>
+                                                <label class="badge badge-danger">Ngừng hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listRankInactive.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Rank Inactive is entity
+                                                Danh sách rank ngừng hoạt động trống
                                             </td>
                                         </tr>
                                         </tbody>
@@ -180,17 +179,17 @@
                 <div class="modal-body">
                     <form id="formRank" th:action="@{/mangostore/admin/rank/add}" th:object="${addRank}"
                           method="post">
-                        <h3 class="mb-4">Add Rank</h3>
+                        <h3 class="mb-4">Thêm Rank</h3>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Name Rank: </label>
+                                            <label class="form-label">Tên Rank: </label>
                                             <input type="text"
                                                    class="form-control"
                                                    name="nameRank" id="nameRankInput"
-                                                   placeholder="Enter Name Rank">
+                                                   placeholder="Mời nhập tên Rank">
                                         </div>
                                     </div>
                                 </div>
@@ -199,20 +198,20 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="form-label">Minimum Sroce: </label>
+                                            <label class="form-label">Điểm tối thiểu: </label>
                                             <input type="number" id="minimumScore"
                                                    class="form-control"
                                                    name="minimumScore"
-                                                   placeholder="Enter Minimum Score">
+                                                   placeholder="Mời nhập diểm tối thiểu">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="form-label">Maximum Score: </label>
+                                            <label class="form-label">Điểm tối đa: </label>
                                             <input type="number" id="maximumScore"
                                                    class="form-control"
                                                    name="maximumScore"
-                                                   placeholder="Enter Maximum Score">
+                                                   placeholder="Mời nhập điểm tối đa">
                                         </div>
                                     </div>
                                 </div>
@@ -220,10 +219,10 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close
+                                            data-dismiss="modal">Đóng lại
                                     </button>
                                     <input type="button"
-                                           value="Save"
+                                           value="Lưu lại"
                                            onclick="addRankForm()"
                                            class="btn btn-primary">
                                 </div>

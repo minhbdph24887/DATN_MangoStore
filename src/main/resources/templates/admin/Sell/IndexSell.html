@@ -5,17 +5,17 @@
 <main class="indexSell">
     <div>
         <ul class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Index Sell</li>
+            <li class="breadcrumb-item active" aria-current="page">Trang chủ bán hàng</li>
         </ul>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h3>Sales At The Counter</h3>
+                    <h3>Bán Hàng Tại Quầy</h3>
                     <a type="button" id="createOrderButton" class="btn btn-success"
-                       style="width: 126px;">Create Order *</a>
-                    <span style="font-size: 15px; line-height: 1.5; padding: 5px 10px; color: red">* You only create a maximum of 5 invoices</span>
+                       style="width: 126px;">Tạo hóa đơn *</a>
+                    <span style="font-size: 15px; line-height: 1.5; padding: 5px 10px; color: red">* Bạn chỉ tạo tối đa 5 hóa đơn</span>
                     <br>
                     <th:block th:each="listInvoiceByAccount : ${listInvoiceByAccount}">
                         <a type="button" class="btn btn-outline-secondary"

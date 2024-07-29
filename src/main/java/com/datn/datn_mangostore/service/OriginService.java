@@ -27,6 +27,8 @@ public interface OriginService {
     String restoreOrigin(Long idOrigin);
 
 
-    Integer findByOriginCreateExit(String name );
-    Integer findByOriginUpdateExit( String codeOrigin ,String name);
+    Integer findByOriginCreateExit(String name);
+
+    Integer findByOriginUpdateExit(String codeOrigin,
+                                   String name);
 }

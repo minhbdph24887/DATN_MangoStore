@@ -19,12 +19,12 @@ public class VoucherRestController {
     }
 
     @PostMapping(value = "check-add")
-    public ResponseEntity<String> checkAddVoucher(@RequestBody VoucherRequest request){
+    public ResponseEntity<String> checkAddVoucher(@RequestBody VoucherRequest request) {
         return voucherService.checkAddVoucher(request);
     }
 
     @PostMapping(value = "check-update")
-    public ResponseEntity<String> checkUpdateVoucher(@RequestBody VoucherRequest request){
+    public ResponseEntity<String> checkUpdateVoucher(@RequestBody VoucherRequest request) {
         return voucherService.checkUpdateVoucher(request);
     }
 

@@ -10,7 +10,6 @@ import com.datn.datn_mangostore.request.VariantRequest;
 import com.datn.datn_mangostore.service.ProductDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,33 +27,16 @@ import java.util.*;
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
-
     private final Gender gender;
-
-
     private final MaterialRepository materialRepository;
-
-
     private final SizeRepository sizeRepository;
-
-
     private final ColorRepository colorRepository;
-
-
     private final OriginRepository originRepository;
-
-
     private final CategoryRepository categoryRepository;
-
-
     private final ProductRepository productRepository;
-
     private final ProductDetailRepository productDetailRepository;
 
-
     public ProductDetailServiceImpl(AccountRepository accountRepository,
-                                    RoleRepository roleRepository,
                                     Gender gender,
                                     MaterialRepository materialRepository,
                                     SizeRepository sizeRepository,
@@ -64,7 +46,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                                     ProductRepository productRepository,
                                     ProductDetailRepository productDetailRepository) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.gender = gender;
         this.materialRepository = materialRepository;
         this.sizeRepository = sizeRepository;
@@ -75,15 +56,21 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         this.productDetailRepository = productDetailRepository;
     }
 
-
-    public Page<ProductDetail> searchAndFilter(String keyword, String materialId, String sizeId, String colorId, String originId, String categoryId, String sortBy, Pageable pageable) {
+    public Page<ProductDetail> searchAndFilter(String keyword,
+                                               String materialId,
+                                               String sizeId,
+                                               String colorId,
+                                               String originId,
+                                               String categoryId,
+                                               String sortBy,
+                                               Pageable pageable) {
         Specification<ProductDetail> spec = Specification.where(ProductDetailSpecifications.hasKeyword(keyword))
                 .and(ProductDetailSpecifications.hasMaterialId(materialId))
                 .and(ProductDetailSpecifications.hasSizeId(sizeId))
                 .and(ProductDetailSpecifications.hasColorId(colorId))
                 .and(ProductDetailSpecifications.hasOriginId(originId))
                 .and(ProductDetailSpecifications.hasCategoryId(categoryId))
-                .and(ProductDetailSpecifications.isActive()); // Áp dụng Specification cho status = 1 nếu cần
+                .and(ProductDetailSpecifications.isActive());
 
         if (sortBy != null && !sortBy.isEmpty()) {
             switch (sortBy) {
@@ -103,133 +90,89 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
 
     @Override
-    public String indexProductDetail(Model model, HttpSession session, String keyword, String materialId, String sizeId, String colorId, String originId, String categoryId, String sortBy, Pageable pageable) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+    public String indexProductDetail(Model model,
+                                     HttpSession session,
+                                     String keyword,
+                                     String materialId,
+                                     String sizeId,
+                                     String colorId,
+                                     String originId,
+                                     String categoryId,
+                                     String sortBy,
+                                     Pageable pageable) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
+            model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
+            Page<ProductDetail> productDetailsPage = searchAndFilter(keyword, materialId, sizeId, colorId, originId, categoryId, sortBy, pageable);
+            List<ProductDetail> itemsProductDetail = productDetailsPage.getContent();
 
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
+            model.addAttribute("listProductDetail", itemsProductDetail);
+            model.addAttribute("keyword", keyword);
 
+            model.addAttribute("currentPage", pageable.getPageNumber());
 
-                List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
-                model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
+            List<Material> materials = materialRepository.findAll();
+            List<Size> sizes = sizeRepository.findAll();
+            List<Color> colors = colorRepository.findAll();
+            List<Origin> origins = originRepository.findAll();
+            List<Category> categories = categoryRepository.findAll();
 
-                Page<ProductDetail> productDetailsPage = searchAndFilter(keyword, materialId, sizeId, colorId, originId, categoryId, sortBy, pageable);
-                List<ProductDetail> itemsProductDetail = productDetailsPage.getContent();
+            model.addAttribute("materials", materials);
+            model.addAttribute("sizes", sizes);
+            model.addAttribute("colors", colors);
+            model.addAttribute("origins", origins);
+            model.addAttribute("categories", categories);
 
-                model.addAttribute("listProductDetail", itemsProductDetail);
-                model.addAttribute("keyword", keyword);
+            model.addAttribute("currentPage", productDetailsPage.getNumber());
+            model.addAttribute("totalPages", productDetailsPage.getTotalPages());
+            model.addAttribute("totalItems", productDetailsPage.getTotalElements());
 
-
-                model.addAttribute("currentPage", pageable.getPageNumber());
-
-                List<Material> materials = materialRepository.findAll();
-                List<Size> sizes = sizeRepository.findAll();
-                List<Color> colors = colorRepository.findAll();
-                List<Origin> origins = originRepository.findAll();
-                List<Category> categories = categoryRepository.findAll();
-
-                model.addAttribute("materials", materials);
-                model.addAttribute("sizes", sizes);
-                model.addAttribute("colors", colors);
-                model.addAttribute("origins", origins);
-                model.addAttribute("categories", categories);
-
-                model.addAttribute("currentPage", productDetailsPage.getNumber());
-                model.addAttribute("totalPages", productDetailsPage.getTotalPages());
-                model.addAttribute("totalItems", productDetailsPage.getTotalElements());
-
-                return "admin/ProductDetail/IndexProductDetail";
-            }
+            return "admin/ProductDetail/IndexProductDetail";
         }
     }
 
 
     @Override
-    public String viewCreateProductDetail(Model model, HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+    public String viewCreateProductDetail(Model model,
+                                          HttpSession session) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            List<Product> itemsProduct = productRepository.getAllProductByStatus1();
+            model.addAttribute("listProduct", itemsProduct);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
+            List<Size> itemsSize = sizeRepository.getAllSizeByStatus1();
+            model.addAttribute("listSize", itemsSize);
 
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
+            List<Color> itemsColor = colorRepository.getAllColorByStatus1();
+            model.addAttribute("listColor", itemsColor);
 
-                List<Product> itemsProduct = productRepository.getAllProductByStatus1();
-                model.addAttribute("listProduct", itemsProduct);
+            List<Material> itemsMaterial = materialRepository.getAllMaterialByStatus1();
+            model.addAttribute("listMaterial", itemsMaterial);
 
-                List<Size> itemsSize = sizeRepository.getAllSizeByStatus1();
-                model.addAttribute("listSize", itemsSize);
+            List<Origin> itemsOrigin = originRepository.getAllOriginByStatus1();
+            model.addAttribute("listOrigin", itemsOrigin);
 
-                List<Color> itemsColor = colorRepository.getAllColorByStatus1();
-                model.addAttribute("listColor", itemsColor);
+            List<Category> itemsCategory = categoryRepository.getAllCategoryByStatus1();
+            model.addAttribute("listCategory", itemsCategory);
 
-                List<Material> itemsMaterial = materialRepository.getAllMaterialByStatus1();
-                model.addAttribute("listMaterial", itemsMaterial);
+            List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
+            model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
 
-                List<Origin> itemsOrigin = originRepository.getAllOriginByStatus1();
-                model.addAttribute("listOrigin", itemsOrigin);
-
-                List<Category> itemsCategory = categoryRepository.getAllCategoryByStatus1();
-                model.addAttribute("listCategory", itemsCategory);
-
-                List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
-                model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
-
-                model.addAttribute("productDetailForm", new ProductDetailRequest());
-                return "admin/ProductDetail/CreateProductDetail";
-            }
+            model.addAttribute("productDetailForm", new ProductDetailRequest());
+            return "admin/ProductDetail/CreateProductDetail";
         }
     }
 
     @Override
-    public Map<String, List<String>> saveProductDetailAPI(CreateProductRequest request, HttpSession session, HttpServletResponse response) throws IOException {
+    public Map<String, List<String>> saveProductDetailAPI(CreateProductRequest request,
+                                                          HttpSession session,
+                                                          HttpServletResponse response) throws IOException {
         String email = (String) session.getAttribute("loginEmail");
         List<String> addedProductDetails = new ArrayList<>();
         Map<String, List<String>> result = new HashMap<>();
@@ -276,7 +219,12 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return result;
     }
 
-    private ProductDetail productDetailExists(Long productId, Long materialId, Long sizeId, Long colorId, Long originId, Long categoryId) {
+    private ProductDetail productDetailExists(Long productId,
+                                              Long materialId,
+                                              Long sizeId,
+                                              Long colorId,
+                                              Long originId,
+                                              Long categoryId) {
         return productDetailRepository.findExistingProductDetail(productId, materialId, sizeId, colorId, originId, categoryId);
     }
 
@@ -334,46 +282,18 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public String editProductDetail(Long idProductDetail,
                                     Model model,
                                     HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
+            model.addAttribute("editProductDetail", productDetail);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
-                model.addAttribute("editProductDetail", productDetail);
-
-                List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
-                model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
-                return "admin/ProductDetail/EditProductDetail";
-            }
+            List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
+            model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
+            return "admin/ProductDetail/EditProductDetail";
         }
     }
-
 
     @Override
     public String updateProductDetail(ProductDetail editProductDetail,

@@ -5,33 +5,33 @@
 <main>
     <div class="row align-items-center">
         <div class="header-text mb-4">
-            <h2>Sign Up</h2>
-            <p>Please set sign up account to use the website.</p>
+            <h2>Đăng ký</h2>
+            <p>Vui lòng đăng ký tài khoản để sử dụng website.</p>
         </div>
         <form th:action="@{/mangostore/login/signup/success}" method="post">
             <div class="input-group mb-3">
                 <input type="text" class="form-control form-control-lg bg-light fs-6" name="fullName"
-                       placeholder="Enter Full Name">
+                       placeholder="Mời nhập họ tên">
             </div>
             <div class="input-group mb-3">
                 <input type="text" class="form-control form-control-lg bg-light fs-6" name="email"
-                       placeholder="Email address">
+                       placeholder="Nhập Email">
             </div>
             <div class="input-group mb-3">
                 <input type="password" class="form-control form-control-lg bg-light fs-6" name="passwordRefresh"
-                       placeholder="Password">
+                       placeholder="Nhật mật khẩu">
             </div>
             <div class="input-group mb-3">
                 <input type="password" class="form-control form-control-lg bg-light fs-6" name="passwordRefreshRE"
-                       placeholder="RE - Password">
+                       placeholder="Nhập lại mật khẩu">
             </div>
             <div class="input-group mb-3">
-                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Sign Up</button>
+                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Đăng ký</button>
             </div>
         </form>
         <div class="row">
-            <small>Have an account? <a th:href="@{/mangostore/login/from}"
-                                       style="text-decoration: none">Log In</a></small>
+            <small>Bạn đã có tài khoản ? <a th:href="@{/mangostore/login/from}"
+                                       style="text-decoration: none">Đăng nhập</a></small>
         </div>
     </div>
 </main>

@@ -5,6 +5,7 @@ public class DataRequest {
     private String idDelete;
     private String numberPhone;
     private String email;
+    private String statusAccount;
 
     public String getIdUpdate() {
         return idUpdate;
@@ -13,6 +14,7 @@ public class DataRequest {
     public void setIdUpdate(String idUpdate) {
         this.idUpdate = idUpdate;
     }
+
     public String getNumberPhone() {
         return numberPhone;
     }
@@ -35,5 +37,13 @@ public class DataRequest {
 
     public void setIdDelete(String idDelete) {
         this.idDelete = idDelete;
+    }
+
+    public String getStatusAccount() {
+        return statusAccount;
+    }
+
+    public void setStatusAccount(String statusAccount) {
+        this.statusAccount = statusAccount;
     }
 }

@@ -80,6 +80,6 @@ if (cancelPurchasePage) {
     function cancelInvoice() {
         const idInvoice = document.getElementById('id-invoice').textContent;
         const url = 'http://localhost:8080/mangostore/purchase/remove?id=' + idInvoice;
-        confirmAlertLink('You Want To Cancel Your Invoice?', 'Cancel Successfully', url);
+        confirmAlertLink(event, 'Bạn muốn hủy hóa đơn này ?', 'Hủy thành công', url);
     }
 }

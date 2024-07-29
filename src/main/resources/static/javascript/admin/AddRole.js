@@ -7,16 +7,15 @@ if (addRolesPage) {
 
         const uppercaseRegex = /^[A-Z]+$/;
         if (CodeRoleInput === '') {
-            dangerAlert('Please Enter Code Role');
+            dangerAlert('Mã quyền không được để trống');
             return false;
         } else if (uppercaseRegex.test(CodeRoleInput) === false) {
-            dangerAlert('Please nhập chữ in hoa');
+            dangerAlert('Mã quyền phải là chữ in hoa');
             return false;
         } else if (nameInput === '') {
-            dangerAlert('Please Enter Name Role');
+            dangerAlert('Tên quyền không được để trống');
             return false;
         } else {
-            // formRoles.submit();
             const data = {
                 codeRole: CodeRoleInput,
             }
@@ -32,7 +31,7 @@ if (addRolesPage) {
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Code Role is already in used');
+                        dangerAlert('Mã quyền đã tồn tại');
                     }
                 }
             });

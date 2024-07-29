@@ -5,7 +5,6 @@ import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ProductDetailSpecifications {
-
     public static Specification<ProductDetail> hasKeyword(String keyword) {
         return (root, query, builder) -> {
             if (keyword == null || keyword.isEmpty()) {
@@ -87,7 +86,6 @@ public class ProductDetailSpecifications {
                 case "desc":
                     query.orderBy(builder.desc(productJoin.get("price")));
                     break;
-                // Các trường hợp sắp xếp khác có thể được xử lý tương tự ở đây
                 default:
                     break;
             }

@@ -26,12 +26,14 @@ public class ProductDetailClientRestController {
     }
 
     @PostMapping(value = "add-to-cart/client")
-    public boolean addToCart(@RequestBody AddToCartRequest request, HttpSession session) {
+    public ResponseEntity<String> addToCart(@RequestBody AddToCartRequest request,
+                                            HttpSession session) {
         return productClientService.addToCart(request, session);
     }
 
     @PostMapping(value = "add-to-favourite/client")
-    public boolean addToFavourite(@RequestBody AddToFavouriteRequest request, HttpSession session) {
+    public boolean addToFavourite(@RequestBody AddToFavouriteRequest request,
+                                  HttpSession session) {
         return productClientService.addToFavourite(request, session);
     }
 }

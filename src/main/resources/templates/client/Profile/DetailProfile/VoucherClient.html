@@ -8,8 +8,8 @@
             <div class="row">
                 <div class="col-md-3" th:replace="~{/client/Profile/IndexProfile :: detailView}"></div>
                 <div class="col-md-9">
-                    <h4>My Voucher</h4>
-                    <p>Vouchers exclusively for customers</p>
+                    <h4>Voucher của tôi</h4>
+                    <p>Voucher dành riêng cho khách hàng</p>
                     <div class="row" style="max-height: 570px; overflow-y: scroll;">
                         <th:block th:unless="${listVoucherClient.empty}">
                             <th:block th:each="listVoucherClient, stat : ${listVoucherClient}">
@@ -28,7 +28,7 @@
                                                     <h5 class="card-title"
                                                         th:text="${listVoucherClient.nameVoucher}"
                                                         style="width: 262px;"></h5>
-                                                    <p th:text="${'Decrease to: ' + #numbers.formatDecimal(listVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                                                    <p th:text="${'Giảm xuống: ' + #numbers.formatDecimal(listVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                        style="white-space: nowrap;"></p>
                                                     <p class="card-text">
                                                         <small class="text-muted"
@@ -45,7 +45,7 @@
                         </th:block>
                         <th:block th:if="${listVoucherClient.empty}">
                             <div class="col-md-12">
-                                <h5>There are no vouchers available</h5>
+                                <h5>Không có voucher nào có sẵn</h5>
                             </div>
                         </th:block>
                     </div>

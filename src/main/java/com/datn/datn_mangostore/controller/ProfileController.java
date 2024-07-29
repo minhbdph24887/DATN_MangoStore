@@ -1,16 +1,13 @@
 package com.datn.datn_mangostore.controller;
 
 import com.datn.datn_mangostore.bean.Account;
-import com.datn.datn_mangostore.bean.AddressClient;
 import com.datn.datn_mangostore.bean.Authentication;
 import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.service.AuthenticationService;
 import com.datn.datn_mangostore.service.ProfileService;
 import com.datn.datn_mangostore.service.RoleService;
-import com.datn.datn_mangostore.service.impl.ClientServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,15 +23,12 @@ public class ProfileController {
     private final RoleService roleService;
     private final AuthenticationService authenticationService;
 
-    private final ClientServiceImpl clientService;
-
     public ProfileController(ProfileService profileService,
                              RoleService roleService,
-                             AuthenticationService authenticationService, ClientServiceImpl clientService) {
+                             AuthenticationService authenticationService) {
         this.profileService = profileService;
         this.roleService = roleService;
         this.authenticationService = authenticationService;
-        this.clientService = clientService;
     }
 
     @GetMapping(value = "list-staff")
@@ -55,13 +49,9 @@ public class ProfileController {
     }
 
     @GetMapping(value = "list-client/restore/{id}")
-    public String restorClient(@PathVariable("id") Long idAccount) {
-        return profileService.restorClient(idAccount);
+    public String restoreClient(@PathVariable("id") Long idAccount) {
+        return profileService.restoreClient(idAccount);
     }
-//    @GetMapping(value = "list-role/restore/{id}")
-//    public String restoreRole(@PathVariable("id") Long idRole) {
-//        return profileService.restoreRole(idAccount);
-//    }
 
     @GetMapping(value = "list-staff/detail/{id}")
     public String detailStaff(Model model,
@@ -84,8 +74,6 @@ public class ProfileController {
     }
 
 
-
-
     @PostMapping(value = "list-staff/update")
     public String updateStaff(@Valid Account account,
                               @RequestParam("newPassword") String newPassword,
@@ -101,14 +89,15 @@ public class ProfileController {
         }
 
     }
+
     @PostMapping(value = "list-client/update")
     public String updateClient(@Valid Account account,
-                              @RequestParam("newPassword") String newPassword,
-                              @RequestParam("rePassword") String rePassword,
-                              @RequestParam("imageFile") MultipartFile imageFile,
-                              @RequestParam("id") Long idAccount,
-                              BindingResult result,
-                              HttpSession session) {
+                               @RequestParam("newPassword") String newPassword,
+                               @RequestParam("rePassword") String rePassword,
+                               @RequestParam("imageFile") MultipartFile imageFile,
+                               @RequestParam("id") Long idAccount,
+                               BindingResult result,
+                               HttpSession session) {
         if (!Objects.equals(newPassword, rePassword)) {
             return "redirect:/mangostore/admin/list-client/detail/" + idAccount;
         } else {
@@ -122,6 +111,7 @@ public class ProfileController {
     public String deleteStaff(@PathVariable("id") Long idAccount) {
         return profileService.deleteStaff(idAccount);
     }
+
     @GetMapping(value = "list-client/delete/{id}")
     public String deleteClient(@PathVariable("id") Long idAccount) {
         return profileService.deleteClient(idAccount);

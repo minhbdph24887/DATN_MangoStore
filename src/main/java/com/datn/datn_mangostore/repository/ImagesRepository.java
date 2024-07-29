@@ -17,7 +17,6 @@ public interface ImagesRepository extends JpaRepository<Images, Long> {
 
     @Query("SELECT i FROM Images i WHERE i.saveToProduct = :productId")
     List<Images> findByProductId(@Param("productId") Long productId);
-//Vinh
 
     @Query("SELECT i.imagesFile FROM Images i")
     List<String> findAllImagesFiles();

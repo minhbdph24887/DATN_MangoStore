@@ -8,15 +8,15 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                 <div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher}">Index Voucher</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail Voucher</li>
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher}">Trang chủ Voucher</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Voucher</li>
                     </ul>
                 </div>
                 <div class="col-lg-12 grid-margin stretch-card container">
                     <div class="card">
                         <div class="card-body container" th:object="${detailVoucher}">
                             <h4 class="font-weight-bold py-3 mb-4">
-                                Update Voucher
+                                Cập nhật Voucher
                             </h4>
                             <form id="formVoucher" th:action="@{|/mangostore/admin/voucher/update/${detailVoucher.id}|}"
                                   method="post">
@@ -24,7 +24,7 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">CodeVoucher</label>
+                                            <label class="form-label">Mã Voucher</label>
                                             <input type="text"
                                                    class="form-control"
                                                    name="codeVoucher" th:field="*{codeVoucher}" readonly/>
@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="col-md-7">
                                         <div class="form-group">
-                                            <label class="form-label">NameVoucher</label>
+                                            <label class="form-label">Tên Voucher</label>
                                             <input type="text" id="nameVoucherInput"
                                                    class="form-control"
                                                    name="nameVoucher" th:field="*{nameVoucher}"/>
@@ -40,18 +40,18 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label class="form-label">Status</label>
+                                            <label class="form-label">Trạng thái</label>
                                             <th:block th:if="${detailVoucher.voucherStatus == 1}">
-                                                <label class="badge badge-success form-control">InProgress</label>
+                                                <label class="badge badge-success form-control">Đang diễn ra</label>
                                             </th:block>
                                             <th:block th:if="${detailVoucher.voucherStatus == 2}">
-                                                <label class="badge badge-info form-control">ComingSoon</label>
+                                                <label class="badge badge-info form-control">Sắp ra mắt</label>
                                             </th:block>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">Quantity</label>
+                                            <label class="form-label">Số lượng</label>
                                             <input type="number" id="quantityVoucherInput"
                                                    class="form-control" name="quantityInput"
                                                    th:field="*{quantity}"/>
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">Minimum Order</label>
+                                            <label class="form-label">Đơn hàng tối thiểu: </label>
                                             <div class="d-flex">
                                                 <input type="text" th:value="${detailVoucher.minimumPrice}"
                                                        id="minimumOrderInput"
@@ -67,7 +67,7 @@
                                                        oninput="onInputMinimumOrder(this.value)"
                                                        name="minimumOrderInput"
                                                        th:text="${miniumVoucher}"
-                                                       placeholder="Enter Minimum Order">
+                                                       placeholder="Vui lòng nhâp đơn hàng tối thiểu">
                                                 <span style="margin-left: 0.5rem">VND</span>
                                                 <input type="hidden" th:field="*{minimumPrice}" name="minimumPrice"
                                                        id="minimumOrderValue">
@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">ReducedValue</label>
+                                            <label class="form-label">Giá trị giảm: </label>
                                             <div class="d-flex">
                                                 <input type="text"
                                                        id="reducedVoucherInput"
@@ -85,7 +85,7 @@
                                                        class="form-control"
                                                        th:text="${reduceVoucher}"
                                                        oninput="onInputReducedVoucher(this.value)"
-                                                       placeholder="Enter ReducedValue Voucher">
+                                                       placeholder="Vui lòng nhập giá trị giảm">
                                                 <span style="margin-left: 0.5rem">VND</span>
                                                 <input type="hidden" name="reducedValue" th:field="*{reducedValue}"
                                                        id="reducedVoucherValue">
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">VoucherFrom</label>
+                                            <label class="form-label">Hình thức voucher</label>
                                             <select name="voucherFrom" class="form-select">
                                                 <option value="offline" th:text="offline"
                                                         th:selected="${detailVoucher.voucherFrom == 'offline'}"></option>
@@ -107,7 +107,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">Rank level to use vouchers</label>
+                                            <label class="form-label">Cấp bậc để sử dụng voucher</label>
                                             <th:block th:if="${detailVoucher.rank.status == 1}">
                                                 <select name="rank" class="form-select">
                                                     <option th:each="listRank : ${listRank}" th:value="${listRank.id}"
@@ -119,13 +119,13 @@
                                                 <input type="text" class="form-control"
                                                        th:value="${detailVoucher.rank.id}" readonly/>
                                                 <input type="hidden" name="rank" th:field="*{rank}"/>
-                                                <span>Currently, the rank level does not exist</span>
+                                                <span>Hiện tại, cấp bậc không tồn tại</span>
                                             </th:block>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">StartDay</label>
+                                            <label class="form-label">Ngày bắt đầu</label>
                                             <input type="date"
                                                    class="form-control" id="startDay"
                                                    name="startDay" th:field="*{startDay}"/>
@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">EndDate</label>
+                                            <label class="form-label">Ngày kết thúc</label>
                                             <input type="date" id="endDate"
                                                    class="form-control"
                                                    name="endDate" th:field="*{endDate}"/>
@@ -141,7 +141,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">UserCreate</label>
+                                            <label class="form-label">Người tạo</label>
                                             <input type="text"
                                                    class="form-control"
                                                    name="userCreate" th:field="*{userCreate}" readonly/>
@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">UserUpdate</label>
+                                            <label class="form-label">Người cập nhật</label>
                                             <input type="text"
                                                    class="form-control"
                                                    name="userUpdate" th:field="*{userUpdate}" readonly/>
@@ -157,7 +157,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">DateCreate</label>
+                                            <label class="form-label">Ngày tạo</label>
                                             <input type="text"
                                                    class="form-control"
                                                    name="dateCreate" th:field="*{dateCreate}" readonly/>
@@ -165,25 +165,22 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">DateUpdate</label>
+                                            <label class="form-label">Ngày cập nhật</label>
                                             <input type="text"
                                                    class="form-control"
                                                    name="dateUpdate" th:field="*{dateUpdate}" readonly/>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                    </div>
-                                    <div class="col-md-9">
-                                    </div>
                                 </div>
                                 <div class="text-right mt-3">
                                     <input type="button"
-                                           value="Save"
+                                           value="Lưu lại"
                                            onclick="updateVoucherForm()"
                                            class="btn btn-primary">
                                     <div class="submitting"></div>
                                     <a th:href="@{/mangostore/admin/voucher/delete/{id}(id=${detailVoucher.id})}">
-                                        <button type="button" class="btn btn-danger" onclick="removeVoucher()">Delete</button>
+                                        <button type="button" class="btn btn-danger" onclick="removeVoucher()">Xóa
+                                        </button>
                                     </a>
                                 </div>
                             </form>

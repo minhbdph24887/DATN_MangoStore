@@ -21,8 +21,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query(value = "select * from category where name_category = :nameCategory", nativeQuery = true)
     Category findByNameExit(@Param("nameCategory") String nameCategory);
-
-    @Query(value = "select * from category where code_category = :codeCategory", nativeQuery = true)
-    Category findByCodeExit(@Param("codeCategory") String codeCategory);
-
 }

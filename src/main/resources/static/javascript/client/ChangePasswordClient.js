@@ -9,7 +9,7 @@ if (showPassWord) {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             confirmPasswordInput.setAttribute('type', type);
-            togglePasswordButton.textContent = type === 'password' ? 'Show Password' : 'Hide Password';
+                togglePasswordButton.textContent = type === 'password' ? 'Hiện Pass' : 'Ẩn Pass';
         }
 
         togglePasswordButton.addEventListener('click', togglePassword);
@@ -57,6 +57,6 @@ const updateChangePassword = document.querySelector(".updateChangePasswordPage")
 if (updateChangePassword) {
     function UpdateChangePassword() {
         const formChangePassword = document.getElementById('formChangePassword');
-        confirmAlertForm("Do you want to update change password ?", "Update Successful", formChangePassword);
+        confirmAlertForm("Bạn có muốn cập nhật mật khẩu ?", "Cập nhật thành công", formChangePassword);
     }
 }

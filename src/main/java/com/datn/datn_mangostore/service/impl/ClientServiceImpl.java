@@ -2,16 +2,14 @@ package com.datn.datn_mangostore.service.impl;
 
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Invoice;
-import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.bean.VoucherClient;
+import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.InvoiceRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
 import com.datn.datn_mangostore.repository.VoucherClientRepository;
 import com.datn.datn_mangostore.request.ProfileRequest;
 import com.datn.datn_mangostore.service.ClientService;
 import jakarta.servlet.http.HttpSession;
-import liquibase.pro.packaged.C;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -26,53 +24,40 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
     private final VoucherClientRepository voucherClientRepository;
     private final InvoiceRepository invoiceRepository;
+    private final Gender gender;
 
     public ClientServiceImpl(AccountRepository accountRepository,
-                             RoleRepository roleRepository,
                              PasswordEncoder encoder,
                              VoucherClientRepository voucherClientRepository,
-                             InvoiceRepository invoiceRepository) {
+                             InvoiceRepository invoiceRepository,
+                             Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.voucherClientRepository = voucherClientRepository;
         this.invoiceRepository = invoiceRepository;
+        this.gender = gender;
     }
 
     @Override
     public String indexClient(Model model,
                               HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email != null) {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
-        }
+        Account detailAccount = gender.checkMenuClient(model, session);
+        assert detailAccount != null;
         return "client/Home";
     }
 
     @Override
     public String indexProfile(Model model,
                                HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
+            return "client/Profile/DetailProfile/ProfileClient";
         }
-        return "client/Profile/DetailProfile/ProfileClient";
     }
 
     @Override
@@ -129,18 +114,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public String changePassword(Model model,
                                  HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
+            return "client/Profile/DetailProfile/ChangePassword";
         }
-        return "client/Profile/DetailProfile/ChangePassword";
     }
 
     @Override
@@ -162,21 +141,14 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public String indexVoucherClient(Model model,
                                      HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
-
             List<VoucherClient> itemsVoucherClient = voucherClientRepository.findAllVoucherForClient(detailAccount.getRank().getId(), detailAccount.getId());
             model.addAttribute("listVoucherClient", itemsVoucherClient);
+            return "client/Profile/DetailProfile/VoucherClient";
         }
-        return "client/Profile/DetailProfile/VoucherClient";
     }
 
     @Override
@@ -185,17 +157,10 @@ public class ClientServiceImpl implements ClientService {
                                     String status,
                                     Integer pageNo,
                                     Integer pageSize) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuClient(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            model.addAttribute("profile", detailAccount);
-            Role detailRoleByEmail = roleRepository.getRoleByEmail(email);
-            if (detailRoleByEmail.getName().equals("ADMIN") || detailRoleByEmail.getName().equals("STAFF")) {
-                model.addAttribute("checkAuthentication", detailRoleByEmail);
-            }
-
             Page<Invoice> itemsAllInvoiceOnline;
             PageRequest pageRequest = PageRequest.of(pageNo - 1, pageSize);
             itemsAllInvoiceOnline = switch (status) {
@@ -215,8 +180,8 @@ public class ClientServiceImpl implements ClientService {
 
             int startCount = (pageNo - 1) * pageSize;
             model.addAttribute("startCount", startCount);
+            return "client/Profile/detailProfile/IndexPurchase";
         }
-        return "client/Profile/detailProfile/IndexPurchase";
     }
 
     @Override

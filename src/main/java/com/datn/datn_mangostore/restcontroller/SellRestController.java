@@ -36,10 +36,14 @@ public class SellRestController {
         return sellService.addNewClientAPI(request);
     }
 
-    @PostMapping(value = "sell/add-voucher")
-    public ResponseEntity<String> addVoucherForSellAPI(@RequestBody IdVoucherSellRequest request,
-                                                       HttpSession session) {
-        return sellService.addVoucherForSellAPI(request, session);
+    @PostMapping(value = "sell/add-voucher-list")
+    public ResponseEntity<String> addVoucherListForSellAPI(@RequestBody VoucherSellRequest request) {
+        return sellService.addVoucherListForSellAPI(request);
+    }
+
+    @PostMapping(value = "sell/add-voucher-code")
+    public ResponseEntity<String> addVoucherCodeForSellAPI(@RequestBody VoucherSellRequest request) {
+        return sellService.addVoucherCodeForSellAPI(request);
     }
 
     @PostMapping(value = "sell/add-product")

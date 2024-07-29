@@ -9,12 +9,12 @@ if (checkAddVoucherPage) {
                 const id = checkInputVoucherList.value;
                 updateMinimumPrice(id);
             } else {
-                dangerAlert('Please Choose The Voucher');
+                dangerAlert('Vui lòng chọn Voucher');
             }
         } else {
             const voucherPattern = /^[A-Z0-9]{10}$/;
             if (!voucherPattern.test(codeVoucher)) {
-                dangerAlert('Voucher Code Is Not Valid');
+                dangerAlert('Mã Voucher không hợp lệ');
             } else {
                 const data = {
                     codeVoucher: codeVoucher,
@@ -31,13 +31,13 @@ if (checkAddVoucherPage) {
                     },
                     error: function (e) {
                         if (e.responseText === "1") {
-                            dangerAlert('Voucher does not exist');
+                            dangerAlert('Voucher không tồn tại');
                         } else if (e.responseText === "2") {
-                            dangerAlert('This voucher cannot be used with this receipt');
+                            dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
                         } else if (e.responseText === '3') {
-                            dangerAlert('This voucher has been used');
+                            dangerAlert('Voucher đã được sử dụng rồi');
                         } else {
-                            errorAlert('An error occurred.');
+                            errorAlert('Lỗi.');
                         }
                         console.clear();
                     }
@@ -47,10 +47,8 @@ if (checkAddVoucherPage) {
 
         function updateMinimumPrice(id) {
             const minimumPrice = parseFloat(document.getElementById('minimumPrice' + id).value.replace(/,/g, ''));
-            console.log('total:', totalPayment);
-            console.log('min:', minimumPrice);
             if (totalPayment < minimumPrice) {
-                dangerAlert('This voucher Cannot Be Used With This Receipt');
+                dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
             } else {
                 const addVoucherClient = document.getElementById('addVoucherClient');
                 addVoucherClient.submit();

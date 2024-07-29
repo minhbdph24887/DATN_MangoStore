@@ -4,8 +4,13 @@ if (addVoucherPage) {
         const codeVoucher = document.getElementById('codeVoucherInput').value;
         const nameVoucher = document.getElementById('nameVoucherInput').value;
         const quantityVoucher = document.getElementById('quantityVoucherInput').value;
+        const minimumOrderValue = document.getElementById('minimumOrderValue').value;
+        const reducedVoucherValue = document.getElementById('reducedVoucherValue').value;
         const startDay = new Date(document.getElementById('startDay').value);
         const endDate = new Date(document.getElementById('endDate').value);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
         let startDayVoucher = new Date(startDay);
         let endDateVoucher = new Date(endDate);
@@ -20,13 +25,19 @@ if (addVoucherPage) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
             dangerAlert('Số lượng không thể nhỏ hơn 0');
+        } else if (minimumOrderValue === '') {
+            dangerAlert('Giá tối thiểu đơn hàng không đươc để trống');
+        } else if (reducedVoucherValue === '') {
+            dangerAlert('Giá trị giảm không được để trống');
+        } else if (parseInt(reducedVoucherValue) > parseInt(minimumOrderValue) * 0.4) {
+            dangerAlert('Giá trị giảm không được vượt quá 40% giá trị đơn hàng tối thiểu');
         } else if (!startDay || isNaN(startDayVoucher.getTime())) {
             dangerAlert('Ngày bắt đầu không hợp lệ');
         } else if (!endDate || isNaN(endDateVoucher.getTime())) {
             dangerAlert('Ngày kết thúc không hợp lệ');
-        } else if (endDate <= new Date()) {
+        } else if (endDate < today) {
             dangerAlert('Ngày kết thúc không được trong quá khứ');
-        } else if (endDate <= startDay) {
+        } else if (endDate < startDay) {
             dangerAlert('Ngày kết thúc không thể trước ngày bắt đầu');
         } else {
             const data = {
@@ -64,35 +75,38 @@ if (updateVoucher) {
         const idVoucher = document.getElementById('idVoucher').value;
         const nameVoucher = document.getElementById('nameVoucherInput').value;
         const quantityVoucher = document.getElementById('quantityVoucherInput').value;
+        const minimumOrderValue = document.getElementById('minimumOrderValue').value;
+        const reducedVoucherValue = document.getElementById('reducedVoucherValue').value;
         const startDay = new Date(document.getElementById('startDay').value);
         const endDate = new Date(document.getElementById('endDate').value);
-        const reducedValue = document.getElementById('reducedVoucherInput').value;
-        const minimumInput = document.getElementById('minimumOrderInput').value;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
         let startDayVoucher = new Date(startDay);
         let endDateVoucher = new Date(endDate);
         if (nameVoucher === '') {
             dangerAlert('Không được để trống Tên Voucher');
         } else if (quantityVoucher === '') {
-            dangerAlert('Không được để trống Số Lượng Voucher');
+            dangerAlert('Không được để trống quantityVoucher');
         } else if (isNaN(quantityVoucher)) {
             dangerAlert('Bắt buộc phải là số');
-        } else if (reducedValue === '') {
-            dangerAlert('Không được để trống giá trị giảm Voucher');
-        } else if (isNaN(reducedValue)) {
-            dangerAlert('Reduce Voucher bat buoc phai la so');
-        } else if (minimumInput === '') {
-            dangerAlert('Không được để trống Minimum Voucher');
-        } else if (isNaN(minimumInput)) {
-            dangerAlert('Minimum Voucher bat buoc phai la so');
+        } else if (quantityVoucher <= 0) {
+            dangerAlert('Số lượng không thể nhỏ hơn 0');
+        } else if (minimumOrderValue === '') {
+            dangerAlert('Giá tối thiểu đơn hàng không đươc để trống');
+        } else if (reducedVoucherValue === '') {
+            dangerAlert('Giá trị giảm không được để trống');
+        } else if (parseInt(reducedVoucherValue) > parseInt(minimumOrderValue) * 0.4) {
+            dangerAlert('Giá trị giảm không được vượt quá 40% giá trị đơn hàng tối thiểu');
         } else if (!startDay || isNaN(startDayVoucher.getTime())) {
             dangerAlert('Ngày bắt đầu không hợp lệ');
         } else if (!endDate || isNaN(endDateVoucher.getTime())) {
             dangerAlert('Ngày kết thúc không hợp lệ');
-        } else if (startDay <= new Date() && endDate <= new Date()) {
-            dangerAlert('Ngày bắt đầu và ngày kết thúc không được trong quá khứ');
-        } else if (endDate <= startDay) {
-            dangerAlert('Ngày kết thúc không thể trước ngày bắt đầu !');
+        } else if (endDate < today) {
+            dangerAlert('Ngày kết thúc không được trong quá khứ');
+        } else if (endDate < startDay) {
+            dangerAlert('Ngày kết thúc không thể trước ngày bắt đầu');
         } else {
             const data = {
                 id: idVoucher,
@@ -123,7 +137,7 @@ if (updateVoucher) {
 
 const deleteVoucherPage = document.querySelector('.deleteVoucherPage');
 if (deleteVoucherPage) {
-    function removeVoucher(){
+    function removeVoucher() {
         const idVoucher = document.getElementById('idVoucher').value;
         const url = "http://localhost:8080/mangostore/admin/voucher/delete/" + idVoucher;
         confirmAlertLink(event, "Bạn có muốn xóa hay không ?", "Xóa thành công", url);

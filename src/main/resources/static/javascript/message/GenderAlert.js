@@ -1,6 +1,6 @@
 function dangerAlert(message) {
     return Swal.fire({
-        title: "Warning",
+        title: "Cảnh báo",
         text: message,
         icon: "info"
     });
@@ -8,7 +8,7 @@ function dangerAlert(message) {
 
 function successAlert(message) {
     return Swal.fire({
-        title: "Successfully",
+        title: "Thành công",
         text: message,
         icon: "success"
     });
@@ -16,7 +16,7 @@ function successAlert(message) {
 
 function errorAlert(message) {
     return Swal.fire({
-        title: "Error!",
+        title: "Lỗi !",
         text: message,
         icon: "error"
     });
@@ -24,17 +24,17 @@ function errorAlert(message) {
 
 function confirmAlertForm(message1, message2, idForm) {
     Swal.fire({
-        title: "Are you sure?",
+        title: "Bạn có chắc không ?",
         text: message1,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes"
+        confirmButtonText: "Có"
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
-                title: "Successfully!",
+                title: "Thành công!",
                 text: message2,
                 icon: "success"
             }).then(() => {
@@ -47,17 +47,17 @@ function confirmAlertForm(message1, message2, idForm) {
 function confirmAlertLink(event, message1, message2, url) {
     event.preventDefault();
     Swal.fire({
-        title: "Are you sure?",
+        title: "Bạn có chắc không?",
         text: message1,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes"
+        confirmButtonText: "Có"
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
-                title: "Successfully!",
+                title: "Thành công!",
                 text: message2,
                 icon: "success"
             }).then(() => {

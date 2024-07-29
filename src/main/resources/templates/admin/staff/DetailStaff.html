@@ -10,28 +10,29 @@
     <th:block th:if="${checkDetailAccount == true}">
         <div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/list-staff}">Index Staff</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Detail Staff</li>
+                <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/list-staff}">Trang chủ nhân viên</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
             </ul>
         </div>
     </th:block>
     <div class="container light-style flex-grow-1 container-p-y">
         <h4 class="font-weight-bold py-3 mb-4">
-            Detail Account, [[${detailProfile.getFullName()}]]
+            Cập nhật tài khoản, [[${detailProfile.getFullName()}]]
         </h4>
-        <form id="formUpdate" th:action="@{/mangostore/admin/list-staff/update}" th:object="${detailProfile}" method="post"
+        <form id="formUpdate" th:action="@{/mangostore/admin/list-staff/update}" th:object="${detailProfile}"
+              method="post"
               enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}" th:value="${detailProfile.id}" id="idStaff">
-            <div class="card overflow-hidden">
+            <div class="card overflow-hidden" style="height: 530px;">
                 <div class="row no-gutters row-bordered row-border-light">
                     <div class="col-md-3 pt-0">
                         <div class="list-group list-group-flush account-settings-links">
                             <a class="list-group-item list-group-item-action active" data-toggle="list"
-                               href="#account-general">General</a>
+                               href="#account-general">Thông tin chung</a>
                             <a class="list-group-item list-group-item-action" data-toggle="list"
-                               href="#account-change-password">Change password</a>
+                               href="#account-change-password">Bảo mật</a>
                             <a class="list-group-item list-group-item-action" data-toggle="list"
-                               href="#account-info">Info</a>
+                               href="#account-info">Liên hệ</a>
                         </div>
                     </div>
                     <div class="col-md-9">
@@ -43,30 +44,30 @@
                                          class="d-block ui-w-80">
                                     <div class="media-body ml-4">
                                         <label class="btn btn-outline-primary">
-                                            Upload new photo
+                                            Tải ảnh mới lên
                                             <input type="file" class="account-settings-fileinput" id="imageInput"
                                                    name="imageFile" accept="images/profile/*">
                                         </label> &nbsp;
                                         <button type="button" class="btn btn-default md-btn-flat"
-                                                style="margin-bottom: 5px">Reset
+                                                style="margin-bottom: 5px">Làm mới
                                         </button>
                                     </div>
                                 </div>
                                 <hr class="border-light m-0">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label class="form-label">Full Name</label>
+                                        <label class="form-label">Họ tên:</label>
                                         <input type="text" class="form-control mb-1" name="fullName"
-                                               th:field="*{fullName}" id="fullNameInput" placeholder="Please Enter Full Name">
+                                               th:field="*{fullName}" id="fullNameInput" placeholder="Mời nhập họ tên">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">E-mail</label>
                                         <input type="text" class="form-control mb-1" name="email" th:field="*{email}"
                                                id="emailInput"
-                                               placeholder="Please Enter Email">
+                                               placeholder="Mời nhập email">
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Gender</label>
+                                        <label class="form-label">Giới tính: </label>
                                         <div class="form-control">
                                             <label>
                                                 <input type="radio" name="gender" value="true"
@@ -74,12 +75,12 @@
                                             </label>&nbsp;
                                             <label>
                                                 <input type="radio" name="gender" value="false"
-                                                       th:checked="${detailProfile.gender == false}" th:text="Nu">
+                                                       th:checked="${detailProfile.gender == false}" th:text="Nữ">
                                             </label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Account Role</label>
+                                        <label class="form-label">Vai trò tài khoản: </label>
                                         <div class="form-control" th:text="${accountRole}"></div>
                                     </div>
                                 </div>
@@ -87,44 +88,61 @@
                             <div class="tab-pane fade" id="account-change-password">
                                 <div class="card-body pb-2">
                                     <div class="form-group">
-                                        <label class="form-label">New password</label>
-                                        <input type="password" class="form-control"id="encryptionPassword" name="newPassword"/>
+                                        <label class="form-label">Mật khẩu mới: </label>
+                                        <input type="password" class="form-control" id="encryptionPassword"
+                                               name="newPassword"/>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Repeat new password</label>
-                                        <input type="password" class="form-control" id="EnterPassword" name="rePassword">
+                                        <label class="form-label">Nhập lại mật khẩu mới: </label>
+                                        <input type="password" class="form-control" id="EnterPassword"
+                                               name="rePassword">
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="account-info">
                                 <div class="card-body pb-2">
                                     <div class="form-group">
-                                        <label class="form-label">Birthday</label>
+                                        <label class="form-label">Ngày sinh: </label>
                                         <input type="date" class="form-control" th:field="*{birthday}" name="birthday">
                                     </div>
 
                                 </div>
                                 <hr class="border-light m-0">
                                 <div class="card-body pb-2">
-                                    <h6 class="mb-4">Contacts</h6>
+                                    <h6 class="mb-4">Liên hệ</h6>
                                     <div class="form-group">
-                                        <label class="form-label">Number Phone</label>
+                                        <label class="form-label">Địa chỉ :</label>
+                                        <th:block th:if="${detailProfile.getAddressClient() != null}">
+                                            <input type="text" class="form-control"
+                                                   th:value="${detailProfile.getAddressClient().getProvince()}"
+                                                   readonly>
+                                        </th:block>
+                                        <th:block th:unless="${detailProfile.getAddressClient() != null}">
+                                            <input type="text" class="form-control"
+                                                   value="Không có địa chỉ" readonly>
+                                        </th:block>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Số điện thoại :</label>
                                         <input type="text" class="form-control" th:field="*{numberPhone}"
-                                               name="numberPhone"  id="numberPhoneInput" placeholder="Please Enter Phone Number">
+                                               name="numberPhone" id="numberPhoneInput"
+                                               placeholder="Vui lòng nhập số điện thoại">
                                     </div>
                                 </div>
                                 <div class="card-body pb-2">
-                                    <h6 class="form-label">Account Status</h6>
-                                    <div class="form-group">
-                                        <select name="status" class="custom-select">
-                                            <option value="1" th:selected="${detailProfile.status == 1}">
-                                                Online
-                                            </option>
-                                            <option value="0" th:selected="${detailProfile.status == 0}">
-                                                Offline
-                                            </option>
-                                        </select>
-                                    </div>
+                                    <th:block th:if="${checkMenuAdmin == true}">
+                                        <h6 class="form-label">Trạng thái tài khản</h6>
+                                        <div class="form-group">
+                                            <select name="status" class="custom-select" id="statusAccount">
+                                                <option value="1" th:selected="${detailProfile.status == 1}">
+                                                    Hoạt động
+                                                </option>
+                                                <option value="0" th:selected="${detailProfile.status == 0}">
+                                                    Ngừng hoạt động
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>
@@ -132,10 +150,10 @@
                 </div>
             </div>
             <div class="text-right mt-3">
-                <button type="button" class="btn btn-primary" onclick="updateAccount()">Save changes</button>&nbsp;
-                <th:block th:if="${checkDetailAccount == true}">
-                    <a th:href="@{/mangostore/admin/list-staff/delete/{id}(id=${detailProfile.id})}"id="idUpdate">
-                        <button type="button" class="btn btn-danger" onclick="deleteAccount()">Delete</button>
+                <button type="button" class="btn btn-primary" onclick="updateAccount()">Lưu lại</button>&nbsp;
+                <th:block th:if="${checkMenuAdmin == true}">
+                    <a th:href="@{/mangostore/admin/list-staff/delete/{id}(id=${detailProfile.id})}">
+                        <button type="button" class="btn btn-danger" onclick="deleteAccount(event)">Xóa</button>
                     </a>
                 </th:block>
             </div>

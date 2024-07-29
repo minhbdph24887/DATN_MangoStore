@@ -1,19 +1,14 @@
 package com.datn.datn_mangostore.config;
 
-import com.datn.datn_mangostore.bean.Invoice;
-import com.datn.datn_mangostore.bean.ProductDetail;
-import com.datn.datn_mangostore.bean.Voucher;
-import com.datn.datn_mangostore.bean.VoucherClient;
-import com.datn.datn_mangostore.repository.InvoiceRepository;
-import com.datn.datn_mangostore.repository.ProductDetailRepository;
-import com.datn.datn_mangostore.repository.VoucherClientRepository;
-import com.datn.datn_mangostore.repository.VoucherRepository;
+import com.datn.datn_mangostore.bean.*;
+import com.datn.datn_mangostore.repository.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Component
 public class UpdateAuto {
@@ -21,15 +16,20 @@ public class UpdateAuto {
     private final ProductDetailRepository productDetailRepository;
     private final InvoiceRepository invoiceRepository;
     private final VoucherClientRepository voucherClientRepository;
+    private final AccountRepository accountRepository;
+    private final RankRepository rankRepository;
 
     public UpdateAuto(VoucherRepository voucherRepository,
                       ProductDetailRepository productDetailRepository,
                       InvoiceRepository invoiceRepository,
-                      VoucherClientRepository voucherClientRepository) {
+                      VoucherClientRepository voucherClientRepository,
+                      AccountRepository accountRepository, RankRepository rankRepository) {
         this.voucherRepository = voucherRepository;
         this.productDetailRepository = productDetailRepository;
         this.invoiceRepository = invoiceRepository;
         this.voucherClientRepository = voucherClientRepository;
+        this.accountRepository = accountRepository;
+        this.rankRepository = rankRepository;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -37,7 +37,7 @@ public class UpdateAuto {
         for (Voucher voucher : voucherRepository.findAll()) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime voucherStartDate = voucher.getStartDay().atStartOfDay();
-            LocalDateTime voucherEndDate = voucher.getEndDate().atStartOfDay();
+            LocalDateTime voucherEndDate = voucher.getEndDate().atTime(23, 59, 59);
 
             if (voucherStartDate.isBefore(now) && voucherEndDate.isBefore(now)) {
                 voucher.setVoucherStatus(0);
@@ -61,7 +61,7 @@ public class UpdateAuto {
         for (VoucherClient voucherClient : voucherClientRepository.findAll()) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime voucherStartDate = voucherClient.getStartDay().atStartOfDay();
-            LocalDateTime voucherEndDate = voucherClient.getEndDate().atStartOfDay();
+            LocalDateTime voucherEndDate = voucherClient.getEndDate().atTime(23, 59, 59);
 
             if (voucherStartDate.isBefore(now) && voucherEndDate.isBefore(now)) {
                 voucherClient.setVoucherStatus(0);
@@ -148,6 +148,24 @@ public class UpdateAuto {
                 voucher.setValidity("Hạn sử dụng: " + daysOfValidity + " ngày");
             }
             voucherRepository.save(voucher);
+        }
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void updateAutoRank() {
+        for (Account account : accountRepository.findAll()) {
+            List<Rank> itemsRank = rankRepository.getAllRankByStatus1();
+            itemsRank.sort((rank1, rank2) -> rank2.getMaximumScore().compareTo(rank1.getMaximumScore()));
+            for (Rank rank : itemsRank) {
+                if (account.getAccumulatedPoints() >= rank.getMinimumScore() && account.getAccumulatedPoints() < rank.getMaximumScore()) {
+                    account.setRank(rank);
+                    break;
+                } else if (account.getAccumulatedPoints() >= rank.getMaximumScore()) {
+                    account.setRank(itemsRank.getFirst());
+                    break;
+                }
+            }
+            accountRepository.save(account);
         }
     }
 }

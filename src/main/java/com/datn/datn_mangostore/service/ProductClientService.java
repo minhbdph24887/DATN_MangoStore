@@ -19,7 +19,7 @@ public interface ProductClientService {
 
     ResponseEntity<?> quantityProductDetail(QuantityRequest request);
 
-    boolean addToCart(AddToCartRequest request,
+    ResponseEntity<String> addToCart(AddToCartRequest request,
                       HttpSession session);
 
     boolean addToFavourite(AddToFavouriteRequest request,

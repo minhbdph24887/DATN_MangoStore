@@ -12,8 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ProfileService {
     String getAllStaffByStatus1(Model model,
                                 HttpSession session);
+
     String restoreStaff(Long idAccount);
-    String restorClient(Long idAccount);
+
+    String restoreClient(Long idAccount);
 
     String detailStaff(Model model,
                        HttpSession session,
@@ -39,6 +41,7 @@ public interface ProfileService {
                         HttpSession session);
 
     String deleteStaff(Long idAccount);
+
     String deleteClient(Long idAccount);
 
     String addAccountClient(BindingResult result,
@@ -49,7 +52,10 @@ public interface ProfileService {
 
     String getAllAccountByClient(Model model,
                                  HttpSession session);
+
     ResponseEntity<String> checkAddAccount(DataRequest request);
+
     ResponseEntity<String> checkUpdateAccount(DataRequest request);
-    ResponseEntity<String> checkDeleteAccount(DataRequest request);
+
+    ResponseEntity<String> checkDeleteAccount(AccountRequest request);
 }

@@ -3,12 +3,13 @@ package com.datn.datn_mangostore.service.impl;
 import com.datn.datn_mangostore.bean.Account;
 import com.datn.datn_mangostore.bean.Invoice;
 import com.datn.datn_mangostore.bean.InvoiceDetail;
-import com.datn.datn_mangostore.bean.Role;
+import com.datn.datn_mangostore.bean.ProductDetail;
+import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.reponse.InvoiceResponse;
 import com.datn.datn_mangostore.repository.AccountRepository;
 import com.datn.datn_mangostore.repository.InvoiceDetailRepository;
 import com.datn.datn_mangostore.repository.InvoiceRepository;
-import com.datn.datn_mangostore.repository.RoleRepository;
+import com.datn.datn_mangostore.repository.ProductDetailRepository;
 import com.datn.datn_mangostore.request.IdOrderRequest;
 import com.datn.datn_mangostore.service.OrderService;
 import jakarta.servlet.http.HttpSession;
@@ -17,64 +18,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final InvoiceRepository invoiceRepository;
     private final InvoiceDetailRepository invoiceDetailRepository;
+    private final ProductDetailRepository productDetailRepository;
+    private final Gender gender;
 
     public OrderServiceImpl(AccountRepository accountRepository,
-                            RoleRepository roleRepository,
                             InvoiceRepository invoiceRepository,
-                            InvoiceDetailRepository invoiceDetailRepository) {
+                            InvoiceDetailRepository invoiceDetailRepository,
+                            ProductDetailRepository productDetailRepository,
+                            Gender gender) {
         this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
         this.invoiceRepository = invoiceRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
+        this.productDetailRepository = productDetailRepository;
+        this.gender = gender;
     }
 
     @Override
     public String orderShow(Model model,
                             HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Invoice> itemsInvoice = invoiceRepository.findAllInvoiceOnline();
-                model.addAttribute("listInvoiceOnline", itemsInvoice);
-                return "admin/Order/IndexOrderShow";
-            }
+            List<Invoice> itemsInvoice = invoiceRepository.findAllInvoiceOnline();
+            model.addAttribute("listInvoiceOnline", itemsInvoice);
+            return "admin/Order/IndexOrderShow";
         }
     }
 
@@ -111,45 +88,18 @@ public class OrderServiceImpl implements OrderService {
     public String listInvoice(Model model,
                               HttpSession session,
                               String findByCode) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
-
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                List<Invoice> findAllInvoice = invoiceRepository.getAllInvoiceOnline(detailAccount.getId());
-                if (findByCode != null) {
-                    findAllInvoice = invoiceRepository.findInvoiceByCodeInvoice(detailAccount.getId(), findByCode);
-                    model.addAttribute("findByCode", findByCode);
-                }
-
-                model.addAttribute("listInvoice", findAllInvoice);
-                return "admin/Order/OrderList";
+            List<Invoice> findAllInvoice = invoiceRepository.getAllInvoiceOnline(detailAccount.getId());
+            if (findByCode != null) {
+                findAllInvoice = invoiceRepository.findInvoiceByCodeInvoice(detailAccount.getId(), findByCode);
+                model.addAttribute("findByCode", findByCode);
             }
+
+            model.addAttribute("listInvoice", findAllInvoice);
+            return "admin/Order/OrderList";
         }
     }
 
@@ -157,46 +107,19 @@ public class OrderServiceImpl implements OrderService {
     public String detailOrderAdmin(Long idInvoice,
                                    Model model,
                                    HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        if (email == null) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
-            Account detailAccount = accountRepository.detailAccountByEmail(email);
-            if (detailAccount.getStatus() == 0) {
-                session.invalidate();
-                return "redirect:/mangostore/home";
-            } else {
-                model.addAttribute("profile", detailAccount);
+            Invoice detailInvoice = invoiceRepository.findById(idInvoice).orElse(null);
+            assert detailInvoice != null;
+            Account detailAccountByInvoice = accountRepository.findAccountByInvoice(detailInvoice.getIdCustomer());
+            model.addAttribute("detailInvoice", detailInvoice);
+            model.addAttribute("detailAccountByInvoice", detailAccountByInvoice);
 
-                LocalDateTime checkDate = LocalDateTime.now();
-                int hour = checkDate.getHour();
-                if (hour >= 5 && hour < 10) {
-                    model.addAttribute("dates", "Morning");
-                } else if (hour >= 10 && hour < 13) {
-                    model.addAttribute("dates", "Noon");
-                } else if (hour >= 13 && hour < 18) {
-                    model.addAttribute("dates", "Afternoon");
-                } else {
-                    model.addAttribute("dates", "Evening");
-                }
-
-                Role detailRole = roleRepository.getRoleByEmail(email);
-                if (detailRole.getName().equals("ADMIN")) {
-                    model.addAttribute("checkMenuAdmin", true);
-                } else {
-                    model.addAttribute("checkMenuAdmin", false);
-                }
-
-                Invoice detailInvoice = invoiceRepository.findById(idInvoice).orElse(null);
-                assert detailInvoice != null;
-                Account detailAccountByInvoice = accountRepository.findAccountByInvoice(detailInvoice.getIdCustomer());
-                model.addAttribute("detailInvoice", detailInvoice);
-                model.addAttribute("detailAccountByInvoice", detailAccountByInvoice);
-
-                List<InvoiceDetail> itemsInvoiceDetail = invoiceDetailRepository.findAllInvoiceDetailByIdInvoice(idInvoice);
-                model.addAttribute("listInvoiceDetail", itemsInvoiceDetail);
-                return "admin/Order/OrderDetail";
-            }
+            List<InvoiceDetail> itemsInvoiceDetail = invoiceDetailRepository.findAllInvoiceDetailByIdInvoice(idInvoice);
+            model.addAttribute("listInvoiceDetail", itemsInvoiceDetail);
+            return "admin/Order/OrderDetail";
         }
     }
 
@@ -215,10 +138,75 @@ public class OrderServiceImpl implements OrderService {
                                                       HttpSession session) {
         String email = (String) session.getAttribute("loginEmail");
         Account detailAccount = accountRepository.detailAccountByEmail(email);
-        if (detailAccount.getId() == Long.parseLong(request.getIdInvoice())) {
+        Invoice detailInvoice = invoiceRepository.findById(Long.parseLong(request.getIdInvoice())).orElse(null);
+        assert detailInvoice != null;
+        if (Objects.equals(detailAccount.getId(), detailInvoice.getIdCustomer())) {
             return new ResponseEntity<>("1", HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>("0", HttpStatus.OK);
+            List<InvoiceDetail> getAllInvoiceDetail = invoiceDetailRepository.findAllByIdInvoice(Long.parseLong(request.getIdInvoice()));
+            boolean hasError = false;
+
+            for (InvoiceDetail detail : getAllInvoiceDetail) {
+                ProductDetail productDetail = productDetailRepository.findById(detail.getProductDetail().getId()).orElse(null);
+                if (productDetail == null) {
+                    continue;
+                }
+
+                int quantityNew = productDetail.getQuantity() - detail.getQuantity();
+                if (quantityNew < 0) {
+                    hasError = true;
+                    break;
+                } else {
+                    productDetail.setQuantity(quantityNew);
+                    productDetailRepository.save(productDetail);
+                }
+            }
+
+            if (hasError) {
+                return new ResponseEntity<>("2", HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>("0", HttpStatus.OK);
+            }
+        }
+    }
+
+    @Override
+    public String orderAllForManager(Model model,
+                                     HttpSession session,
+                                     String findByCode) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
+            return "redirect:/mangostore/home";
+        } else {
+            List<Invoice> findAllOrderByManager = invoiceRepository.findAllOrder();
+            if (findByCode != null) {
+                findAllOrderByManager = invoiceRepository.searchOrder(findByCode);
+                model.addAttribute("findByCode", findByCode);
+            }
+            model.addAttribute("listOrderForManager", findAllOrderByManager);
+            return "admin/Order/OrderManager";
+        }
+    }
+
+    @Override
+    public String orderAllDetailForManager(Model model,
+                                           HttpSession session,
+                                           Long idInvoice) {
+        Account detailAccount = gender.checkMenuAdmin(model, session);
+        if (detailAccount == null) {
+            return "redirect:/mangostore/home";
+        } else {
+            Invoice detailInvoice = invoiceRepository.findById(idInvoice).orElse(null);
+            assert detailInvoice != null;
+            Account detailCustomByInvoice = accountRepository.findAccountByInvoice(detailInvoice.getIdCustomer());
+            Account detailStaffByInvoice = accountRepository.findById(detailInvoice.getAccount().getId()).orElse(null);
+            model.addAttribute("detailInvoice", detailInvoice);
+            model.addAttribute("detailCustomByInvoice", detailCustomByInvoice);
+            model.addAttribute("detailStaffByInvoice", detailStaffByInvoice);
+
+            List<InvoiceDetail> itemsInvoiceDetail = invoiceDetailRepository.findAllInvoiceDetailByIdInvoice(idInvoice);
+            model.addAttribute("listInvoiceDetail", itemsInvoiceDetail);
+            return "admin/Order/OrderDetailManager";
         }
     }
 }

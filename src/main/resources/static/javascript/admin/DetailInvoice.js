@@ -61,16 +61,26 @@ if (ConfirmInvoicePage) {
             contentType: 'application/json',
             success: function (response) {
                 const url = 'http://localhost:8080/mangostore/admin/confirm-invoice?id=' + idInvoice;
-                confirmAlertLink(event, 'Would You Like To Accept This Invoice?', 'Successful Reception', url);
+                confirmAlertLink(event, 'Bạn có muốn tiếp nhận hóa đơn này ?', 'Tiếp nhận thành công', url);
             },
             error: function (response) {
                 if (response.responseText === '1') {
                     dangerAlert('Bạn không thể xác nhận hóa đơn của chính mình!');
+                } else if (response.responseText === '2') {
+                    dangerAlert('Số lượng trong sản phẩm không đủ');
                 } else {
                     dangerAlert('Lỗi');
                 }
-                console.clear();
             }
         });
+    }
+}
+
+const CancelInvoiceForAdminPage = document.querySelector('.CancelInvoiceForAdminPage');
+if (CancelInvoiceForAdminPage) {
+    function cancelInvoiceForAdmin() {
+        const idInvoice = document.getElementById('id-invoice').textContent;
+        const url = 'http://localhost:8080/mangostore/purchase/remove?id=' + idInvoice;
+        confirmAlertLink(event,'Bạn muốn hủy hóa đơn này ?', 'Hủy thành công', url);
     }
 }

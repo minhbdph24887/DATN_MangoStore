@@ -27,4 +27,12 @@ public interface OrderService {
 
     ResponseEntity<String> checkConfirmInvoice(IdOrderRequest request,
                                                HttpSession session);
+
+    String orderAllForManager(Model model,
+                              HttpSession session,
+                              String findByCode);
+
+    String orderAllDetailForManager(Model model,
+                                    HttpSession session,
+                                    Long idInvoice);
 }

@@ -8,20 +8,21 @@
             </div>
             <nav style="flex: 1; margin-top: 16px; text-align: right;">
                 <ul id="MenuItems" style="list-style-type: none;">
-                    <li><a th:href="@{/mangostore/home}" style="text-decoration: none; color: #555;">Home</a></li>
-                    <li><a th:href="@{/mangostore/product}" style="text-decoration: none; color: #555;">Products</a>
+                    <li><a th:href="@{/mangostore/home}" style="text-decoration: none; color: #555;">Trang chủ</a></li>
+                    <li><a th:href="@{/mangostore/product}" style="text-decoration: none; color: #555;">Sản phẩm</a>
                     </li>
                     <th:block th:if="${checkAuthentication != null}">
-                        <li><a th:href="@{/mangostore/admin/home}" style="text-decoration: none; color: #555;">Product
-                            Management</a></li>
+                        <li><a th:href="@{/mangostore/admin/home}" style="text-decoration: none; color: #555;">Quản lý
+                            sản phẩm</a></li>
                     </th:block>
-                    <li><a th:href="@{/mangostore/voucher/shop}" style="text-decoration: none; color: #555;">Voucher
-                        Shop</a>
+                    <li><a th:href="@{/mangostore/voucher/shop}" style="text-decoration: none; color: #555;">Voucher tại
+                        cửa hàng</a>
                     </li>
                     <th:block th:unless="${profile != null}">
                         <li>
                             <a th:href="@{/mangostore/login/from}"
-                               style="display: inline-block; background: #2867b3; color: #fff; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s; text-decoration: none;">Login</a>
+                               style="display: inline-block; background: #2867b3; color: #fff; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s; text-decoration: none;">Đăng
+                                nhập</a>
                         </li>
                     </th:block>
                     <th:block th:if="${profile != null}">
@@ -38,8 +39,7 @@
                         </li>
                         <li>
                             <a type="button" th:href="@{/mangostore/login/clear}"
-                               th:text="LogOut"
-                               style="display: inline-block; background: #d72d2d; color: #fff; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s; text-decoration: none;"></a>
+                               style="display: inline-block; background: #d72d2d; color: #fff; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s; text-decoration: none;">Đăng xuất</a>
                         </li>
                     </th:block>
                 </ul>

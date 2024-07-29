@@ -9,12 +9,12 @@
                 <li class="nav-item">
                     <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
                        href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Active Material</a>
+                       aria-controls="tab1" aria-selected="true">Chất liêu hoạt động</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
                        aria-controls="tab2" role="tab"
-                       aria-selected="false">Material Inactive</a>
+                       aria-selected="false">Chất liệu ngừng hoạt động</a>
                 </li>
             </ul>
         </div>
@@ -22,70 +22,60 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                 <div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/material}">Index Material</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail Material</li>
+                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/material}">Trang chủ chất liệu</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chất liệu</li>
                     </ul>
                 </div>
                 <div class="col-lg-12 grid-margin stretch-card container">
                     <div class="card">
                         <div class="card-body container">
                             <h4 class="font-weight-bold py-3 mb-4">
-                                Update Material,
+                                Cập nhật chất liệu,
                             </h4>
                             <form id="updateMaterialForm" th:action="@{/mangostore/admin/material/update}" th:object="${detailMaterial}" method="post" onsubmit="return confirmAndSubmitUpdateMaterial(event)">
                                 <input type="hidden" th:field="*{id}" th:value="${detailMaterial.id}">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">Code Material</label>
+                                            <label class="form-label">Mã chất liệu</label>
                                             <input type="text" class="form-control" name="codeMaterial" th:field="*{codeMaterial}" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                            <label class="form-label">Name Material</label>
+                                            <label class="form-label">Tên chất liệu</label>
                                             <input type="text" class="form-control" name="nameMaterial" th:field="*{nameMaterial}"/>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">User Create</label>
+                                            <label class="form-label">Người tạo</label>
                                             <input type="text" class="form-control" name="nameUserCreate" th:field="*{nameUserCreate}" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">User Update</label>
+                                            <label class="form-label">Người cập nhật</label>
                                             <input type="text" class="form-control" name="nameUserUpdate" th:field="*{nameUserUpdate}" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">Date Create</label>
+                                            <label class="form-label">Ngày tạo</label>
                                             <input type="text" class="form-control" name="dateCreate" th:field="*{dateCreate}" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="form-label">Date Update</label>
+                                            <label class="form-label">Ngày cập nhật</label>
                                             <input type="text" class="form-control" name="dateUpdate" th:field="*{dateUpdate}" readonly/>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-<!--                                        <div class="form-group">-->
-<!--                                            <label class="form-label">Status</label>-->
-<!--                                            <label class="switch">-->
-<!--                                                <input type="checkbox" th:checked="${detailMaterial.status == 1}" id="active">-->
-<!--                                                <span class="slider round"></span>-->
-<!--                                            </label>-->
-<!--                                            <input type="hidden" id="status" name="status">-->
-<!--                                        </div>-->
-                                    </div>
                                 </div>
                                 <div class="text-right mt-3">
-                                    <button type="submit" class="btn btn-primary">Save As</button>&nbsp;
+                                    <button type="submit" class="btn btn-primary">Lưu lại</button>&nbsp;
                                     <a th:href="@{/mangostore/admin/material/delete/{id}(id=${detailMaterial.id})}" onclick="return removeMaterial(event)">
-                                        <button type="button" class="btn btn-danger">Delete</button>
+                                        <button type="button" class="btn btn-danger">Xóa</button>
                                     </a>
                                 </div>
                             </form>
@@ -99,25 +89,25 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">List Material Inactive</h4>
+                            <h4 class="card-title">Danh sách chất liệu ngừng hoạt động</h4>
                             <div class="table-responsive">
                                 <div class="header">
                                     <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th style="width: 30px">#</th>
-                                            <th style="width: 114px">CodeMaterial</th>
-                                            <th style="width: 151px">NameMaterial</th>
-                                            <th style="width: 100px">UserCreate</th>
-                                            <th style="width: 100px">UserUpdate</th>
-                                            <th style="width: 100px">DateCreate</th>
-                                            <th style="width: 100px">DateUpdate</th>
-                                            <th style="width: 84px">Status</th>
+                                            <th style="width: 114px">Mã chất liệu</th>
+                                            <th style="width: 151px">Tên chất liệu</th>
+                                            <th style="width: 100px">Người tạo</th>
+                                            <th style="width: 100px">Người cập nhật</th>
+                                            <th style="width: 100px">Ngày tạo</th>
+                                            <th style="width: 100px">Ngày cập nhật</th>
+                                            <th style="width: 84px">Trạng thái</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="content" style="height: 395px">
+                                <div class="content" style="height: 452px">
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr th:each="listMaterialInactive, stat : ${listMaterialInactive}">
@@ -138,12 +128,12 @@
                                             <td style="width: 100px"
                                                 th:text="${#temporals.format(listMaterialInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
                                             <td style="width: 84px" th:if="${listMaterialInactive.status == 0}">
-                                                <label class="badge badge-danger">Stop Working</label>
+                                                <label class="badge badge-danger">Ngừng hoạt động</label>
                                             </td>
                                         </tr>
                                         <tr th:if="${listMaterialInactive.isEmpty()}">
                                             <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Material Inactive is entity
+                                                Danh sách chất liệu ngừng hoạt động trống
                                             </td>
                                         </tr>
                                         </tbody>

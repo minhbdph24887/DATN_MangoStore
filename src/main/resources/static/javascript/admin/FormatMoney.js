@@ -1,6 +1,9 @@
 const formatMoneyPage = document.querySelector(".indexFormatMoneyPage");
 if (formatMoneyPage) {
     function formatToCurrencyAll(value) {
+        if (!value || isNaN(parseInt(value.replace(/[\D.]+/g, '')))) {
+            return '';
+        }
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }
@@ -9,26 +12,43 @@ if (formatMoneyPage) {
         return value.replace(/[\D.]+/g, '');
     }
 
-    function onInputReducedVoucher(value){
-        document.getElementById('reducedVoucherInput').value = formatToCurrencyAll(value);
-        document.getElementById('reducedVoucherValue').value = formatToNumberAll(formatToCurrencyAll(value));
+    function onInputReducedVoucher(value) {
+        if (value === '') {
+            document.getElementById('reducedVoucherInput').value = '';
+            document.getElementById('reducedVoucherValue').value = '';
+        } else {
+            document.getElementById('reducedVoucherInput').value = formatToCurrencyAll(value);
+            document.getElementById('reducedVoucherValue').value = formatToNumberAll(formatToCurrencyAll(value));
+        }
     }
-    function onInputMinimumOrder(value){
-        document.getElementById('minimumOrderInput').value = formatToCurrencyAll(value);
-        document.getElementById('minimumOrderValue').value = formatToNumberAll(formatToCurrencyAll(value));
+
+    function onInputMinimumOrder(value) {
+        if (value === '') {
+            document.getElementById('minimumOrderInput').value = '';
+            document.getElementById('minimumOrderValue').value = '';
+        } else {
+            document.getElementById('minimumOrderInput').value = formatToCurrencyAll(value);
+            document.getElementById('minimumOrderValue').value = formatToNumberAll(formatToCurrencyAll(value));
+        }
     }
-    window.onload = function() {
+
+    window.onload = function () {
         const inputMinimumElement = document.getElementById('minimumOrderInput');
-        inputMinimumElement.value = formatToCurrencyAll(inputMinimumElement.value);
+        if (inputMinimumElement.value !== '') {
+            inputMinimumElement.value = formatToCurrencyAll(inputMinimumElement.value);
+        }
 
         const inputReduceElement = document.getElementById('reducedVoucherInput');
-        inputReduceElement.value = formatToCurrencyAll(inputReduceElement.value);
+        if (inputReduceElement.value !== '') {
+            inputReduceElement.value = formatToCurrencyAll(inputReduceElement.value);
+        }
     }
 }
 
 const formatMoneyImportPriceProductDetail = document.querySelector(".formatMoneyImportPriceProductDetail");
 if (formatMoneyImportPriceProductDetail) {
     function formatToCurrencyPDImport(value) {
+        if (value.trim() === '') return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }
@@ -38,14 +58,17 @@ if (formatMoneyImportPriceProductDetail) {
     }
 
     function onInputImportPriceProductDetail(value, id) {
-        document.getElementById(id).value = formatToCurrencyPDImport(value);
-        document.getElementById('outputImportPrice' + id.slice(-2)).value = formatToNumberPDImport(formatToCurrencyPDImport(value));
+        const formattedCurrency = formatToCurrencyPDImport(value);
+        document.getElementById(id).value = formattedCurrency;
+        document.getElementById('outputImportPrice' + id.slice(-2)).value = formatToNumberPDImport(formattedCurrency);
     }
+
 }
 
 const formatMoneyPriceProductDetail = document.querySelector(".formatMoneyPriceProductDetail");
 if (formatMoneyPriceProductDetail) {
     function formatToCurrencyPDOut(value) {
+        if (value.trim() === '') return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }
@@ -74,6 +97,7 @@ if (formatMoneyFrom) {
     }
 
     function formatToCurrencyAllVD(value) {
+        if (value.trim() === '') return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }

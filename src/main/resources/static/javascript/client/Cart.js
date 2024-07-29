@@ -3,7 +3,7 @@ if (checkCartPage) {
     function checkCartIndex() {
         const checkLogin = document.getElementById('checkLogin').value;
         if (checkLogin === 'null') {
-            dangerAlert('Please log in to go to the shopping cart page');
+            dangerAlert('Vui lòng đăng nhập để đến trang giỏ hàng');
         } else {
             window.location.href = "http://localhost:8080/mangostore/cart";
         }
@@ -30,9 +30,9 @@ if (checkQuantityCartPage) {
             },
             error: function (e) {
                 if (e.responseText === '1') {
-                    dangerAlert('The quantity added must not exceed the quantity in stock');
+                    dangerAlert('Số lượng thêm vào không được vượt quá số lượng tồn');
                 } else if (e.responseText === '2') {
-                    dangerAlert('You can only purchase a maximum of 50 products/items');
+                    dangerAlert('Bạn chỉ có thể mua tối đa 50 sản phẩm/món hàng');
                 }
                 console.clear();
             }

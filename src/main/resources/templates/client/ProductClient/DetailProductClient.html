@@ -3,12 +3,12 @@
       th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
 <body>
 <main class="showImagePage">
-    <div class="container" style="height: 660px;">
-        <a th:href="@{/mangostore/product}">Back To Product Client</a>
+    <div class="container" style="height: auto">
+        <a th:href="@{/mangostore/product}">Quay lại khách hàng sản phẩm</a>
         <br>
         <div class="cardProduct">
             <div class="container-fluid">
-                <div class="wrapper row" style="height: 631px;">
+                <div class="wrapper row" style="height: auto">
                     <div class="preview col-md-6">
                         <div class="preview-pic tab-content">
                             <th:block th:each="listImagesByProduct, iterStat : ${listImagesByProduct}">
@@ -42,7 +42,7 @@
                                 <span class="fa fa-star"></span>
                                 <span class="fa fa-star"></span>
                             </div>
-                            <span class="review-no">41 reviews</span>
+                            <span class="review-no">41 đánh giá</span>
                         </div>
                         <p class="product-description">[[*{detailProductClient.getDescribe()}]]</p>
                         <h4 id="showPrice" class="price"
@@ -52,23 +52,23 @@
                             <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
                         </h4>
                         <p class="vote">
-                            <strong>91%</strong> of buyers enjoyed this product!
-                            <strong>(87 votes)</strong>
+                            <strong>91%</strong> số người mua thích sản phẩm này!
+                            <strong>(87 bình chọn)</strong>
                         </p>
 
                         <input type="hidden" id="idProduct" th:value="${detailProductClient.product.id}">
                         <input type="hidden" id="idProductDetail" th:value="${detailProductClient.id}">
                         <div class="option-group" id="color-options">
-                            <label>Color</label>
+                            <label>Màu sắc</label>
                             <th:block th:each="listColor : ${listColor}">
-                                <div class="option" th:data-value="${listColor.id}">[[*{listColor.nameColor}]]</div>
+                                <div class="option mb-2" th:data-value="${listColor.id}">[[*{listColor.nameColor}]]</div>
                             </th:block>
                         </div>
 
                         <div class="option-group" id="size-options">
-                            <label>Size</label>
+                            <label>Kích cỡ</label>
                             <th:block th:each="listSize : ${listSize}">
-                                <div class="option" th:data-value="${listSize.id}" style="width: 50px;">
+                                <div class="option mb-2" th:data-value="${listSize.id}" style="width: 50px;">
                                     [[*{listSize.nameSize}]]
                                 </div>
                             </th:block>
@@ -76,7 +76,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="form-label">Quantity: </label>
+                                <label class="form-label">Số lượng: </label>
                                 <div class="container py-1">
                                     <div class="row align-items-center">
                                         <div style="width: 170px;">
@@ -105,7 +105,7 @@
                                    th:value="${profile != null ? 'profile' : 'null'}">
                             <button id="checkButtonAddToCart" class="add-to-cart btn btn-default"
                                     onclick="AddToCart()" type="button">
-                                Add To Cart
+                                Thêm vào giỏ hàng
                             </button>
                             <button id="checkButtonFavourite" class="like btn btn-default"
                                     onclick="AddToFavourite()" type="button">
@@ -113,7 +113,7 @@
                             </button>
                             <button type="button" class="add-to-cart btn btn-default" data-bs-toggle="modal"
                                     data-bs-target="#similarProduct">
-                                Similar Product
+                                Sản phẩm tương tự
                             </button>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
         <div class="modal-dialog" style="max-width: 100%; margin: 30px;">
             <div class="modal-content" style="height: 95vh;">
                 <div class="modal-header">
-                    <h4 class="modal-title">Similar Product</h4>
+                    <h4 class="modal-title">Danh sách sản phẩm tương tự</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="row">

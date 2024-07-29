@@ -2,29 +2,29 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
       th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
 <body>
-<main class="DetailInvoiceOnlinePage ConfirmInvoicePage">
+<main class="DetailInvoiceOnlinePage ConfirmInvoicePage CancelInvoiceForAdminPage">
     <div>
         <ul class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Index Invoice Online</li>
+            <li class="breadcrumb-item active" aria-current="page">Trang chủ hóa đơn chờ xác nhận</li>
         </ul>
     </div>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">List Invoice Online</h4>
+                <h4 class="card-title">Danh sach hóa đơn chờ xác nhận</h4>
                 <div class="table-responsive">
                     <div class="header">
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>CodeInvoice</th>
-                                <th>NameInvoice</th>
-                                <th>InvoiceCreationDate</th>
-                                <th>InvoicePaymentDate</th>
-                                <th>TotalInvoiceAmount</th>
-                                <th>TotalPayment</th>
-                                <th>Action</th>
+                                <th style="width: 30px;">#</th>
+                                <th>Mã hóa đơn</th>
+                                <th>Tên hóa đơn</th>
+                                <th>Ngày tạo hóa đơn</th>
+                                <th>Ngày thanh toán hóa đơn</th>
+                                <th>Tổng giá trị trên hóa đơn</th>
+                                <th>Tổng tiền thanh toán</th>
+                                <th>Hành động</th>
                             </tr>
                             </thead>
                         </table>
@@ -33,7 +33,7 @@
                         <table class="table table-hover">
                             <tbody>
                             <tr th:each="listInvoiceOnline, stat : ${listInvoiceOnline}">
-                                <td th:text="${stat.count}"></td>
+                                <td style="width: 30px;" th:text="${stat.count}"></td>
                                 <td th:text="${listInvoiceOnline.codeInvoice}"></td>
                                 <td th:text="${listInvoiceOnline.nameInvoice}"></td>
                                 <td th:text="${#temporals.format(listInvoiceOnline.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
@@ -50,7 +50,7 @@
                             </tr>
                             <tr th:if="${listInvoiceOnline.isEmpty()}">
                                 <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                    Invoice is entity
+                                    Danh sách trống
                                 </td>
                             </tr>
                             </tbody>
@@ -66,7 +66,7 @@
              style="max-width: 100%; margin: 29px 314px 0 314px; padding: 0 0 0 0;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Invoice Information</h4>
+                    <h4 class="modal-title">Thông tin hóa đơn</h4>
                     <button type="button" class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -84,13 +84,13 @@
                                 <article class="card">
                                     <div class="card-body row">
                                         <div class="col">
-                                            <strong>Invoice Payment Date:</strong> <br>
+                                            <strong>Ngày thanh toán hóa đơn:</strong> <br>
                                             <span id="invoice-payment-date"></span></div>
                                         <div style="width: 667px;">
-                                            <strong>Customer Address:</strong> <br>
+                                            <strong>Địa chỉ của khách hàng:</strong> <br>
                                             <span id="customer-address"></span></div>
                                         <div style="width: 180px;">
-                                            <strong>Total Payment:</strong> <br>
+                                            <strong>Tổng tiền thanh toán:</strong> <br>
                                             <span id="total-payment"></span></div>
                                     </div>
                                 </article>
@@ -106,9 +106,12 @@
                     <input type="hidden" id="id-invoice">
                     <button type="button" class="btn btn-outline-success" onclick="confirmInvoice()">
                         <i class="bi bi-check2-circle"></i>
-                        Confirm Invoice
+                        Tiếp nhận hóa đơn
                     </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="cancelInvoiceForAdmin()">
+                        Hủy hóa đơn
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng lại</button>
                 </div>
             </div>
         </div>
