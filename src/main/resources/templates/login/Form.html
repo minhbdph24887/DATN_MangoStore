@@ -2,19 +2,20 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
       th:replace="~{/layout/login/IndexLogin :: dynamic(~{:: main})}">
 <body>
-<main>
+<main class="loginPage">
     <div class="row align-items-center">
         <div class="header-text mb-4">
             <h3>Xin chào, Bạn</h3>
             <p>Vui lòng đăng nhập để sử dụng trang web.</p>
         </div>
-        <form th:action="@{/mangostore/login/success}" method="post">
+        <form id="fromLogin" th:action="@{/mangostore/login/success}" method="post">
             <div class="input-group mb-3">
-                <input type="text" class="form-control form-control-lg bg-light fs-6" name="email"
+                <input type="text" class="form-control form-control-lg bg-light fs-6" name="email" id="emailInput"
                        placeholder="Nhập Email">
             </div>
             <div class="input-group mb-1">
                 <input type="password" class="form-control form-control-lg bg-light fs-6" name="password"
+                       id="passwordInput"
                        placeholder="Mật khẩu">
             </div>
             <div class="input-group mb-5 d-flex justify-content-between">
@@ -28,7 +29,7 @@
                 </div>
             </div>
             <div class="input-group mb-3">
-                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Đăng nhập</button>
+                <button type="button" onclick="loginAccount()" class="btn btn-lg btn-primary w-100 fs-6">Đăng nhập</button>
             </div>
             <div class="input-group mb-3">
                 <a type="button" th:href="@{/oauth2/authorization/google}" class="btn btn-lg btn-light w-100 fs-6"><img

@@ -1,7 +1,9 @@
 package com.datn.datn_mangostore.service;
 
+import com.datn.datn_mangostore.request.LoginRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
@@ -28,4 +30,13 @@ public interface LoginService {
                          String passwordRefresh);
 
     String logOutWebsite(HttpSession session);
+
+    ResponseEntity<String> checkLogin(LoginRequest request);
+
+    ResponseEntity<String> checkRegister(LoginRequest request);
+
+    ResponseEntity<String> checkSendEmail(LoginRequest request);
+
+    ResponseEntity<String> checkForgotPassword(LoginRequest request,
+                                               HttpSession session);
 }

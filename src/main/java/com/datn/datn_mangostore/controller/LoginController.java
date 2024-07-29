@@ -51,20 +51,20 @@ public class LoginController {
     }
 
     @GetMapping(value = "password/refresh")
-    public String refreshPassword() {
-        return "login/NewPassword";
+    public String refreshPassword(HttpSession session) {
+        String email = (String) session.getAttribute("loginEmailForgot");
+        if (email == null) {
+            return "login/ForgotPassword";
+        } else {
+            return "login/NewPassword";
+        }
     }
 
     @PostMapping(value = "refresh/success")
     public String refreshPasswordSuccess(@RequestParam("passwordRefresh") String passwordRefresh,
-                                         @RequestParam("passwordRefreshRE") String passwordRefreshRE,
                                          HttpSession session) {
         String email = (String) session.getAttribute("loginEmailForgot");
-        if (!Objects.equals(passwordRefresh, passwordRefreshRE)) {
-            return "login/NewPassword";
-        } else {
-            return loginService.refreshPassword(email, passwordRefresh, session);
-        }
+        return loginService.refreshPassword(email, passwordRefresh, session);
     }
 
     @GetMapping(value = "signup")
@@ -75,13 +75,8 @@ public class LoginController {
     @PostMapping(value = "signup/success")
     public String signUpAccountSuccess(@RequestParam("fullName") String fullName,
                                        @RequestParam("email") String email,
-                                       @RequestParam("passwordRefresh") String passwordRefresh,
-                                       @RequestParam("passwordRefreshRE") String passwordRefreshRE) {
-        if (!Objects.equals(passwordRefresh, passwordRefreshRE)) {
-            return "login/SignUp";
-        } else {
-            return loginService.signUpAccount(fullName, email, passwordRefresh);
-        }
+                                       @RequestParam("passwordRefresh") String passwordRefresh) {
+        return loginService.signUpAccount(fullName, email, passwordRefresh);
     }
 
     @GetMapping(value = "clear")

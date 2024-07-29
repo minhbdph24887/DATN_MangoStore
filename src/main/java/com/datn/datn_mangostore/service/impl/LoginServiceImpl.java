@@ -3,9 +3,12 @@ package com.datn.datn_mangostore.service.impl;
 import com.datn.datn_mangostore.bean.*;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.repository.*;
+import com.datn.datn_mangostore.request.LoginRequest;
 import com.datn.datn_mangostore.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -218,5 +221,60 @@ public class LoginServiceImpl implements LoginService {
         session.removeAttribute("loginEmail");
         session.invalidate();
         return "redirect:/mangostore/home";
+    }
+
+    @Override
+    public ResponseEntity<String> checkLogin(LoginRequest request) {
+        Account detailAccount = accountRepository.detailAccountByEmail(request.getEmail());
+        if (detailAccount == null || !encoder.matches(request.getPassword(), detailAccount.getEncryptionPassword())) {
+            return new ResponseEntity<>("Thông tin không đúng vui lòng nhập lại", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> checkRegister(LoginRequest request) {
+        Account detailAccount = accountRepository.detailAccountByEmail(request.getEmail());
+        if (detailAccount != null) {
+            return new ResponseEntity<>("Email đã tồn tại", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> checkSendEmail(LoginRequest request) {
+        Account detailAccount = accountRepository.detailAccountByEmail(request.getEmail());
+        if (detailAccount == null) {
+            return new ResponseEntity<>("Email không tồn tại", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> checkForgotPassword(LoginRequest request, HttpSession session) {
+        String email = (String) session.getAttribute("loginEmailForgot");
+        if (email == null) {
+            return new ResponseEntity<>("Vui lòng tiến hành nhập mail để tiến hành gửi mã xác nhận", HttpStatus.BAD_REQUEST);
+        } else {
+            if (request.getCodeForgot().isEmpty()) {
+                return new ResponseEntity<>("Vui lòng nhập mã xác nhận", HttpStatus.BAD_REQUEST);
+            } else {
+                try {
+                    int codeLoginInteger = Integer.parseInt(request.getCodeForgot());
+
+                    Account detailAccount = accountRepository.detailAccountByEmail(email);
+                    if (codeLoginInteger != Integer.parseInt(detailAccount.getVeryCode())) {
+                        return new ResponseEntity<>("Mã xác nhận không đúng", HttpStatus.BAD_REQUEST);
+                    } else {
+                        return new ResponseEntity<>("0", HttpStatus.OK);
+                    }
+                } catch (NumberFormatException e) {
+                    return new ResponseEntity<>("Mã xác nhận phải là số", HttpStatus.BAD_REQUEST);
+                }
+            }
+        }
     }
 }

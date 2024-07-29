@@ -2,36 +2,39 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
       th:replace="~{/layout/login/IndexLogin :: dynamic(~{:: main})}">
 <body>
-<main>
+<main class="RegisterPage">
     <div class="row align-items-center">
         <div class="header-text mb-4">
             <h2>Đăng ký</h2>
             <p>Vui lòng đăng ký tài khoản để sử dụng website.</p>
         </div>
-        <form th:action="@{/mangostore/login/signup/success}" method="post">
+        <form id="formRegister" th:action="@{/mangostore/login/signup/success}" method="post">
             <div class="input-group mb-3">
-                <input type="text" class="form-control form-control-lg bg-light fs-6" name="fullName"
+                <input type="text" class="form-control form-control-lg bg-light fs-6" name="fullName" id="fullNameInput"
                        placeholder="Mời nhập họ tên">
             </div>
             <div class="input-group mb-3">
-                <input type="text" class="form-control form-control-lg bg-light fs-6" name="email"
+                <input type="text" class="form-control form-control-lg bg-light fs-6" name="email" id="emailInput"
                        placeholder="Nhập Email">
             </div>
             <div class="input-group mb-3">
                 <input type="password" class="form-control form-control-lg bg-light fs-6" name="passwordRefresh"
+                       id="passwordInput"
                        placeholder="Nhật mật khẩu">
             </div>
             <div class="input-group mb-3">
-                <input type="password" class="form-control form-control-lg bg-light fs-6" name="passwordRefreshRE"
+                <input type="password" class="form-control form-control-lg bg-light fs-6"
+                       id="passwordConfirm"
                        placeholder="Nhập lại mật khẩu">
             </div>
             <div class="input-group mb-3">
-                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Đăng ký</button>
+                <button type="button" onclick="registerAccount()" class="btn btn-lg btn-primary w-100 fs-6">Đăng ký
+                </button>
             </div>
         </form>
         <div class="row">
             <small>Bạn đã có tài khoản ? <a th:href="@{/mangostore/login/from}"
-                                       style="text-decoration: none">Đăng nhập</a></small>
+                                            style="text-decoration: none">Đăng nhập</a></small>
         </div>
     </div>
 </main>
