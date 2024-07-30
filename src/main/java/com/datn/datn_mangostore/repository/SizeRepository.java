@@ -16,7 +16,7 @@ public interface SizeRepository extends JpaRepository<Size, Long> {
     @Query(value = "select * from size where status= 0 order by id desc", nativeQuery = true)
     List<Size> getAllSizeByStatus0();
 
-    @Query(value = "SELECT * FROM  size WHERE name_size LIKE %:searchSize% AND status= 1", nativeQuery = true)
+    @Query(value = "select * from size where name_size collate Latin1_General_CI_AI like %:searchSize% and status= 1", nativeQuery = true)
     List<Size> searchSize(@Param("searchSize") String searchSize);
 
     @Query(value = "select * from size where name_size= :nameSize and status= 1", nativeQuery = true)
