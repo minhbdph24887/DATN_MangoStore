@@ -25,6 +25,8 @@ if (addVoucherPage) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
             dangerAlert('Số lượng không thể nhỏ hơn 0');
+        } else if (quantityVoucher > 1000) {
+            dangerAlert('Bạn chỉ được tạo voucher tối đa 1000 lần sử dụng');
         } else if (minimumOrderValue === '') {
             dangerAlert('Giá tối thiểu đơn hàng không đươc để trống');
         } else if (reducedVoucherValue === '') {
@@ -93,6 +95,8 @@ if (updateVoucher) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
             dangerAlert('Số lượng không thể nhỏ hơn 0');
+        } else if (quantityVoucher > 1000) {
+            dangerAlert('Bạn chỉ được cập nhật voucher tối đa 1000 lần sử dụng');
         } else if (minimumOrderValue === '') {
             dangerAlert('Giá tối thiểu đơn hàng không đươc để trống');
         } else if (reducedVoucherValue === '') {
