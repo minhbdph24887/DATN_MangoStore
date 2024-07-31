@@ -1,9 +1,4 @@
-// vinh
-
 refreshData();
-
-var currentPage = 0; // Biến lưu trữ trang hiện tại, mặc định là trang đầu tiên
-var totalPages = 0; // Giá trị này sẽ được cập nhật từ server
 
 function applyFilters() {
     var formData = {
@@ -14,8 +9,8 @@ function applyFilters() {
         originId: getSelectValue('select[name="origin"]'),
         categoryId: getSelectValue('select[name="category"]'),
         sortBy: getSelectValue('select[name="sortByPrice"]'),
-        page: 0,  // Trang đầu tiên khi áp dụng bộ lọc
-        size: 10  // Số lượng sản phẩm trên mỗi trang
+        page: 0,  // Not needed if we are not paginating
+        size: 1000  // Fetch a large number of products to ensure we get all
     };
 
     fetchData(formData);
@@ -41,45 +36,14 @@ function fetchData(formData) {
         success: function(data) {
             $('#content2').find('tbody').html($(data).find('tbody').html());
 
-            // Lấy thông tin từ response để cập nhật phân trang
-            var totalPagesElement = $(data).find('#totalPages');
-            var currentPageElement = $(data).find('#currentPageDisplay span');
-
-            console.log("Total Pages Element:", totalPagesElement);
-            console.log("Current Page Element:", currentPageElement);
-
-            if (totalPagesElement.length > 0 && currentPageElement.length > 0) {
-                totalPages = parseInt(totalPagesElement.text());
-                currentPage = parseInt(currentPageElement.text());
-            } else {
-                console.error("Could not find totalPages or currentPage in the response.");
-            }
-
-            // Ghi log để kiểm tra giá trị của totalPages và currentPage
-            console.log("Total Pages:", totalPages);
-            console.log("Current Page:", currentPage);
-
-            var totalItems = parseInt($(data).find('#totalItems').text());
-
-            updatePagination(totalPages, currentPage, totalItems);
+            // Log the received data for debugging purposes
+            console.log("Data received:", data);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
         }
     });
 }
-
-
-// function updatePagination(totalPages, currentPage, totalItems) {
-//     // Cập nhật các nút phân trang
-//     $('#firstPage').toggleClass('disabled', currentPage === 0);
-//     $('#previousPage').toggleClass('disabled', currentPage === 0);
-//     $('#nextPage').toggleClass('disabled', currentPage >= totalPages - 1);
-//     $('#lastPage').toggleClass('disabled', currentPage >= totalPages - 1);
-//
-//     // Cập nhật thông tin trang hiện tại
-//     document.getElementById('currentPageDisplay').innerHTML = 'Current Page: ' + (currentPage + 1);
-// }
 
 function refreshData() {
     // Clear filter fields
@@ -95,43 +59,4 @@ function refreshData() {
 
     // Trigger applyFilters to fetch data with default parameters
     applyFilters();
-}
-
-function nextPage() {
-    console.log("Current Page before next:", currentPage);
-
-    if (currentPage < totalPages - 1) {
-        currentPage += 1;
-        goToPage(currentPage);
-    }
-}
-
-function previousPage() {
-    console.log("Current Page before previous:", currentPage);
-
-    if (currentPage > 0) {
-        currentPage -= 1;
-        goToPage(currentPage);
-    }
-}
-
-function goToPage(pageNumber) {
-    // Cập nhật formData với pageNumber mới
-    var formData = {
-        keyword: getInputValue('input[name="keyword"]'),
-        materialId: getSelectValue('select[name="material"]'),
-        sizeId: getSelectValue('select[name="size"]'),
-        colorId: getSelectValue('select[name="color"]'),
-        originId: getSelectValue('select[name="origin"]'),
-        categoryId: getSelectValue('select[name="category"]'),
-        sortBy: "asc",  // Sắp xếp theo giá tăng dần
-        page: pageNumber,  // Trang mới
-        size: 10  // Số lượng sản phẩm trên mỗi trang (có thể lấy từ biến size nếu cần)
-    };
-
-    document.getElementById('currentPageDisplay').innerHTML = 'Current Page: ' + (pageNumber + 1);
-
-    console.log("Page number going to:", pageNumber);
-    // Gọi fetchData với formData mới
-    fetchData(formData);
 }
