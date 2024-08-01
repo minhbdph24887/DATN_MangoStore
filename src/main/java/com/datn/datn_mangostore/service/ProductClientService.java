@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 public interface ProductClientService {
     String indexProductClient(Model model,
                               HttpSession session,
+                              String keyword,
                               String sortDirection,
                               Integer pageNo);
 

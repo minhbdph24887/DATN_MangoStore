@@ -22,9 +22,10 @@ public class ProductClientController {
     @GetMapping(value = "product")
     public String viewIndexProductClient(Model model,
                                          HttpSession session,
+                                         @Param("keyword") String keyword,
                                          @Param("sortDirection") String sortDirection,
                                          @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
-        return productClientService.indexProductClient(model, session, sortDirection, pageNo);
+        return productClientService.indexProductClient(model, session, keyword, sortDirection, pageNo);
     }
 
     @GetMapping(value = "product/detail/{id}")

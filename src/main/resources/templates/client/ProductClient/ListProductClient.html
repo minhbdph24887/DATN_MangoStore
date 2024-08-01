@@ -4,7 +4,7 @@
 <body>
 <main class="productClientPage">
     <div class="container">
-        <div class="row">
+        <div class="row" style="height: 737px;">
             <div class="col-md-12" style="height: 75px;">
                 <div class="form-group">
                     <nav class="navbar navbar-expand-sm">
@@ -13,7 +13,7 @@
                                 <div class="d-flex align-items-center">
                                     <p style="width: 120px; margin-bottom: 1px;">Sắp xếp theo:</p>
                                     <label>
-                                        <select class="form-select me-2" style="width: 200px;"
+                                        <select class="form-select me-3" style="width: 200px;"
                                                 id="priceSortSelect" onchange="sortProducts()">
                                             <option value="default" disabled selected>Sắp xếp theo giá</option>
                                             <option value="" th:selected="${sortDirection == ''}">Giá mặc định</option>
@@ -26,7 +26,17 @@
                                         </select>
                                     </label>
                                 </div>
-                                <div style="margin-left: 477px;"></div>
+                                <div class="align-items-center" style="width: 530px; margin-top: 17px;">
+                                    <div class="form-group">
+                                        <form>
+                                            <label>
+                                                <input type="text" name="keyword" class="form-control"
+                                                       th:value="${keyword}" style="width: 485px;"
+                                                       placeholder="Nhập tên sản phẩm mà bạn muốn tìm kiếm">
+                                            </label>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="ml-auto mt-3 mr-2" style="margin-left: 76px;">
                                     <div class="d-flex">
                                         <span style="margin-top: 9px; width: 147px;">[[*{currentPage}]] của [[*{totalPage}]] trang</span>
@@ -34,21 +44,19 @@
                                             <ul class="pagination">
                                                 <li th:classappend="${currentPage > 1} ? '' : 'disabled'"
                                                     class="page-item" style="margin-right: 0;">
-                                                    <a class="page-link"
-                                                       th:href="@{${sortDirection != null && sortDirection!= '' ? '?sortDirection=' + sortDirection + '&' : '?'} + 'pageNo=' + ${currentPage - 1}}"
+                                                    <a class="page-link" href="javascript:void(0)"
+                                                       th:onclick="'changePage(' + (${currentPage} - 1) + ')'"
                                                        aria-label="Previous">
-                                                            <span aria-hidden="true"
-                                                                  class="font-weight-bold">&lt;</span>
+                                                        <span aria-hidden="true" class="font-weight-bold">&lt;</span>
                                                         <span class="sr-only">Trước</span>
                                                     </a>
                                                 </li>
                                                 <li th:classappend="${currentPage < totalPage} ? '' : 'disabled'"
                                                     class="page-item" style="margin-right: 0;">
-                                                    <a class="page-link"
-                                                       th:href="@{${sortDirection != null && sortDirection!= '' ? '?sortDirection=' + sortDirection + '&' : '?'} + 'pageNo=' + ${currentPage + 1}}"
+                                                    <a class="page-link" href="javascript:void(0)"
+                                                       th:onclick="'changePage(' + (${currentPage} + 1) + ')'"
                                                        aria-label="Next">
-                                                            <span aria-hidden="true"
-                                                                  class="font-weight-bold">&gt;</span>
+                                                        <span aria-hidden="true" class="font-weight-bold">&gt;</span>
                                                         <span class="sr-only">Tiếp</span>
                                                     </a>
                                                 </li>
@@ -78,7 +86,7 @@
                                     [[*{productDetail.getProduct().getNameProduct()}]]
                                 </div>
                                 <div th:with="priceRange=${priceRangeMap[productDetail.product.id]}"
-                                     style="color: red; margin-top: 14px; margin-left: 20px;">
+                                     style="color: red; margin-top: 15px; margin-left: 10px;">
                                     <span th:if="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
                                     <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
                                 </div>

@@ -67,7 +67,8 @@ public class ProductAdminController {
 
 
     @GetMapping("/product-detail")
-    public String indexProductDetail(Model model, HttpSession session,
+    public String indexProductDetail(Model model,
+                                     HttpSession session,
                                      @RequestParam(name = "keyword", required = false) String keyword,
                                      @RequestParam(name = "materialId", required = false) String materialId,
                                      @RequestParam(name = "sizeId", required = false) String sizeId,

@@ -60,6 +60,7 @@ public class ProductClientServiceImpl implements ProductClientService {
     @Override
     public String indexProductClient(Model model,
                                      HttpSession session,
+                                     String keyword,
                                      String sortDirection,
                                      Integer pageNo) {
         Account detailAccount = gender.checkMenuClient(model, session);
@@ -67,15 +68,29 @@ public class ProductClientServiceImpl implements ProductClientService {
             return "redirect:/mangostore/home";
         } else {
             Page<ProductDetail> itemsProductDetail;
-            if ("LowToHigh".equals(sortDirection)) {
-                itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8));
-                model.addAttribute("sortDirection", "LowToHigh");
-            } else if ("HighToLow".equals(sortDirection)) {
-                itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8));
-                model.addAttribute("sortDirection", "HighToLow");
+            if (keyword != null && !keyword.isEmpty()) {
+                if ("LowToHigh".equals(sortDirection)) {
+                    itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8), keyword);
+                    model.addAttribute("sortDirection", "LowToHigh");
+                } else if ("HighToLow".equals(sortDirection)) {
+                    itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8), keyword);
+                    model.addAttribute("sortDirection", "HighToLow");
+                } else {
+                    itemsProductDetail = productDetailRepository.searchProductDetailByNameProduct(PageRequest.of(pageNo - 1, 8), keyword);
+                }
+                model.addAttribute("keyword", keyword);
             } else {
-                itemsProductDetail = productDetailRepository.getAllProductDetailByIdProduct(PageRequest.of(pageNo - 1, 8));
+                if ("LowToHigh".equals(sortDirection)) {
+                    itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8), "");
+                    model.addAttribute("sortDirection", "LowToHigh");
+                } else if ("HighToLow".equals(sortDirection)) {
+                    itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8), "");
+                    model.addAttribute("sortDirection", "HighToLow");
+                } else {
+                    itemsProductDetail = productDetailRepository.getAllProductDetailByIdProduct(PageRequest.of(pageNo - 1, 8));
+                }
             }
+
             model.addAttribute("listProductDetail", itemsProductDetail);
             model.addAttribute("totalPage", itemsProductDetail.getTotalPages());
             model.addAttribute("currentPage", pageNo);
@@ -85,6 +100,7 @@ public class ProductClientServiceImpl implements ProductClientService {
             return "client/ProductClient/ListProductClient";
         }
     }
+
 
     @Override
     public String detailProductClient(Long idProductDetail,
