@@ -14,7 +14,7 @@ if(searchProduct) {
             categoryId: getSelectValue('select[name="category"]'),
             sortBy: getSelectValue('select[name="sortByPrice"]'),
             page: 0,
-            size: 10
+            size: 100000000000000000
         };
 
         fetchData(formData);
