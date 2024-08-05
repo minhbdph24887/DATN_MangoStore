@@ -401,24 +401,28 @@ public class CartServiceImpl implements CartService {
             assert email != null;
             Account detailAccount = accountRepository.detailAccountByEmail(email);
 
-            Invoice detailInvoice = invoiceRepository.findInvoiceByIdAccount(detailAccount.getId());
-            if (detailInvoice.getVoucherClient() != null) {
-                detailInvoice.setVoucherClient(null);
+            if (detailVoucher.getRank() != null && detailAccount.getRank().getId() < detailVoucher.getRank().getId()) {
+                return new ResponseEntity<>("4", HttpStatus.BAD_REQUEST);
+            } else {
+                Invoice detailInvoice = invoiceRepository.findInvoiceByIdAccount(detailAccount.getId());
+                if (detailInvoice.getVoucherClient() != null) {
+                    detailInvoice.setVoucherClient(null);
+                }
+
+                detailInvoice.setVoucher(detailVoucher);
+                invoiceRepository.save(detailInvoice);
+
+                int pointClient = 0;
+                if (detailInvoice.getCustomerPoints() != null) {
+                    pointClient = detailInvoice.getCustomerPoints();
+                }
+
+                int conversionPoint = pointClient * 1000;
+                int newPaymentInvoice = detailInvoice.getTotalInvoiceAmount() + detailInvoice.getShippingMoney() - conversionPoint - detailVoucher.getReducedValue();
+                detailInvoice.setTotalPayment(Math.max(newPaymentInvoice, 0));
+                invoiceRepository.save(detailInvoice);
+                return new ResponseEntity<>("0", HttpStatus.OK);
             }
-
-            detailInvoice.setVoucher(detailVoucher);
-            invoiceRepository.save(detailInvoice);
-
-            int pointClient = 0;
-            if (detailInvoice.getCustomerPoints() != null) {
-                pointClient = detailInvoice.getCustomerPoints();
-            }
-
-            int conversionPoint = pointClient * 1000;
-            int newPaymentInvoice = detailInvoice.getTotalInvoiceAmount() + detailInvoice.getShippingMoney() - conversionPoint - detailVoucher.getReducedValue();
-            detailInvoice.setTotalPayment(Math.max(newPaymentInvoice, 0));
-            invoiceRepository.save(detailInvoice);
-            return new ResponseEntity<>("0", HttpStatus.OK);
         }
     }
 

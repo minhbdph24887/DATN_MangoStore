@@ -36,6 +36,8 @@ if (checkAddVoucherPage) {
                             dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
                         } else if (e.responseText === '3') {
                             dangerAlert('Voucher đã được sử dụng rồi');
+                        }else if(e.responseText === '4'){
+                            dangerAlert('Mức rank của bạn hiện tại không thể sử dụng voucher này');
                         } else {
                             errorAlert('Lỗi.');
                         }
