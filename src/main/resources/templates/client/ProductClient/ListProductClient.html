@@ -5,7 +5,7 @@
 <main class="productClientPage">
     <div class="container">
         <div class="row" style="height: 737px;">
-            <div class="col-md-12" style="height: 75px;">
+            <div class="col-md-12" style="height: 10px;">
                 <div class="form-group">
                     <nav class="navbar navbar-expand-sm">
                         <div class="container-fluid">
@@ -27,14 +27,18 @@
                                     </label>
                                 </div>
                                 <div class="align-items-center" style="width: 530px; margin-top: 17px;">
-                                    <div class="form-group">
+                                    <div class="form-group d-flex">
                                         <form>
                                             <label>
-                                                <input type="text" name="keyword" class="form-control"
-                                                       th:value="${keyword}" style="width: 485px;"
+                                                <input type="text" name="keyword" class="form-control me-2"
+                                                       th:value="${keyword}" style="width: 370px;"
                                                        placeholder="Nhập tên sản phẩm mà bạn muốn tìm kiếm">
                                             </label>
                                         </form>
+                                        <label>
+                                            <input type="button" class="form-control btn-outline-primary"
+                                                   onclick="window.location.reload();" value="Làm mới">
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="ml-auto mt-3 mr-2" style="margin-left: 76px;">

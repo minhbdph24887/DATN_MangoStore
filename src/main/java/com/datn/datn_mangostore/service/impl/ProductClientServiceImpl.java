@@ -64,41 +64,38 @@ public class ProductClientServiceImpl implements ProductClientService {
                                      String sortDirection,
                                      Integer pageNo) {
         Account detailAccount = gender.checkMenuClient(model, session);
-        if (detailAccount == null) {
-            return "redirect:/mangostore/home";
-        } else {
-            Page<ProductDetail> itemsProductDetail;
-            if (keyword != null && !keyword.isEmpty()) {
-                if ("LowToHigh".equals(sortDirection)) {
-                    itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8), keyword);
-                    model.addAttribute("sortDirection", "LowToHigh");
-                } else if ("HighToLow".equals(sortDirection)) {
-                    itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8), keyword);
-                    model.addAttribute("sortDirection", "HighToLow");
-                } else {
-                    itemsProductDetail = productDetailRepository.searchProductDetailByNameProduct(PageRequest.of(pageNo - 1, 8), keyword);
-                }
-                model.addAttribute("keyword", keyword);
+        assert detailAccount != null;
+        Page<ProductDetail> itemsProductDetail;
+        if (keyword != null && !keyword.isEmpty()) {
+            if ("LowToHigh".equals(sortDirection)) {
+                itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8), keyword);
+                model.addAttribute("sortDirection", "LowToHigh");
+            } else if ("HighToLow".equals(sortDirection)) {
+                itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8), keyword);
+                model.addAttribute("sortDirection", "HighToLow");
             } else {
-                if ("LowToHigh".equals(sortDirection)) {
-                    itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8), "");
-                    model.addAttribute("sortDirection", "LowToHigh");
-                } else if ("HighToLow".equals(sortDirection)) {
-                    itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8), "");
-                    model.addAttribute("sortDirection", "HighToLow");
-                } else {
-                    itemsProductDetail = productDetailRepository.getAllProductDetailByIdProduct(PageRequest.of(pageNo - 1, 8));
-                }
+                itemsProductDetail = productDetailRepository.searchProductDetailByNameProduct(PageRequest.of(pageNo - 1, 8), keyword);
             }
-
-            model.addAttribute("listProductDetail", itemsProductDetail);
-            model.addAttribute("totalPage", itemsProductDetail.getTotalPages());
-            model.addAttribute("currentPage", pageNo);
-
-            Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
-            model.addAttribute("priceRangeMap", priceRangeMap);
-            return "client/ProductClient/ListProductClient";
+            model.addAttribute("keyword", keyword);
+        } else {
+            if ("LowToHigh".equals(sortDirection)) {
+                itemsProductDetail = productDetailRepository.sortProductDetailLowToHigh(PageRequest.of(pageNo - 1, 8), "");
+                model.addAttribute("sortDirection", "LowToHigh");
+            } else if ("HighToLow".equals(sortDirection)) {
+                itemsProductDetail = productDetailRepository.sortProductDetailHighToLow(PageRequest.of(pageNo - 1, 8), "");
+                model.addAttribute("sortDirection", "HighToLow");
+            } else {
+                itemsProductDetail = productDetailRepository.getAllProductDetailByIdProduct(PageRequest.of(pageNo - 1, 8));
+            }
         }
+
+        model.addAttribute("listProductDetail", itemsProductDetail);
+        model.addAttribute("totalPage", itemsProductDetail.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+
+        Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
+        model.addAttribute("priceRangeMap", priceRangeMap);
+        return "client/ProductClient/ListProductClient";
     }
 
 
@@ -107,29 +104,26 @@ public class ProductClientServiceImpl implements ProductClientService {
                                       Model model,
                                       HttpSession session) {
         Account detailAccount = gender.checkMenuClient(model, session);
-        if (detailAccount == null) {
-            return "redirect:/mangostore/home";
-        } else {
-            ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
-            model.addAttribute("detailProductClient", productDetail);
+        assert detailAccount != null;
+        ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
+        model.addAttribute("detailProductClient", productDetail);
 
-            assert productDetail != null;
-            List<Images> listImagesByProduct = imagesRepository.findAllImagesByProduct(productDetail.getProduct().getId());
-            model.addAttribute("listImagesByProduct", listImagesByProduct);
+        assert productDetail != null;
+        List<Images> listImagesByProduct = imagesRepository.findAllImagesByProduct(productDetail.getProduct().getId());
+        model.addAttribute("listImagesByProduct", listImagesByProduct);
 
-            Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
-            model.addAttribute("priceRangeMap", priceRangeMap);
+        Map<Long, PriceRange> priceRangeMap = gender.getPriceRangMap();
+        model.addAttribute("priceRangeMap", priceRangeMap);
 
-            List<Color> itemsColor = colorRepository.findAll();
-            model.addAttribute("listColor", itemsColor);
+        List<Color> itemsColor = colorRepository.findAll();
+        model.addAttribute("listColor", itemsColor);
 
-            List<Size> itemsSize = sizeRepository.findAll();
-            model.addAttribute("listSize", itemsSize);
+        List<Size> itemsSize = sizeRepository.findAll();
+        model.addAttribute("listSize", itemsSize);
 
-            List<ProductDetail> getAllProductDetailByCategory = productDetailRepository.findAllByIdCategory(productDetail.getCategory().getId());
-            model.addAttribute("listProductDetailByCategory", getAllProductDetailByCategory);
-            return "client/ProductClient/DetailProductClient";
-        }
+        List<ProductDetail> getAllProductDetailByCategory = productDetailRepository.findAllByIdCategory(productDetail.getCategory().getId());
+        model.addAttribute("listProductDetailByCategory", getAllProductDetailByCategory);
+        return "client/ProductClient/DetailProductClient";
     }
 
     @Override

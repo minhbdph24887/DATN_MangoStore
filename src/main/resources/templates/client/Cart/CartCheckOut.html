@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}" xmlns="http://www.w3.org/1999/html">
 <body>
 <main class="checkOutPage dataAddressClientPage addAddressClient checkAddVoucher checkButtonCheckOut">
     <div class="container">
-        <h2 class="title">Giao điện thanh toán</h2>
+        <h2 class="title">Trang thanh toán</h2>
         <div class="row" style="--bs-gutter-y: -3rem;">
             <div class="col-md-5 col-lg-4 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">Danh sách sản phẩm</span>
+                    <span class="text-primary">Thông tin hóa đơn</span>
                 </h4>
                 <ul class="list-group mb-3">
                     <input type="hidden" id="idInvoiceInput" th:value="${shoppingCart.id}"/>
@@ -111,7 +111,7 @@
                 </div>
             </div>
             <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Thông tin hóa đơn</h4>
+                <h4 class="mb-3">Địa chỉ giao hàng</h4>
                 <div class="row g-3">
                     <div class="col-12">
                         <label class="form-label">Địa chỉ giao hàng:</label>
@@ -157,7 +157,7 @@
                     <span>* 1 điểm = 1,000 VND</span>
                 </form>
                 <br>
-                <h5>Danh sách sản phẩm trên hóa đơn</h5>
+                <h5>Danh sách sản phẩm trong hóa đơn</h5>
                 <div class="content" style="height: 324px">
                     <th:block th:each="listProductByIdInvoice : ${listProductByIdInvoice}">
                         <table>
@@ -333,11 +333,15 @@
 
                                 <div class="col-md-12">
                                     <br>
-                                    <label><input type="radio" name="status" value="1" checked style="width: 21px;"/>
-                                        đặt làm địa chỉ mặc định</label>
+                                    <label>
+                                        <input type="radio" name="status" value="1" checked style="width: 21px;"/>
+                                        <span>đặt làm địa chỉ mặc định</span>
+                                    </label>
                                     <br>
-                                    <label><input type="radio" name="status" value="0" style="width: 21px;"/> không đặt
-                                        làm địa chỉ mặc định</label>
+                                    <label>
+                                        <input type="radio" name="status" value="0" style="width: 21px;"/>
+                                        <span>không đặt làm địa chỉ mặc định</span>
+                                    </label>
                                     <br>
                                 </div>
                             </div>

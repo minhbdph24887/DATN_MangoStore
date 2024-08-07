@@ -38,13 +38,10 @@ public class VoucherShopServiceImpl implements VoucherShopService {
     public String indexVoucherShop(Model model,
                                    HttpSession session) {
         Account detailAccount = gender.checkMenuClient(model, session);
-        if (detailAccount == null) {
-            return "redirect:/mangostore/home";
-        } else {
-            List<Voucher> getAllVoucher = voucherRepository.getAllVoucherOnline();
-            model.addAttribute("listVoucher", getAllVoucher);
-            return "client/VoucherShop/IndexVoucherShopClient";
-        }
+        assert detailAccount != null;
+        List<Voucher> getAllVoucher = voucherRepository.getAllVoucherOnline();
+        model.addAttribute("listVoucher", getAllVoucher);
+        return "client/VoucherShop/IndexVoucherShopClient";
     }
 
     @Override

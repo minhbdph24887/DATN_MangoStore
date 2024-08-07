@@ -1,0 +1,14 @@
+version: '4.32.0'
+services:
+  api-services:
+    container_name: api-container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '6624:8080'
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
