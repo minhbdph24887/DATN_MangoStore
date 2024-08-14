@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public String getAllStaffByStatus1(Model model,
                                        HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ nhân viên");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -91,7 +91,7 @@ public class ProfileServiceImpl implements ProfileService {
     public String detailStaff(Model model,
                               HttpSession session,
                               Long idAccount) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật nhân viên");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -108,7 +108,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public String detailViewStaff(Model model,
                                   HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Nhân viên");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -123,7 +123,7 @@ public class ProfileServiceImpl implements ProfileService {
     public String detailclient(Model model,
                                HttpSession session,
                                Long idAccount) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật khách hàng");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -276,7 +276,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public String getAllAccountByClient(Model model,
                                         HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ khách hàng");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

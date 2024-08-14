@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     public String indexProductAdmin(Model model,
                                     HttpSession session,
                                     String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String createProductAdmin(Model model,
                                      HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Tạo sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -195,7 +195,7 @@ public class ProductServiceImpl implements ProductService {
     public String detailProduct(Model model,
                                 HttpSession session,
                                 Long idProduct) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

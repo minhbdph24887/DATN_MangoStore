@@ -45,7 +45,7 @@ public class VoucherServiceImpl implements VoucherService {
     public String indexVoucher(Model model,
                                HttpSession session,
                                String voucherActive) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ phiếu giảm giá");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -114,7 +114,7 @@ public class VoucherServiceImpl implements VoucherService {
     public String detailVoucher(Model model,
                                 HttpSession session,
                                 Long idVoucher) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật phiếu giảm giá");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

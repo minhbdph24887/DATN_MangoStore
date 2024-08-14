@@ -1,84 +1,81 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main>
-    <div>
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Trang chủ hóa đơn</li>
-        </ul>
-    </div>
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex">
-                    <h5 class="card-title me-3" style="margin-top: 8px;">Tìm kiếm hóa đơn theo mã: </h5>
-                    <form>
-                        <div class="form-group">
-                            <input type="text" name="findByCode" class="form-control" th:value="${findByCode}"
-                                   placeholder="Nhập mã hóa đơn" style="width: 500px;">
-                        </div>
-                    </form>
-                </div>
-                <h4 class="card-title">Danh sach hóa đơn</h4>
-                <div class="table-responsive">
-                    <div class="header">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th style="width: 30px;">#</th>
-                                <th>Mã hóa đơn</th>
-                                <th>Tên hóa đơn</th>
-                                <th>Ngày tạo hóa đơn</th>
-                                <th>Ngày thanh toán hóa đơn</th>
-                                <th>Tổng giá trị trên hóa đơn</th>
-                                <th>Tổng tiền thanh toán</th>
-                                <th>Tình trạng hóa đơn</th>
-                            </tr>
-                            </thead>
-                        </table>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main>
+        <div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Trang chủ hóa đơn</li>
+            </ul>
+        </div>
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <h5 class="card-title me-3" style="margin-top: 8px;">Tìm kiếm hóa đơn theo mã: </h5>
+                        <form>
+                            <div class="form-group">
+                                <input type="text" name="findByCode" class="form-control" th:value="${findByCode}"
+                                       placeholder="Nhập mã hóa đơn" style="width: 500px;">
+                            </div>
+                        </form>
                     </div>
-                    <div class="content" style="height: 476px;">
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr th:each="listInvoice, stat : ${listInvoice}">
-                                <td style="width: 30px;" th:text="${stat.count}"></td>
-                                <td>
-                                    <a th:href="@{|/mangostore/admin/order/detail/${listInvoice.id}|}"
-                                       th:text="${listInvoice.codeInvoice}"
-                                       style="text-decoration: none">
-                                    </a>
-                                </td>
-                                <td th:text="${listInvoice.nameInvoice}"></td>
-                                <td th:text="${#temporals.format(listInvoice.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
-                                <td th:text="${#temporals.format(listInvoice.invoicePaymentDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
-                                <td th:text="${#numbers.formatDecimal(listInvoice.totalInvoiceAmount, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                <td th:text="${#numbers.formatDecimal(listInvoice.totalPayment, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                <td th:if="${listInvoice.invoiceStatus == 2}">
-                                    <label class="badge badge-success">đã xác nhận</label>
-                                </td>
-                                <td th:if="${listInvoice.invoiceStatus == 3}">
-                                    <label class="badge badge-success">đã giao ĐVVC</label>
-                                </td>
-                                <td th:if="${listInvoice.invoiceStatus == 4}">
-                                    <label class="badge badge-success">đang giao hàng</label>
-                                </td>
-                                <td th:if="${listInvoice.invoiceStatus == 5}">
-                                    <label class="badge badge-success">thành công</label>
-                                </td>
-                            </tr>
-                            <tr th:if="${listInvoice.isEmpty()}">
-                                <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                    Danh sách hóa đơn trống
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <h4 class="card-title">Danh sach hóa đơn</h4>
+                    <div class="table-responsive">
+                        <div class="header">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th style="width: 30px;">#</th>
+                                    <th>Mã hóa đơn</th>
+                                    <th>Tên hóa đơn</th>
+                                    <th>Ngày tạo hóa đơn</th>
+                                    <th>Ngày thanh toán hóa đơn</th>
+                                    <th>Tổng giá trị trên hóa đơn</th>
+                                    <th>Tổng tiền thanh toán</th>
+                                    <th>Tình trạng hóa đơn</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="content" style="height: 476px;">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr th:each="listInvoice, stat : ${listInvoice}">
+                                    <td style="width: 30px;" th:text="${stat.count}"></td>
+                                    <td>
+                                        <a th:href="@{|/mangostore/admin/order/detail/${listInvoice.id}|}"
+                                           th:text="${listInvoice.codeInvoice}"
+                                           style="text-decoration: none">
+                                        </a>
+                                    </td>
+                                    <td th:text="${listInvoice.nameInvoice}"></td>
+                                    <td th:text="${#temporals.format(listInvoice.invoiceCreationDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
+                                    <td th:text="${#temporals.format(listInvoice.invoicePaymentDate, 'HH:mm:ss : dd/MM/yyyy')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(listInvoice.totalInvoiceAmount, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                    <td th:text="${#numbers.formatDecimal(listInvoice.totalPayment, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                    <td th:if="${listInvoice.invoiceStatus == 2}">
+                                        <label class="badge badge-success">đã xác nhận</label>
+                                    </td>
+                                    <td th:if="${listInvoice.invoiceStatus == 3}">
+                                        <label class="badge badge-success">đã giao ĐVVC</label>
+                                    </td>
+                                    <td th:if="${listInvoice.invoiceStatus == 4}">
+                                        <label class="badge badge-success">đang giao hàng</label>
+                                    </td>
+                                    <td th:if="${listInvoice.invoiceStatus == 5}">
+                                        <label class="badge badge-success">thành công</label>
+                                    </td>
+                                </tr>
+                                <tr th:if="${listInvoice.isEmpty()}">
+                                    <td colspan="9" style="text-align: center; color: red; font-size: larger;">
+                                        Danh sách hóa đơn trống
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

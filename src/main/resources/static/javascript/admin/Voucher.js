@@ -16,11 +16,11 @@ if (addVoucherPage) {
         let endDateVoucher = new Date(endDate);
         const voucherPattern = /^[A-Z0-9]{10}$/;
         if (!voucherPattern.test(codeVoucher) && codeVoucher !== '') {
-            dangerAlert('Lỗi định dạng mã Voucher');
+            dangerAlert('Lỗi định dạng mã phiếu giảm giá');
         } else if (nameVoucher === '') {
-            dangerAlert('Không được để trống tên Voucher');
+            dangerAlert('Không được để trống tên phiếu giảm giá');
         } else if (quantityVoucher === '') {
-            dangerAlert('Không được để trống quantityVoucher');
+            dangerAlert('Không được để trống số lượng phiếu giảm giá');
         } else if (isNaN(quantityVoucher)) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
@@ -58,9 +58,9 @@ if (addVoucherPage) {
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Mã Voucher Đã Tồn Tại');
+                        dangerAlert('Mã phiếu giảm giá đã tồn tại');
                     } else if (e.responseText === '2') {
-                        dangerAlert('Tên Voucher Đã Tồn Tại');
+                        dangerAlert('Tên phiếu giảm giá đã tồn tại');
                     } else {
                         errorAlert('Lỗi.');
                     }
@@ -88,9 +88,9 @@ if (updateVoucher) {
         let startDayVoucher = new Date(startDay);
         let endDateVoucher = new Date(endDate);
         if (nameVoucher === '') {
-            dangerAlert('Không được để trống Tên Voucher');
+            dangerAlert('Không được để trống tên phiếu giảm giá');
         } else if (quantityVoucher === '') {
-            dangerAlert('Không được để trống quantityVoucher');
+            dangerAlert('Không được để trống số lượng phiếu giảm giá');
         } else if (isNaN(quantityVoucher)) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
@@ -124,11 +124,11 @@ if (updateVoucher) {
                 contentType: 'application/json',
                 success: function (response) {
                     const formVoucher = document.getElementById('formVoucher');
-                    confirmAlertForm('Bạn có muốn thêm hay không', 'them thanh cong', formVoucher);
+                    confirmAlertForm('Bạn có muốn thêm hay không', 'Thêm thành công', formVoucher);
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Tên Voucher đã tồn tại');
+                        dangerAlert('Tên phiếu giảm giá đã tồn tại');
                     } else {
                         errorAlert('Lỗi.');
                     }

@@ -63,7 +63,7 @@ public class ProductClientServiceImpl implements ProductClientService {
                                      String keyword,
                                      String sortDirection,
                                      Integer pageNo) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Sản phẩm");
         assert detailAccount != null;
         Page<ProductDetail> itemsProductDetail;
         if (keyword != null && !keyword.isEmpty()) {
@@ -103,7 +103,7 @@ public class ProductClientServiceImpl implements ProductClientService {
     public String detailProductClient(Long idProductDetail,
                                       Model model,
                                       HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Sản phẩm");
         assert detailAccount != null;
         ProductDetail productDetail = productDetailRepository.findById(idProductDetail).orElse(null);
         model.addAttribute("detailProductClient", productDetail);

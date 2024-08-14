@@ -3,6 +3,7 @@ package com.datn.datn_mangostore.controller;
 import com.datn.datn_mangostore.service.LoginService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,8 @@ public class LoginController {
     }
 
     @GetMapping(value = "from")
-    public String loginFrom() {
+    public String loginFrom(Model model) {
+        model.addAttribute("titleWebsite", "MangoStore | Đăng nhập");
         return "login/Form";
     }
 
@@ -33,7 +35,8 @@ public class LoginController {
     }
 
     @GetMapping(value = "forgot")
-    public String viewForgot() {
+    public String viewForgot(Model model) {
+        model.addAttribute("titleWebsite", "MangoStore | Quên mật khẩu");
         return "login/ForgotPassword";
     }
 
@@ -51,7 +54,9 @@ public class LoginController {
     }
 
     @GetMapping(value = "password/refresh")
-    public String refreshPassword(HttpSession session) {
+    public String refreshPassword(HttpSession session,
+                                  Model model) {
+        model.addAttribute("titleWebsite", "MangoStore | Đặt mật khẩu");
         String email = (String) session.getAttribute("loginEmailForgot");
         if (email == null) {
             return "login/ForgotPassword";
@@ -68,7 +73,8 @@ public class LoginController {
     }
 
     @GetMapping(value = "signup")
-    public String signUpAccount() {
+    public String signUpAccount(Model model) {
+        model.addAttribute("titleWebsite", "MangoStore | Đăng ký");
         return "login/SignUp";
     }
 

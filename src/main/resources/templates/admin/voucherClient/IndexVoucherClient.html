@@ -1,79 +1,80 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main>
-    <div class="home-tab">
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Trang chủ Voucher khách hàng</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách voucher khách hàng</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 110px">Mã voucher</th>
-                                            <th style="width: 145px">Tên Voucher</th>
-                                            <th style="width: 111px">Giá trị giảm</th>
-                                            <th style="width: 104px">Hình thức voucher</th>
-                                            <th style="width: 100px">Người lưu voucher</th>
-                                            <th style="width: 104px">Ngày lưu voucher</th>
-                                            <th style="width: 104px">Ngày bắt đầu</th>
-                                            <th style="width: 101px">Ngày kết thúc</th>
-                                            <th style="width: 102px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 428px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="items, stat : ${listVoucherClient}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 110px">
-                                                <a th:href="@{|/mangostore/admin/voucher-client/detail/${items.id}|}"
-                                                   th:text="${items.codeVoucher}"
-                                                   style="text-decoration: none">
-                                                </a>
-                                            </td>
-                                            <td style="width: 145px; word-break: break-all"
-                                                th:text="${items.nameVoucher}"></td>
-                                            <td style="width: 111px"
-                                                th:text="${#numbers.formatDecimal(items.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                            <td style="width: 104px" th:text="${items.voucher.voucherFrom}"></td>
-                                            <td style="width: 100px" th:text="${items.account.fullName}"></td>
-                                            <td style="width: 104px"
-                                                th:text="${#temporals.format(items.saveDate, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 104px"
-                                                th:text="${#temporals.format(items.startDay, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 101px"
-                                                th:text="${#temporals.format(items.endDate, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 102px" th:if="${items.voucherStatus == 0}">
-                                                <label class="badge badge-danger">Đã kết thúc</label>
-                                            </td>
-                                            <td style="width: 102px" th:if="${items.voucherStatus == 1}">
-                                                <label class="badge badge-success">Đang diễn ra</label>
-                                            </td>
-                                            <td style="width: 102px" th:if="${items.voucherStatus == 2}">
-                                                <label class="badge badge-info">Săp ra mắt</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listVoucherClient.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách voucher khách hàng trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main>
+        <div class="home-tab">
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ phiếu giảm giá khách hàng
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách phiếu giảm giá khách hàng</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 110px">Mã phiếu giảm giá</th>
+                                                <th style="width: 145px">Tên phiếu giảm giá</th>
+                                                <th style="width: 111px">Giá trị giảm</th>
+                                                <th style="width: 104px">Hình thức</th>
+                                                <th style="width: 100px">Người lưu</th>
+                                                <th style="width: 104px">Ngày lưu</th>
+                                                <th style="width: 104px">Ngày bắt đầu</th>
+                                                <th style="width: 101px">Ngày kết thúc</th>
+                                                <th style="width: 102px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 428px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="items, stat : ${listVoucherClient}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 110px">
+                                                    <a th:href="@{|/mangostore/admin/voucher-client/detail/${items.id}|}"
+                                                       th:text="${items.codeVoucher}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td style="width: 145px; word-break: break-all"
+                                                    th:text="${items.nameVoucher}"></td>
+                                                <td style="width: 111px"
+                                                    th:text="${#numbers.formatDecimal(items.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 104px" th:text="${items.voucher.voucherFrom}"></td>
+                                                <td style="width: 100px" th:text="${items.account.fullName}"></td>
+                                                <td style="width: 104px"
+                                                    th:text="${#temporals.format(items.saveDate, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 104px"
+                                                    th:text="${#temporals.format(items.startDay, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 101px"
+                                                    th:text="${#temporals.format(items.endDate, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 102px" th:if="${items.voucherStatus == 0}">
+                                                    <label class="badge badge-danger">Đã kết thúc</label>
+                                                </td>
+                                                <td style="width: 102px" th:if="${items.voucherStatus == 1}">
+                                                    <label class="badge badge-success">Đang diễn ra</label>
+                                                </td>
+                                                <td style="width: 102px" th:if="${items.voucherStatus == 2}">
+                                                    <label class="badge badge-info">Săp ra mắt</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listVoucherClient.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách phiếu giảm giá khách hàng trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +82,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

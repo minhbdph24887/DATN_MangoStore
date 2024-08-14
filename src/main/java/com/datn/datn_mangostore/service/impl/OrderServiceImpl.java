@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String orderShow(Model model,
                             HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ hóa đơn chờ xác nhận");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     public String listInvoice(Model model,
                               HttpSession session,
                               String findByCode) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ hóa đơn");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
     public String detailOrderAdmin(Long idInvoice,
                                    Model model,
                                    HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Tiến độ hóa đơn");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -174,7 +174,7 @@ public class OrderServiceImpl implements OrderService {
     public String orderAllForManager(Model model,
                                      HttpSession session,
                                      String findByCode) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ tất cả hóa đơn");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -192,7 +192,7 @@ public class OrderServiceImpl implements OrderService {
     public String orderAllDetailForManager(Model model,
                                            HttpSession session,
                                            Long idInvoice) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Tiến độ hóa đơn");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

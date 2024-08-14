@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     public String indexCategory(Model model,
                                 HttpSession session,
                                 String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ danh mục");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
     public String detailCategory(Model model,
                                  HttpSession session,
                                  Long idCategory) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật danh mục");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

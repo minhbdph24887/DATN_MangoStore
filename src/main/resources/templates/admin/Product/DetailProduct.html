@@ -1,210 +1,206 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Product</title>
-</head>
-<body>
-<main class="checkUpdateProductPage deleteProductPage restoreProductPage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Sản phẩm đang hoạt động</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2" aria-controls="tab2"
-                       role="tab" aria-selected="false">Sản phẩm ngừng hoạt động</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/product}">Trang chủ sản phẩm</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card container">
-                    <div class="card">
-                        <div class="card-body container">
-                            <h4 class="font-weight-bold py-3 mb-4">
-                                Cập nhật sản phẩm,
-                            </h4>
-                            <form id="updateForm" th:object="${detailProduct}" enctype="multipart/form-data">
-                                <input name="id" type="hidden" th:field="*{id}" th:value="${detailProduct.id}">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Mã sản phẩm</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="codeProduct" th:field="*{codeProduct}" readonly/>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="checkUpdateProductPage deleteProductPage restoreProductPage">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Sản phẩm đang hoạt động</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2" aria-controls="tab2"
+                           role="tab" aria-selected="false">Sản phẩm ngừng hoạt động</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/product}">Trang chủ sản phẩm</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Cập nhật sản phẩm</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card container">
+                        <div class="card">
+                            <div class="card-body container">
+                                <h4 class="font-weight-bold py-3 mb-4">
+                                    Cập nhật sản phẩm,
+                                </h4>
+                                <form id="updateForm" th:object="${detailProduct}" enctype="multipart/form-data">
+                                    <input name="id" type="hidden" th:field="*{id}" th:value="${detailProduct.id}">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Mã sản phẩm</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="codeProduct" th:field="*{codeProduct}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label class="form-label">Tên sản phẩm</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="nameProduct" th:field="*{nameProduct}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Người tạo</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="nameUserCreate" th:field="*{nameUserCreate}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Người cập nhật</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="nameUserUpdate" th:field="*{nameUserUpdate}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Ngày tạo</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="dateCreate" th:field="*{dateCreate}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">Ngày cập nhật</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="dateUpdate" th:field="*{dateUpdate}" readonly/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-9">
-                                        <div class="form-group">
-                                            <label class="form-label">Tên sản phẩm</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="nameProduct" th:field="*{nameProduct}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Người tạo</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="nameUserCreate" th:field="*{nameUserCreate}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Người cập nhật</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="nameUserUpdate" th:field="*{nameUserUpdate}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Ngày tạo</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="dateCreate" th:field="*{dateCreate}" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-label">Ngày cập nhật</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="dateUpdate" th:field="*{dateUpdate}" readonly/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-4">
-                                    <div class="col-md-12">
-                                        <h5 class="font-weight-bold mb-3">Ảnh sản phẩm</h5>
-                                        <div class="row" id="imageContainer">
-                                            <div th:each="image : ${listImage}" class="col-md-3 mb-4">
-                                                <div class="card">
-                                                    <img th:src="@{|/images/product/${image.imagesFile}|}"
-                                                         alt="Product Image" class="card-img-top product-image">
-                                                    <div class="card-body">
-                                                        <th:block th:if="${detailProduct.images.id == image.id}">
-                                                            <div class="d-flex">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <h5 class="font-weight-bold mb-3">Ảnh sản phẩm</h5>
+                                            <div class="row" id="imageContainer">
+                                                <div th:each="image : ${listImage}" class="col-md-3 mb-4">
+                                                    <div class="card">
+                                                        <img th:src="@{|/images/product/${image.imagesFile}|}"
+                                                             alt="Product Image" class="card-img-top product-image">
+                                                        <div class="card-body">
+                                                            <th:block th:if="${detailProduct.images.id == image.id}">
+                                                                <div class="d-flex">
+                                                                    <button type="button"
+                                                                            class="btn btn-danger btn-sm delete-image-btn me-2"
+                                                                            th:data-image-id="${image.id}"
+                                                                            th:data-image-file="${image.imagesFile}"
+                                                                            disabled>Xóa
+                                                                    </button>
+                                                                    <i class="bi bi-check2-circle"></i>
+                                                                </div>
+                                                            </th:block>
+                                                            <th:block
+                                                                    th:unless="${detailProduct.images.id == image.id}">
                                                                 <button type="button"
-                                                                        class="btn btn-danger btn-sm delete-image-btn me-2"
+                                                                        class="btn btn-danger btn-sm delete-image-btn"
                                                                         th:data-image-id="${image.id}"
-                                                                        th:data-image-file="${image.imagesFile}"
-                                                                        disabled>Xóa
+                                                                        th:data-image-file="${image.imagesFile}">Xóa
                                                                 </button>
-                                                                <i class="bi bi-check2-circle"></i>
-                                                            </div>
-                                                        </th:block>
-                                                        <th:block th:unless="${detailProduct.images.id == image.id}">
-                                                            <button type="button"
-                                                                    class="btn btn-danger btn-sm delete-image-btn"
-                                                                    th:data-image-id="${image.id}"
-                                                                    th:data-image-file="${image.imagesFile}">Xóa
-                                                            </button>
-                                                        </th:block>
+                                                            </th:block>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="d-flex mt-4">
+                                                <label class="form-label me-2">Tải lên nhiều hình ảnh</label>
+                                                <input type="file" id="newImagesInput" name="filename" multiple
+                                                       class="form-control" style="width: 104px;">
+                                            </div>
+                                            <div id="imagePreview" class="d-flex flex-wrap mt-3"></div>
                                         </div>
-                                        <div class="d-flex mt-4">
-                                            <label class="form-label me-2">Tải lên nhiều hình ảnh</label>
-                                            <input type="file" id="newImagesInput" name="filename" multiple
-                                                   class="form-control" style="width: 104px;">
-                                        </div>
-                                        <div id="imagePreview" class="d-flex flex-wrap mt-3"></div>
                                     </div>
-                                </div>
-                                <div class="text-right mt-3">
-                                    <button type="button" class="btn btn-primary" onclick="updateProduct()">Cập nhật
-                                    </button>
-
-                                    <a th:href="@{/mangostore/admin/product/delete/{id}(id=${detailProduct.id})}">
-                                        <button type="button" class="btn btn-danger" onclick="removeProduct()">Xóa
+                                    <div class="text-right mt-3">
+                                        <button type="button" class="btn btn-primary" onclick="updateProduct()">Cập nhật
                                         </button>
-                                    </a>
-                                </div>
-                            </form>
+
+                                        <a th:href="@{/mangostore/admin/product/delete/{id}(id=${detailProduct.id})}">
+                                            <button type="button" class="btn btn-danger" onclick="removeProduct()">Xóa
+                                            </button>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách sản phẩm ngừng hoạt động</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 114px">Mã sản phẩm</th>
-                                            <th style="width: 122px">Ảnh sản phẩm</th>
-                                            <th style="width: 151px">Tên sản phẩm</th>
-                                            <th style="width: 100px">Người tạo</th>
-                                            <th style="width: 100px">Người cập nhật</th>
-                                            <th style="width: 100px">Ngày tạo</th>
-                                            <th style="width: 100px">Ngày cập nhật</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 452px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listProductInactive, stat : ${listProductInactive}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 114px">
-                                                <button type="button" th:data-id="${listProductInactive.id}"
-                                                        class="btn btn-red"
-                                                        onclick="restoreProduct(this)"
-                                                        style="text-decoration: none">
-                                                    [[*{listProductInactive.codeProduct}]]
-                                                </button>
-                                            </td>
-                                            <td style="width: 120px;">
-                                                <div th:if="${listProductInactive.images != null and listProductInactive.images.imagesFile != null}">
-                                                    <img th:src="@{|/images/product/${listProductInactive.images.imagesFile}|}"
-                                                         alt="image" style="width: 116px; height: 132px">
-                                                </div>
+                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách sản phẩm ngừng hoạt động</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 114px">Mã sản phẩm</th>
+                                                <th style="width: 122px">Ảnh sản phẩm</th>
+                                                <th style="width: 151px">Tên sản phẩm</th>
+                                                <th style="width: 100px">Người tạo</th>
+                                                <th style="width: 100px">Người cập nhật</th>
+                                                <th style="width: 100px">Ngày tạo</th>
+                                                <th style="width: 100px">Ngày cập nhật</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 452px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listProductInactive, stat : ${listProductInactive}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 114px">
+                                                    <button type="button" th:data-id="${listProductInactive.id}"
+                                                            class="btn btn-red"
+                                                            onclick="restoreProduct(this)"
+                                                            style="text-decoration: none">
+                                                        [[*{listProductInactive.codeProduct}]]
+                                                    </button>
+                                                </td>
+                                                <td style="width: 120px;">
+                                                    <div th:if="${listProductInactive.images != null and listProductInactive.images.imagesFile != null}">
+                                                        <img th:src="@{|/images/product/${listProductInactive.images.imagesFile}|}"
+                                                             alt="image" style="width: 116px; height: 132px">
+                                                    </div>
 
-                                            </td>
-                                            <td style="width: 151px;word-break: break-all"
-                                                th:text="${listProductInactive.nameProduct}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listProductInactive.nameUserCreate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listProductInactive.nameUserUpdate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listProductInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listProductInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 84px" th:if="${listProductInactive.status == 0}">
-                                                <label class="badge badge-danger">Ngừng hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listProductInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách sản phẩm ngừng hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                                </td>
+                                                <td style="width: 151px;word-break: break-all"
+                                                    th:text="${listProductInactive.nameProduct}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listProductInactive.nameUserCreate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listProductInactive.nameUserUpdate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listProductInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listProductInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 84px" th:if="${listProductInactive.status == 0}">
+                                                    <label class="badge badge-danger">Ngừng hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listProductInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách sản phẩm ngừng hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +208,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

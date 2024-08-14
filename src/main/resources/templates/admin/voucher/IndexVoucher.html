@@ -1,327 +1,335 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="indexFormatMoneyPage addVoucherPage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Voucher còn sử dụng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Voucher đã hết</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Trang chủ voucher</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách voucher còn sử dụng</h4>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                            data-target="#myModal">Thêm Voucher
-                                    </button>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="indexFormatMoneyPage addVoucherPage">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                           href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Phiếu giảm giá còn sử dụng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                           aria-controls="tab2" role="tab"
+                           aria-selected="false">Phiếu giảm giá đã hết lượt sử dụng</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ phiếu giảm giá</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách phiếu giảm giá còn sử dụng</h4>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                                data-target="#myModal">Thêm phiếu giảm giá
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-7 form-group" style="margin-left: 100px;">
+                                        <form>
+                                            <input type="text" name="voucherActive" class="form-control"
+                                                   th:value="${voucherActive}"
+                                                   placeholder="Tìm kiếm phiếu giảm giá theo tên hoặc mã"/>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-sm-7 form-group" style="margin-left: 100px;">
-                                    <form>
-                                        <input type="text" name="voucherActive" class="form-control"
-                                               th:value="${voucherActive}"
-                                               placeholder="Tìm kiếm voucher theo tên hoặc mã voucher"/>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <form id="formVoucherAdd" th:action="@{/mangostore/admin/voucher/add}"
-                                                  th:object="${addVoucher}" method="post">
-                                                <h3 class="mb-4">Thêm Voucher</h3>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Mã Voucher:</label>
-                                                            <input type="text"
-                                                                   th:text="${codeVoucher}"
-                                                                   id="codeVoucherInput"
-                                                                   class="form-control"
-                                                                   name="codeVoucher"
-                                                                   placeholder="Vui lòng nhập mã Voucher">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Tên Voucher:</label>
-                                                            <input type="text"
-                                                                   th:text="${nameVoucher}"
-                                                                   id="nameVoucherInput"
-                                                                   class="form-control"
-                                                                   name="nameVoucher"
-                                                                   placeholder="Vui lòng nhập tên Voucher">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Hìn thức voucher:</label>
-                                                                    <select name="voucherFrom" class="form-select">
-                                                                        <option value="all" th:text="all"></option>
-                                                                        <option value="offline"
-                                                                                th:text="offline"></option>
-                                                                        <option value="online"
-                                                                                th:text="online"></option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Voucher thuộc
-                                                                        hạng: </label>
-                                                                    <select name="rank" class="form-select">
-                                                                        <option th:each="listRank : ${listRank}"
-                                                                                th:value="${listRank.id}"
-                                                                                th:text="${listRank.nameRank}"></option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Số lượng:</label>
-                                                                    <input type="number"
-                                                                           th:text="${quantityVoucher}"
-                                                                           id="quantityVoucherInput"
-                                                                           class="form-control"
-                                                                           name="quantity"
-                                                                           placeholder="Mời nhập số lượng voucher">
-                                                                </div>
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form id="formVoucherAdd" th:action="@{/mangostore/admin/voucher/add}"
+                                                      th:object="${addVoucher}" method="post">
+                                                    <h3 class="mb-4">Thêm phiếu giảm giá</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Mã phiếu giảm giá:</label>
+                                                                <input type="text"
+                                                                       th:text="${codeVoucher}"
+                                                                       id="codeVoucherInput"
+                                                                       class="form-control"
+                                                                       name="codeVoucher"
+                                                                       placeholder="Vui lòng nhập mã phiếu giảm giá">
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Đơn hàng tối
-                                                                        thiểu: </label>
-                                                                    <div class="d-flex">
-                                                                        <input type="text"
-                                                                               id="minimumOrderInput"
-                                                                               class="form-control"
-                                                                               oninput="onInputMinimumOrder(this.value)"
-                                                                               name="minimumOrderInput"
-                                                                               th:text="${miniumVoucher}"
-                                                                               placeholder="Mời nhập số tiền tối thiểu đơn hàng">
-                                                                        <span style="margin-left: 0.5rem">VND</span>
-                                                                        <input type="hidden" name="minimumPrice"
-                                                                               id="minimumOrderValue">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Tên phiếu giảm giá:</label>
+                                                                <input type="text"
+                                                                       th:text="${nameVoucher}"
+                                                                       id="nameVoucherInput"
+                                                                       class="form-control"
+                                                                       name="nameVoucher"
+                                                                       placeholder="Vui lòng nhập tên phiếu giảm giá">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Hìn thức
+                                                                            phiếu giảm giá:</label>
+                                                                        <select name="voucherFrom" class="form-select">
+                                                                            <option value="all" th:text="all"></option>
+                                                                            <option value="offline"
+                                                                                    th:text="offline"></option>
+                                                                            <option value="online"
+                                                                                    th:text="online"></option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Giảm giá Voucher:</label>
-                                                                    <div class="d-flex">
-                                                                        <input type="text"
-                                                                               id="reducedVoucherInput"
-                                                                               name="reducedVoucherInput"
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Phiếu giảm giá thuộc
+                                                                            hạng: </label>
+                                                                        <select name="rank" class="form-select">
+                                                                            <option th:each="listRank : ${listRank}"
+                                                                                    th:value="${listRank.id}"
+                                                                                    th:text="${listRank.nameRank}"></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Số lượng:</label>
+                                                                        <input type="number"
+                                                                               th:text="${quantityVoucher}"
+                                                                               id="quantityVoucherInput"
                                                                                class="form-control"
-                                                                               th:text="${reduceVoucher}"
-                                                                               oninput="onInputReducedVoucher(this.value)"
-                                                                               placeholder="Mời nhập giá trị giảm voucher">
-                                                                        <span style="margin-left: 0.5rem">VND</span>
-                                                                        <input type="hidden" name="reducedValue"
-                                                                               id="reducedVoucherValue">
+                                                                               name="quantity"
+                                                                               placeholder="Mời nhập số lượng phiếu giảm giá">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Ngày bắt đầu:</label>
-                                                                    <input type="date"
-                                                                           id="startDay"
-                                                                           th:text="${startDayVoucher}"
-                                                                           class="form-control"
-                                                                           name="startDay">
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Đơn hàng tối
+                                                                            thiểu: </label>
+                                                                        <div class="input-group">
+                                                                            <input type="text"
+                                                                                   id="minimumOrderInput"
+                                                                                   class="form-control"
+                                                                                   oninput="onInputMinimumOrder(this.value)"
+                                                                                   name="minimumOrderInput"
+                                                                                   th:text="${miniumVoucher}"
+                                                                                   placeholder="Mời nhập số tiền tối thiểu đơn hàng">
+                                                                            <span class="input-group-text">VND</span>
+                                                                            <input type="hidden" name="minimumPrice"
+                                                                                   id="minimumOrderValue">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Ngày kết thúc:</label>
-                                                                    <input type="date"
-                                                                           id="endDate"
-                                                                           th:text="${endDateVoucher}"
-                                                                           class="form-control"
-                                                                           name="endDate">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Giảm giá
+                                                                            tối đa:</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text"
+                                                                                   id="reducedVoucherInput"
+                                                                                   name="reducedVoucherInput"
+                                                                                   class="form-control"
+                                                                                   th:text="${reduceVoucher}"
+                                                                                   oninput="onInputReducedVoucher(this.value)"
+                                                                                   placeholder="Mời nhập giá trị tối đa của phiếu giảm giá">
+                                                                            <span class="input-group-text">VND</span>
+                                                                            <input type="hidden" name="reducedValue"
+                                                                                   id="reducedVoucherValue">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Đóng lại
-                                                            </button>
-                                                            <button type="button"
-                                                                    onclick="addVoucherForm()"
-                                                                    class="btn btn-primary">Lưu lại
-                                                            </button>
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Ngày bắt đầu:</label>
+                                                                        <input type="date"
+                                                                               id="startDay"
+                                                                               th:text="${startDayVoucher}"
+                                                                               class="form-control"
+                                                                               name="startDay">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Ngày kết thúc:</label>
+                                                                        <input type="date"
+                                                                               id="endDate"
+                                                                               th:text="${endDateVoucher}"
+                                                                               class="form-control"
+                                                                               name="endDate">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Đóng lại
+                                                                </button>
+                                                                <button type="button"
+                                                                        onclick="addVoucherForm()"
+                                                                        class="btn btn-primary">Lưu lại
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 90px">Mã voucher</th>
-                                            <th style="width: 145px">Tên voucher</th>
-                                            <th style="width: 104px">Số lượng</th>
-                                            <th style="width: 111px">Gía trị giảm</th>
-                                            <th style="width: 104px">Hình thức</th>
-                                            <th style="width: 100px">Thuộc về</th>
-                                            <th style="width: 104px">Ngày bắt đầu</th>
-                                            <th style="width: 101px">Ngày kết thúc</th>
-                                            <th style="width: 102px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 333px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listVoucher, stat : ${listVoucher}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 90px">
-                                                <a th:href="@{|/mangostore/admin/voucher/detail/${listVoucher.id}|}"
-                                                   th:text="${listVoucher.codeVoucher}"
-                                                   style="text-decoration: none">
-                                                </a>
-                                            </td>
-                                            <td style="width: 145px; word-break: break-all"
-                                                th:text="${listVoucher.nameVoucher}"></td>
-                                            <td style="width: 104px" th:text="${listVoucher.quantity}"></td>
-                                            <td style="width: 111px"
-                                                th:text="${#numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                            <td style="width: 104px" th:text="${listVoucher.voucherFrom}"></td>
-                                            <td style="width: 100px" th:text="${listVoucher.rank.nameRank}"></td>
-                                            <td style="width: 104px"
-                                                th:text="${#temporals.format(listVoucher.startDay, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 101px"
-                                                th:text="${#temporals.format(listVoucher.endDate, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 102px" th:if="${listVoucher.voucherStatus == 1}">
-                                                <label class="badge badge-success">Đang diễn ra</label>
-                                            </td>
-                                            <td style="width: 102px" th:if="${listVoucher.voucherStatus == 2}">
-                                                <label class="badge badge-info">Sắp ra mắt</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listVoucher.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách voucher trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 97px;">Mã phiếu giảm giá</th>
+                                                <th style="width: 145px">Tên phiếu giảm giá</th>
+                                                <th style="width: 104px">Số lượng</th>
+                                                <th style="width: 111px">Gía trị giảm</th>
+                                                <th style="width: 104px">Hình thức</th>
+                                                <th style="width: 100px">Thuộc về</th>
+                                                <th style="width: 104px">Ngày bắt đầu</th>
+                                                <th style="width: 101px">Ngày kết thúc</th>
+                                                <th style="width: 102px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 333px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listVoucher, stat : ${listVoucher}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 97px;">
+                                                    <a th:href="@{|/mangostore/admin/voucher/detail/${listVoucher.id}|}"
+                                                       th:text="${listVoucher.codeVoucher}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td style="width: 145px; word-break: break-all"
+                                                    th:text="${listVoucher.nameVoucher}"></td>
+                                                <td style="width: 104px" th:text="${listVoucher.quantity}"></td>
+                                                <td style="width: 111px"
+                                                    th:text="${#numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 104px" th:text="${listVoucher.voucherFrom}"></td>
+                                                <td style="width: 100px" th:text="${listVoucher.rank.nameRank}"></td>
+                                                <td style="width: 104px"
+                                                    th:text="${#temporals.format(listVoucher.startDay, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 101px"
+                                                    th:text="${#temporals.format(listVoucher.endDate, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 102px" th:if="${listVoucher.voucherStatus == 1}">
+                                                    <label class="badge badge-success">Đang diễn ra</label>
+                                                </td>
+                                                <td style="width: 102px" th:if="${listVoucher.voucherStatus == 2}">
+                                                    <label class="badge badge-info">Sắp ra mắt</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listVoucher.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách phiếu giảm giá trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách voucher đã hết</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 100px">Mã voucher</th>
-                                            <th style="width: 145px">Tên voucher</th>
-                                            <th style="width: 141px">Số lượng</th>
-                                            <th style="width: 105px">Giá trị giảm</th>
-                                            <th style="width: 100px">Hình thức voucher</th>
-                                            <th style="width: 100px">Thuộc về</th>
-                                            <th style="width: 102px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 452px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listVoucherInactive, stat : ${listVoucherInactive}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 100px" th:text="${listVoucherInactive.codeVoucher}"></td>
-                                            <td style="width: 145px;word-break: break-all"
-                                                th:text="${listVoucherInactive.nameVoucher}"></td>
-                                            <td style="width: 141px">
-                                                <input type="hidden" name="id" class="idVoucher"
-                                                       th:value="${listVoucherInactive.id}">
-                                                <th:block th:if="${listVoucherInactive.quantity == 0}">
-                                                    <input type="number" style="width: 70px" name="quantity"
-                                                           class="quantityNew"
-                                                           th:value="${listVoucherInactive.quantity}">
-                                                </th:block>
-                                                <th:block th:unless="${listVoucherInactive.quantity == 0}">
-                                                    <input type="text" style="width: 70px" name="quantity"
-                                                           class="quantityOld"
-                                                           th:value="${listVoucherInactive.quantity}" readonly>
-                                                </th:block>
-                                                <button type="submit" th:text="Save" class="btn btn-info"
-                                                        onclick="restoreVoucher(this)"></button>
-                                            </td>
-                                            <td style="width: 105px"
-                                                th:text="${#numbers.formatDecimal(listVoucherInactive.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                            <td style="width: 100px" th:text="${listVoucherInactive.voucherFrom}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listVoucherInactive.rank.nameRank}"></td>
-                                            <td style="width: 102px" th:if="${listVoucherInactive.voucherStatus == 0}">
-                                                <label class="badge badge-danger">Đã kết thúc</label>
-                                            </td>
-                                            <td style="width: 102px" th:if="${listVoucherInactive.voucherStatus == 1}">
-                                                <label class="badge badge-success">Đang diễn ra</label>
-                                            </td>
-                                            <td style="width: 102px" th:if="${listVoucherInactive.voucherStatus == 2}">
-                                                <label class="badge badge-info">Sắp ra mắt</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listVoucherInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách voucher trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                <div class="tab-pane fade" id="tab2" role="tabpanel"
+                     aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách phiếu giảm giá đã hết lượt sử dụng</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 97px;">Mã phiếu giảm giá</th>
+                                                <th style="width: 145px">Tên phiếu giảm giá</th>
+                                                <th style="width: 141px">Số lượng</th>
+                                                <th style="width: 105px">Giá trị giảm</th>
+                                                <th style="width: 100px">Hình thức</th>
+                                                <th style="width: 100px">Thuộc về</th>
+                                                <th style="width: 102px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 452px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listVoucherInactive, stat : ${listVoucherInactive}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 97px;"
+                                                    th:text="${listVoucherInactive.codeVoucher}"></td>
+                                                <td style="width: 145px;word-break: break-all"
+                                                    th:text="${listVoucherInactive.nameVoucher}"></td>
+                                                <td style="width: 141px">
+                                                    <input type="hidden" name="id" class="idVoucher"
+                                                           th:value="${listVoucherInactive.id}">
+                                                    <th:block th:if="${listVoucherInactive.quantity == 0}">
+                                                        <input type="number" style="width: 70px" name="quantity"
+                                                               class="quantityNew"
+                                                               th:value="${listVoucherInactive.quantity}">
+                                                    </th:block>
+                                                    <th:block th:unless="${listVoucherInactive.quantity == 0}">
+                                                        <input type="text" style="width: 70px" name="quantity"
+                                                               class="quantityOld"
+                                                               th:value="${listVoucherInactive.quantity}" readonly>
+                                                    </th:block>
+                                                    <button type="submit" th:text="Save" class="btn btn-info"
+                                                            onclick="restoreVoucher(this)"></button>
+                                                </td>
+                                                <td style="width: 105px"
+                                                    th:text="${#numbers.formatDecimal(listVoucherInactive.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listVoucherInactive.voucherFrom}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listVoucherInactive.rank.nameRank}"></td>
+                                                <td style="width: 102px"
+                                                    th:if="${listVoucherInactive.voucherStatus == 0}">
+                                                    <label class="badge badge-danger">Đã kết thúc</label>
+                                                </td>
+                                                <td style="width: 102px"
+                                                    th:if="${listVoucherInactive.voucherStatus == 1}">
+                                                    <label class="badge badge-success">Đang diễn ra</label>
+                                                </td>
+                                                <td style="width: 102px"
+                                                    th:if="${listVoucherInactive.voucherStatus == 2}">
+                                                    <label class="badge badge-info">Sắp ra mắt</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listVoucherInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách phiếu giảm giá trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -329,7 +337,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

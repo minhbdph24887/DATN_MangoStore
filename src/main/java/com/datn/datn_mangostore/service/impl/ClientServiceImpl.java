@@ -44,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public String indexClient(Model model,
                               HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Trang Chủ");
         assert detailAccount != null;
         return "client/Home";
     }
@@ -52,7 +52,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public String indexProfile(Model model,
                                HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Tài khoản");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -114,7 +114,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public String changePassword(Model model,
                                  HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Mật khẩu");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -141,7 +141,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public String indexVoucherClient(Model model,
                                      HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Phiếu giảm giá");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -157,7 +157,7 @@ public class ClientServiceImpl implements ClientService {
                                     String status,
                                     Integer pageNo,
                                     Integer pageSize) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Hóa đơn");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

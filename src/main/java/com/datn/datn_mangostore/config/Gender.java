@@ -421,7 +421,9 @@ public class Gender {
     }
 
     public Account checkMenuAdmin(Model model,
-                                  HttpSession session) {
+                                  HttpSession session,
+                                  String titleWebsite) {
+        model.addAttribute("titleWebsite", titleWebsite);
         String email = (String) session.getAttribute("loginEmail");
         if (email == null) {
             return null;
@@ -439,13 +441,13 @@ public class Gender {
                     LocalDateTime checkDate = LocalDateTime.now();
                     int hour = checkDate.getHour();
                     if (hour >= 5 && hour < 10) {
-                        model.addAttribute("dates", "Buổi sáng");
+                        model.addAttribute("dates", "Buổi Sáng");
                     } else if (hour >= 10 && hour < 13) {
-                        model.addAttribute("dates", "Buổi trưa");
+                        model.addAttribute("dates", "Buổi Trưa");
                     } else if (hour >= 13 && hour < 18) {
-                        model.addAttribute("dates", "Buổi chiều");
+                        model.addAttribute("dates", "Buổi Chiều");
                     } else {
-                        model.addAttribute("dates", "Buổi tối");
+                        model.addAttribute("dates", "Buổi Tối");
                     }
 
                     Role detailRole = roleRepository.getRoleByEmail(email);
@@ -465,7 +467,9 @@ public class Gender {
     }
 
     public Account checkMenuClient(Model model,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   String titleWebsite) {
+        model.addAttribute("titleWebsite", titleWebsite);
         String email = (String) session.getAttribute("loginEmail");
         if (email == null) {
             return null;

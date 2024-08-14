@@ -1,116 +1,116 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
-<body>
-<main class="checkQuantityProductDetail">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Trang chủ Giỏ hàng</h2>
-                <div class="table-responsive">
-                    <div class="header">
-                        <table class="table table-hover table-condensed">
-                            <thead>
-                            <tr>
-                                <th style="width:35%">Tên sản phẩm</th>
-                                <th style="width:11%">Giá</th>
-                                <th style="width:15%">Số lượng</th>
-                                <th style="width:12%" class="text-center">Thành tiền</th>
-                                <th style="width:10%"></th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="content" style="height: 465px">
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr th:each="listShoppingCartByAccount : ${listShoppingCartByAccount}">
-                                <td data-th="Product" style="width: 35%">
-                                    <div class="row">
-                                        <div class="col-sm-2 hidden-xs">
-                                            <img th:src="@{|/images/product/${listShoppingCartByAccount.productDetail.product.images.imagesFile}|}"
-                                                 alt="Product 1" class="img-responsive" width="100">
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+    <main class="checkQuantityProductDetail">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Trang chủ Giỏ hàng</h2>
+                    <div class="table-responsive">
+                        <div class="header">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                <tr>
+                                    <th style="width:35%">Tên sản phẩm</th>
+                                    <th style="width:11%">Giá</th>
+                                    <th style="width:15%">Số lượng</th>
+                                    <th style="width:12%" class="text-center">Thành tiền</th>
+                                    <th style="width:10%"></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="content" style="height: 465px">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr th:each="listShoppingCartByAccount : ${listShoppingCartByAccount}">
+                                    <td data-th="Product" style="width: 35%">
+                                        <div class="row">
+                                            <div class="col-sm-2 hidden-xs">
+                                                <img th:src="@{|/images/product/${listShoppingCartByAccount.productDetail.product.images.imagesFile}|}"
+                                                     alt="Product 1" class="img-responsive" width="100">
+                                            </div>
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-9">
+                                                <h4 class="nomargin"
+                                                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    [[*{listShoppingCartByAccount.productDetail.product.nameProduct}]]</h4>
+                                                <p th:utext="('Size ' + ${listShoppingCartByAccount.productDetail.size.nameSize} + ', Màu ' + ${listShoppingCartByAccount.productDetail.color.nameColor})"></p>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-1"></div>
-                                        <div class="col-sm-9">
-                                            <h4 class="nomargin"
-                                                style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                [[*{listShoppingCartByAccount.productDetail.product.nameProduct}]]</h4>
-                                            <p th:utext="('Size ' + ${listShoppingCartByAccount.productDetail.size.nameSize} + ', Màu ' + ${listShoppingCartByAccount.productDetail.color.nameColor})"></p>
+                                    </td>
+                                    <td data-th="Price" style="width: 11%">
+                                        [[${#numbers.formatDecimal(listShoppingCartByAccount.productDetail.price, 0,
+                                        'COMMA', 0, 'POINT')} + ' VND']]
+                                    </td>
+                                    <td data-th="Quantity" style="width: 15%">
+                                        <div class="quantity-selector input-group">
+                                            <form th:action="@{/mangostore/cart/reduce(id=${listShoppingCartByAccount.id})}"
+                                                  method="post">
+                                                <button class="btn btn-outline-primary" type="submit"
+                                                        style="height: 38px;">
+                                                    <span style="margin-bottom: 1px;">-</span></button>
+                                            </form>
+                                            <input type="number" class="form-control"
+                                                   th:value="${listShoppingCartByAccount.quantity}" min="0"
+                                                   id="quantityInput"
+                                                   aria-label="Số lượng" readonly style="height: 38px; width: 80px;">
+                                            <form id="increaseFrom"
+                                                  th:action="@{/mangostore/cart/increase(id=${listShoppingCartByAccount.id})}"
+                                                  method="post">
+                                                <button class="btn btn-outline-primary" type="button"
+                                                        style="height: 38px;"
+                                                        th:attr="onclick='increaseQuantityForCart(' + ${listShoppingCartByAccount.productDetail.id} + ')'">
+                                                    +
+                                                </button>
+                                            </form>
                                         </div>
-                                    </div>
-                                </td>
-                                <td data-th="Price" style="width: 11%">
-                                    [[${#numbers.formatDecimal(listShoppingCartByAccount.productDetail.price, 0,
-                                    'COMMA', 0, 'POINT')} + ' VND']]
-                                </td>
-                                <td data-th="Quantity" style="width: 15%">
-                                    <div class="quantity-selector input-group">
-                                        <form th:action="@{/mangostore/cart/reduce(id=${listShoppingCartByAccount.id})}"
-                                              method="post">
-                                            <button class="btn btn-outline-primary" type="submit" style="height: 38px;">
-                                                <span style="margin-bottom: 1px;">-</span></button>
-                                        </form>
-                                        <input type="number" class="form-control"
-                                               th:value="${listShoppingCartByAccount.quantity}" min="0"
-                                               id="quantityInput"
-                                               aria-label="Số lượng" readonly style="height: 38px; width: 80px;">
-                                        <form id="increaseFrom"
-                                              th:action="@{/mangostore/cart/increase(id=${listShoppingCartByAccount.id})}"
-                                              method="post">
-                                            <button class="btn btn-outline-primary" type="button" style="height: 38px;"
-                                                    th:attr="onclick='increaseQuantityForCart(' + ${listShoppingCartByAccount.productDetail.id} + ')'">
-                                                +
+                                        <p th:utext="${'Còn ' + listShoppingCartByAccount.productDetail.quantity + ' sản phẩm'}"></p>
+                                    </td>
+                                    <td data-th="Subtotal" class="text-center" style="width: 12%">
+                                        [[${#numbers.formatDecimal(listShoppingCartByAccount.capitalSum, 0, 'COMMA', 0,
+                                        'POINT')} + ' VND']]
+                                    </td>
+                                    <td class="actions" data-th="" style="width: 10%">
+                                        <a type="bottom"
+                                           th:href="@{/mangostore/cart/delete(id=${listShoppingCartByAccount.id})}"
+                                           class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table>
+                                <tfoot>
+                                <tr>
+                                    <td style="width: 40%">
+                                        <a th:href="@{/mangostore/product}" class="btn btn-warning"><i
+                                                class="fa fa-angle-left"></i> Tiếp tục mua sắm</a>
+                                    </td>
+                                    <td style="width: 40%" class="hidden-xs text-center">
+                                        <strong style="margin-left: 50px;">Tổng cộng:
+                                            [[*{totalShoppingCart}]]</strong>
+                                    </td>
+                                    <td style="width: 30%">
+                                        <th:block th:if="${listShoppingCartByAccount.isEmpty()}">
+                                            <button class="btn btn-success btn-block"
+                                                    style="width: 123px; margin-left: 115px;">Thanh toán
+                                                <i class="fa fa-angle-right"></i>
                                             </button>
-                                        </form>
-                                    </div>
-                                    <p th:utext="${'Còn ' + listShoppingCartByAccount.productDetail.quantity + ' sản phẩm'}"></p>
-                                </td>
-                                <td data-th="Subtotal" class="text-center" style="width: 12%">
-                                    [[${#numbers.formatDecimal(listShoppingCartByAccount.capitalSum, 0, 'COMMA', 0,
-                                    'POINT')} + ' VND']]
-                                </td>
-                                <td class="actions" data-th="" style="width: 10%">
-                                    <a type="bottom"
-                                       th:href="@{/mangostore/cart/delete(id=${listShoppingCartByAccount.id})}"
-                                       class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <table>
-                            <tfoot>
-                            <tr>
-                                <td style="width: 40%">
-                                    <a th:href="@{/mangostore/product}" class="btn btn-warning"><i
-                                            class="fa fa-angle-left"></i> Tiếp tục mua sắm</a>
-                                </td>
-                                <td style="width: 40%" class="hidden-xs text-center">
-                                    <strong style="margin-left: 50px;">Tổng cộng: [[*{totalShoppingCart}]]</strong>
-                                </td>
-                                <td style="width: 30%">
-                                    <th:block th:if="${listShoppingCartByAccount.isEmpty()}">
-                                        <button class="btn btn-success btn-block"
-                                                style="width: 123px; margin-left: 115px;">Thanh toán
-                                            <i class="fa fa-angle-right"></i>
-                                        </button>
-                                    </th:block>
-                                    <th:block th:unless=" ${listShoppingCartByAccount.isEmpty()}">
-                                        <a th:href="@{/mangostore/cart/checkout}" class="btn btn-success btn-block"
-                                           style="width: 123px; margin-left: 115px;">Thanh toán <i
-                                                class="fa fa-angle-right"></i></a>
-                                    </th:block>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                        </th:block>
+                                        <th:block th:unless=" ${listShoppingCartByAccount.isEmpty()}">
+                                            <a th:href="@{/mangostore/cart/checkout}" class="btn btn-success btn-block"
+                                               style="width: 123px; margin-left: 115px;">Thanh toán <i
+                                                    class="fa fa-angle-right"></i></a>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

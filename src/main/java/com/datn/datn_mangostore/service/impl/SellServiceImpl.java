@@ -62,7 +62,7 @@ public class SellServiceImpl implements SellService {
     @Override
     public String indexSellAdmin(Model model,
                                  HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ bán hàng");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -99,7 +99,7 @@ public class SellServiceImpl implements SellService {
     public String editInvoice(Long idInvoice,
                               Model model,
                               HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật hóa đơn");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

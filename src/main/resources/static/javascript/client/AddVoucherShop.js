@@ -7,7 +7,7 @@ if (checkVoucherShop) {
                 const checkLogin = document.getElementById('checkLogin').value;
                 const voucherId = this.getAttribute('data-voucher-id');
                 if (checkLogin === 'null') {
-                    dangerAlert('Vui lòng đăng nhập vào tài khoản của bạn để lưu voucher');
+                    dangerAlert('Vui lòng đăng nhập vào tài khoản của bạn để lưu phiếu giảm giá');
                 } else {
                     const data = {
                         idVoucher: voucherId,
@@ -20,13 +20,13 @@ if (checkVoucherShop) {
                         dataType: 'json',
                         success: function (responseData) {
                             if (responseData) {
-                                successAlert('Lưu voucher thành công').then((result) => {
+                                successAlert('Lưu phiếu giảm giá thành công').then((result) => {
                                     if (result.value) {
                                         window.location.href = 'http://localhost:8080/mangostore/voucher/shop';
                                     }
                                 });
                             } else {
-                                errorAlert('Voucher đã được thêm vào trước đó rồi');
+                                errorAlert('Phiếu giảm giá đã được thêm vào trước đó rồi');
                             }
                         },
                         error: function (e) {

@@ -113,7 +113,8 @@
             <li class="nav-item dropdown d-none d-lg-block user-dropdown">
                 <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="img-xs rounded-circle" th:if="${profile.getImages() != null}"
-                         th:src="@{|/images/profile/${profile.getImages()}|}" alt="Profile image" style="width: 36px; height: 36px; border-radius: 100%;">
+                         th:src="@{|/images/profile/${profile.getImages()}|}" alt="Profile image"
+                         style="width: 36px; height: 36px; border-radius: 100%;">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                     <div class="dropdown-header text-center">
@@ -122,7 +123,7 @@
                         <p class="mb-1 mt-3 font-weight-semibold">[[${profile.getFullName()}]]</p>
                         <p class="fw-light text-muted mb-0">[[${profile.getEmail()}]]</p>
                     </div>
-                    <a class="dropdown-item" th:href="@{/mangostore/login/clear}">Sign Out</a>
+                    <a class="dropdown-item" th:href="@{/mangostore/login/clear}">Đăng xuất</a>
                 </div>
             </li>
         </ul>

@@ -1,165 +1,248 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="searchProductPage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Sản phẩm còn hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Sản phẩm hết hàng</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Trang chủ sản phẩm</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3>Danh sách sản phẩm còn hàng</h3>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <form id="productFilterForm">
-                                        <div class="row">
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="searchProductPage">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                           href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Sản phẩm còn hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                           aria-controls="tab2" role="tab"
+                           aria-selected="false">Sản phẩm hết hàng</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ sản phẩm</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3>Danh sách sản phẩm còn hàng</h3>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form id="productFilterForm">
                                             <div class="row">
-                                                <div class="col-sm-2">
-                                                    <a th:href="@{|/mangostore/admin/product-detail/create|}"
-                                                       type="button"
-                                                       class="btn btn-info btn-lg">Tạo sản phẩm</a>
+                                                <div class="row">
+                                                    <div class="col-sm-2">
+                                                        <a th:href="@{|/mangostore/admin/product-detail/create|}"
+                                                           type="button"
+                                                           class="btn btn-info btn-lg">Tạo sản phẩm</a>
+                                                    </div>
+                                                    <div class="col-sm-8 form-group">
+                                                        <input type="text" class="form-control" name="keyword"
+                                                               placeholder="Tìm kiếm theo tên sản phẩm"/>
+                                                    </div>
+                                                    <div class="col-sm-1 form-group">
+                                                        <button type="button" class="btn btn-primary btn-lg"
+                                                                onclick="applyFilters()">Lọc
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-1 form-group">
+                                                        <button type="button" class="btn btn-primary btn-lg"
+                                                                onclick="refreshData()">Làm mới
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-8 form-group">
-                                                    <input type="text" class="form-control" name="keyword"
-                                                           placeholder="Tìm kiếm theo tên sản phẩm"/>
+                                                <div class="col-sm-2 form-group">
+                                                    <select class="form-select" name="sortByPrice">
+                                                        <option value="" disabled selected>Sắp xếp theo giá</option>
+                                                        <option value="asc">Giá thấp đến cao</option>
+                                                        <option value="desc">Giá từ cao đến thấp</option>
+                                                    </select>
                                                 </div>
-                                                <div class="col-sm-1 form-group">
-                                                    <button type="button" class="btn btn-primary btn-lg"
-                                                            onclick="applyFilters()">Lọc
-                                                    </button>
+                                                <div class="col-sm-2 form-group">
+                                                    <select class="form-select" name="material">
+                                                        <option value="" disabled selected>Chất liệu</option>
+                                                        <option th:each="material : ${materials}"
+                                                                th:value="${material.id}"
+                                                                th:text="${material.nameMaterial}"></option>
+                                                    </select>
                                                 </div>
-                                                <div class="col-sm-1 form-group">
-                                                    <button type="button" class="btn btn-primary btn-lg"
-                                                            onclick="refreshData()">Làm mới
-                                                    </button>
+                                                <div class="col-sm-2 form-group">
+                                                    <select class="form-select" name="size">
+                                                        <option value="" disabled selected>Kích thước</option>
+                                                        <option th:each="size : ${sizes}" th:value="${size.id}"
+                                                                th:text="${size.nameSize}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 form-group">
+                                                    <select class="form-control" name="color">
+                                                        <option value="">Màu sắc</option>
+                                                        <option th:each="color : ${colors}" th:value="${color.id}"
+                                                                th:text="${color.nameColor}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 form-group">
+                                                    <select class="form-select" name="origin">
+                                                        <option value="" disabled selected>Nhà sản xuất</option>
+                                                        <option th:each="origin : ${origins}" th:value="${origin.id}"
+                                                                th:text="${origin.nameOrigin}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 form-group">
+                                                    <select class="form-select" name="category">
+                                                        <option value="" disabled selected>Danh mục</option>
+                                                        <option th:each="category : ${categories}"
+                                                                th:value="${category.id}"
+                                                                th:text="${category.nameCategory}"></option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-2 form-group">
-                                                <select class="form-select" name="sortByPrice">
-                                                    <option value="" disabled selected>Sắp xếp theo giá</option>
-                                                    <option value="asc">Giá thấp đến cao</option>
-                                                    <option value="desc">Giá từ cao đến thấp</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2 form-group">
-                                                <select class="form-select" name="material">
-                                                    <option value="" disabled selected>Chất liệu</option>
-                                                    <option th:each="material : ${materials}"
-                                                            th:value="${material.id}"
-                                                            th:text="${material.nameMaterial}"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2 form-group">
-                                                <select class="form-select" name="size">
-                                                    <option value="" disabled selected>Kích thước</option>
-                                                    <option th:each="size : ${sizes}" th:value="${size.id}"
-                                                            th:text="${size.nameSize}"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2 form-group">
-                                                <select class="form-control" name="color">
-                                                    <option value="">Màu sắc</option>
-                                                    <option th:each="color : ${colors}" th:value="${color.id}"
-                                                            th:text="${color.nameColor}"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2 form-group">
-                                                <select class="form-select" name="origin">
-                                                    <option value="" disabled selected>Nhà sản xuất</option>
-                                                    <option th:each="origin : ${origins}" th:value="${origin.id}"
-                                                            th:text="${origin.nameOrigin}"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2 form-group">
-                                                <select class="form-select" name="category">
-                                                    <option value="" disabled selected>Danh mục</option>
-                                                    <option th:each="category : ${categories}"
-                                                            th:value="${category.id}"
-                                                            th:text="${category.nameCategory}"></option>
-                                                </select>
-                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="content2" class="content" style="height: 500px">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 120px">Ảnh sản phẩm</th>
+                                                <th style="width: 172px">Tên sản phẩm</th>
+                                                <th style="width: 172px">Giá bán</th>
+                                                <th style="width: 90px">Kích thước</th>
+                                                <th style="width: 90px">Màu sắc</th>
+                                                <th style="width: 95px">Chất liệu</th>
+                                                <th style="width: 95px">Nhà sản xuất</th>
+                                                <th style="width: 100px">Mô tả</th>
+                                                <th style="width: 85px">Số lượng</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="listProductDetail, stat : ${listProductDetail}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 120px">
+                                                    <img th:src="@{|/images/product/${listProductDetail.product.images.imagesFile}|}"
+                                                         alt="image" style="width: 116px; height: 132px">
+                                                </td>
+                                                <td style="width: 172px; word-break: break-all">
+                                                    <a th:href="@{|/mangostore/admin/product-detail/edit/${listProductDetail.id}|}"
+                                                       th:text="${listProductDetail.product.nameProduct}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td class="price-cell" style="width: 95px"
+                                                    th:text="${#numbers.formatInteger(listProductDetail.price, 0, 'POINT') + ' VND'}"></td>
+                                                <td style="width: 90px"
+                                                    th:text="${listProductDetail.size.nameSize}"></td>
+                                                <td style="width: 90px"
+                                                    th:text="${listProductDetail.color.nameColor}"></td>
+                                                <td style="width: 95px"
+                                                    th:text="${listProductDetail.material.nameMaterial}"></td>
+                                                <td style="width: 95px"
+                                                    th:text="${listProductDetail.origin.nameOrigin}"></td>
+                                                <td style="width: 100px" th:text="${listProductDetail.describe}"></td>
+                                                <td style="width: 85px" th:text="${listProductDetail.quantity}"></td>
+                                                <td style="width: 84px" th:if="${listProductDetail.productStatus == 1}">
+                                                    <label class="badge badge-success">Còn hàng</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listProductDetail.isEmpty()}">
+                                                <td colspan="11"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách sản phẩm còn hàng trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div id="paginationInfo" style="display:none;">
+                                            <span id="totalPages" th:text="${totalPages}"></span>
+                                            <span id="totalItems" th:text="${totalItems}"></span>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="content2" class="content" style="height: 500px">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 120px">Ảnh sản phẩm</th>
-                                            <th style="width: 172px">Tên sản phẩm</th>
-                                            <th style="width: 172px">Giá bán</th>
-                                            <th style="width: 90px">Kích thước</th>
-                                            <th style="width: 90px">Màu sắc</th>
-                                            <th style="width: 95px">Chất liệu</th>
-                                            <th style="width: 95px">Nhà sản xuất</th>
-                                            <th style="width: 100px">Mô tả</th>
-                                            <th style="width: 85px">Số lượng</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="listProductDetail, stat : ${listProductDetail}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 120px">
-                                                <img th:src="@{|/images/product/${listProductDetail.product.images.imagesFile}|}"
-                                                     alt="image" style="width: 116px; height: 132px">
-                                            </td>
-                                            <td style="width: 172px; word-break: break-all">
-                                                <a th:href="@{|/mangostore/admin/product-detail/edit/${listProductDetail.id}|}"
-                                                   th:text="${listProductDetail.product.nameProduct}"
-                                                   style="text-decoration: none">
-                                                </a>
-                                            </td>
-                                            <td class="price-cell" style="width: 95px"
-                                                th:text="${#numbers.formatInteger(listProductDetail.price, 0, 'POINT') + ' VND'}"></td>
-                                            <td style="width: 90px"
-                                                th:text="${listProductDetail.size.nameSize}"></td>
-                                            <td style="width: 90px"
-                                                th:text="${listProductDetail.color.nameColor}"></td>
-                                            <td style="width: 95px"
-                                                th:text="${listProductDetail.material.nameMaterial}"></td>
-                                            <td style="width: 95px"
-                                                th:text="${listProductDetail.origin.nameOrigin}"></td>
-                                            <td style="width: 100px" th:text="${listProductDetail.describe}"></td>
-                                            <td style="width: 85px" th:text="${listProductDetail.quantity}"></td>
-                                            <td style="width: 84px" th:if="${listProductDetail.productStatus == 1}">
-                                                <label class="badge badge-success">Còn hàng</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listProductDetail.isEmpty()}">
-                                            <td colspan="11"
-                                                style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách sản phẩm còn hàng trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div id="paginationInfo" style="display:none;">
-                                        <span id="totalPages" th:text="${totalPages}"></span>
-                                        <span id="totalItems" th:text="${totalItems}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tab2" role="tabpanel"
+                     aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách sản phẩm hết hàng</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 120px">Ảnh sản phẩm</th>
+                                                <th style="width: 115px">Tên sản phẩm</th>
+                                                <th style="width: 70px">Chất liệu</th>
+                                                <th style="width: 70px">Nhà sản xuất</th>
+                                                <th style="width: 70px">Mô tả</th>
+                                                <th style="width: 124px">Số lượng</th>
+                                                <th style="width: 70px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 395px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="productDetail, stat : ${listProductDetailInactive}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 120px"><img
+                                                        th:src="@{|/images/product/${productDetail.product.images.imagesFile}|}"
+                                                        alt="image" style="width: 116px; height: 132px">
+                                                </td>
+                                                <td style="width: 115px; word-break: break-all"
+                                                    th:text="${productDetail.product.nameProduct + '(' + productDetail.size.nameSize + ', ' + productDetail.color.nameColor + ')'}"></td>
+                                                <td style="width: 70px"
+                                                    th:text="${productDetail.material.nameMaterial}"></td>
+                                                <td style="width: 70px"
+                                                    th:text="${productDetail.origin.nameOrigin}"></td>
+                                                <td style="width: 70px"
+                                                    th:text="${productDetail.describe}"></td>
+                                                <td style="width: 124px">
+                                                    <div class="d-flex">
+                                                        <input type="hidden" name="id" class="idProductDetail"
+                                                               th:value="${productDetail.id}">
+                                                        <th:block th:if="${productDetail.quantity == 0}">
+                                                            <input type="number"
+                                                                   style="width: 70px; height: 30px; margin-left: 65px;"
+                                                                   name="quantity"
+                                                                   class="quantityNew"
+                                                                   th:value="${productDetail.quantity}">
+                                                        </th:block>
+                                                        <th:block th:unless="${productDetail.quantity == 0}">
+                                                            <input type="text"
+                                                                   style="width: 70px; height: 30px; margin-left: 65px;"
+                                                                   name="quantity"
+                                                                   class="quantityOld"
+                                                                   th:value="${productDetail.quantity}" readonly>
+                                                        </th:block>
+                                                        <button type="submit" th:text="Save" class="btn btn-info"
+                                                                onclick="restoreProductDetail(this)"></button>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 70px" th:if="${productDetail.productStatus == 1}">
+                                                    <label class="badge badge-success">Còn hàng</label>
+                                                </td>
+
+                                                <td style="width: 70px" th:if="${productDetail.productStatus == 0}">
+                                                    <label class="badge badge-danger">Hết hàng</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${#lists.isEmpty(listProductDetailInactive)}">
+                                                <td colspan="8"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách sản phẩm hết hàng trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -167,91 +250,6 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách sản phẩm hết hàng</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 120px">Ảnh sản phẩm</th>
-                                            <th style="width: 115px">Tên sản phẩm</th>
-                                            <th style="width: 70px">Chất liệu</th>
-                                            <th style="width: 70px">Nhà sản xuất</th>
-                                            <th style="width: 70px">Mô tả</th>
-                                            <th style="width: 124px">Số lượng</th>
-                                            <th style="width: 70px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 395px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="productDetail, stat : ${listProductDetailInactive}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 120px"><img
-                                                    th:src="@{|/images/product/${productDetail.product.images.imagesFile}|}"
-                                                    alt="image" style="width: 116px; height: 132px">
-                                            </td>
-                                            <td style="width: 115px; word-break: break-all"
-                                                th:text="${productDetail.product.nameProduct + '(' + productDetail.size.nameSize + ', ' + productDetail.color.nameColor + ')'}"></td>
-                                            <td style="width: 70px"
-                                                th:text="${productDetail.material.nameMaterial}"></td>
-                                            <td style="width: 70px"
-                                                th:text="${productDetail.origin.nameOrigin}"></td>
-                                            <td style="width: 70px"
-                                                th:text="${productDetail.describe}"></td>
-                                            <td style="width: 124px">
-                                                <div class="d-flex">
-                                                    <input type="hidden" name="id" class="idProductDetail"
-                                                           th:value="${productDetail.id}">
-                                                    <th:block th:if="${productDetail.quantity == 0}">
-                                                        <input type="number"
-                                                               style="width: 70px; height: 30px; margin-left: 65px;"
-                                                               name="quantity"
-                                                               class="quantityNew"
-                                                               th:value="${productDetail.quantity}">
-                                                    </th:block>
-                                                    <th:block th:unless="${productDetail.quantity == 0}">
-                                                        <input type="text"
-                                                               style="width: 70px; height: 30px; margin-left: 65px;"
-                                                               name="quantity"
-                                                               class="quantityOld"
-                                                               th:value="${productDetail.quantity}" readonly>
-                                                    </th:block>
-                                                    <button type="submit" th:text="Save" class="btn btn-info"
-                                                            onclick="restoreProductDetail(this)"></button>
-                                                </div>
-                                            </td>
-                                            <td style="width: 70px" th:if="${productDetail.productStatus == 1}">
-                                                <label class="badge badge-success">Còn hàng</label>
-                                            </td>
-
-                                            <td style="width: 70px" th:if="${productDetail.productStatus == 0}">
-                                                <label class="badge badge-danger">Hết hàng</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${#lists.isEmpty(listProductDetailInactive)}">
-                                            <td colspan="8" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách sản phẩm hết hàng trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

@@ -45,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
                              HttpSession session,
                              Integer years,
                              String precious) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

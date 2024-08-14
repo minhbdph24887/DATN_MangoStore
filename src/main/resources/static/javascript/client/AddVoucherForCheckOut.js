@@ -9,12 +9,12 @@ if (checkAddVoucherPage) {
                 const id = checkInputVoucherList.value;
                 updateMinimumPrice(id);
             } else {
-                dangerAlert('Vui lòng chọn Voucher');
+                dangerAlert('Vui lòng chọn phiếu giảm giá');
             }
         } else {
             const voucherPattern = /^[A-Z0-9]{10}$/;
             if (!voucherPattern.test(codeVoucher)) {
-                dangerAlert('Mã Voucher không hợp lệ');
+                dangerAlert('Mã phiếu giảm giá không hợp lệ');
             } else {
                 const data = {
                     codeVoucher: codeVoucher,
@@ -31,13 +31,13 @@ if (checkAddVoucherPage) {
                     },
                     error: function (e) {
                         if (e.responseText === "1") {
-                            dangerAlert('Voucher không tồn tại');
+                            dangerAlert('Phiếu giảm giá không tồn tại');
                         } else if (e.responseText === "2") {
-                            dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
+                            dangerAlert('Phiếu giảm giá này không thể được sử dụng với hóa đơn này');
                         } else if (e.responseText === '3') {
-                            dangerAlert('Voucher đã được sử dụng rồi');
+                            dangerAlert('Phiếu giảm giá đã được sử dụng rồi');
                         }else if(e.responseText === '4'){
-                            dangerAlert('Mức rank của bạn hiện tại không thể sử dụng voucher này');
+                            dangerAlert('Mức rank của bạn hiện tại không thể sử dụng phiếu giảm giá này');
                         } else {
                             errorAlert('Lỗi.');
                         }
@@ -50,7 +50,7 @@ if (checkAddVoucherPage) {
         function updateMinimumPrice(id) {
             const minimumPrice = parseFloat(document.getElementById('minimumPrice' + id).value.replace(/,/g, ''));
             if (totalPayment < minimumPrice) {
-                dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
+                dangerAlert('Phiếu giảm giá này không thể được sử dụng với hóa đơn này');
             } else {
                 const addVoucherClient = document.getElementById('addVoucherClient');
                 addVoucherClient.submit();

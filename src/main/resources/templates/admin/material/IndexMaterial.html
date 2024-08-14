@@ -1,191 +1,193 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="restoreMaterialPage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Chất liệu hoạt động</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Chất liệu ngừng hoạt động</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Trang chủ chất liệu</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách chất liệu ngừng hoạt động</h4>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                            data-target="#myModal">Thêm chất liệu
-                                    </button>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="restoreMaterialPage">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                           href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Chất liệu hoạt động</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                           aria-controls="tab2" role="tab"
+                           aria-selected="false">Chất liệu ngừng hoạt động</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ chất liệu</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách chất liệu ngừng hoạt động</h4>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                                data-target="#myModal">Thêm chất liệu
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-7 form-group" style="margin-left: 100px;">
+                                        <form action="/mangostore/admin/material" method="get">
+                                            <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                                   placeholder="Tìm theo tên chất liệu"/>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-sm-7 form-group" style="margin-left: 100px;">
-                                    <form action="/mangostore/admin/material" method="get">
-                                        <input type="text" name="keyword" class="form-control" th:value="${keyword}"
-                                               placeholder="Tìm theo tên chất liệu"/>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <form id="addMaterialForm" th:action="@{/mangostore/admin/material/add}"
-                                                  th:object="${addMaterial}" method="post"
-                                                  onsubmit="return confirmAndSubmitMaterial(event)">
-                                                <h3 class="mb-4">Thêm chất liệu</h3>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> Tên chất liệu : </label>
-                                                            <input type="text" class="form-control" name="nameMaterial"
-                                                                   placeholder="Vui lòng nhập tên chất liệu">
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form id="addMaterialForm" th:action="@{/mangostore/admin/material/add}"
+                                                      th:object="${addMaterial}" method="post"
+                                                      onsubmit="return confirmAndSubmitMaterial(event)">
+                                                    <h3 class="mb-4">Thêm chất liệu</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"> Tên chất liệu : </label>
+                                                                <input type="text" class="form-control"
+                                                                       name="nameMaterial"
+                                                                       placeholder="Vui lòng nhập tên chất liệu">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
 
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Đóng lại
-                                                            </button>
-                                                            <input type="submit" value="Lưu lại"
-                                                                   class="btn btn-primary">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Đóng lại
+                                                                </button>
+                                                                <input type="submit" value="Lưu lại"
+                                                                       class="btn btn-primary">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 114px">Mã chất liệu</th>
-                                            <th style="width: 151px">Tên chất liệu</th>
-                                            <th style="width: 100px">Người tạo</th>
-                                            <th style="width: 100px">Người cập nhật</th>
-                                            <th style="width: 100px">Ngày tạo</th>
-                                            <th style="width: 100px">Ngày câp nhật</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 333px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listMaterial, stat : ${listMaterial}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 114px">
-                                                <a th:href="@{|/mangostore/admin/material/detail/${listMaterial.id}|}"
-                                                   th:text="${listMaterial.codeMaterial}"
-                                                   style="text-decoration: none">
-                                                </a>
-                                            </td>
-                                            <td style="width: 151px; word-break: break-all"
-                                                th:text="${listMaterial.nameMaterial}"></td>
-                                            <td style="width: 100px" th:text="${listMaterial.nameUserCreate}"></td>
-                                            <td style="width: 100px" th:text="${listMaterial.nameUserUpdate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listMaterial.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listMaterial.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 84px" th:if="${listMaterial.status == 1}">
-                                                <label class="badge badge-success">Đang hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listMaterial.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách chất liệu trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 114px">Mã chất liệu</th>
+                                                <th style="width: 151px">Tên chất liệu</th>
+                                                <th style="width: 100px">Người tạo</th>
+                                                <th style="width: 100px">Người cập nhật</th>
+                                                <th style="width: 100px">Ngày tạo</th>
+                                                <th style="width: 100px">Ngày câp nhật</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 333px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listMaterial, stat : ${listMaterial}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 114px">
+                                                    <a th:href="@{|/mangostore/admin/material/detail/${listMaterial.id}|}"
+                                                       th:text="${listMaterial.codeMaterial}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td style="width: 151px; word-break: break-all"
+                                                    th:text="${listMaterial.nameMaterial}"></td>
+                                                <td style="width: 100px" th:text="${listMaterial.nameUserCreate}"></td>
+                                                <td style="width: 100px" th:text="${listMaterial.nameUserUpdate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listMaterial.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listMaterial.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 84px" th:if="${listMaterial.status == 1}">
+                                                    <label class="badge badge-success">Đang hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listMaterial.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách chất liệu trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách chất liệu ngừng hoạt động</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 114px">Mã chất liệu</th>
-                                            <th style="width: 151px">Tên chất liệu</th>
-                                            <th style="width: 100px">Người tạo</th>
-                                            <th style="width: 100px">Người cập nhật</th>
-                                            <th style="width: 100px">Ngày tạo</th>
-                                            <th style="width: 100px">Ngày cập nhật</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 452px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listMaterialInactive, stat : ${listMaterialInactive}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 114px">
-                                                <button type="button" th:data-id="${listMaterialInactive.id}"
-                                                        class="btn btn-red"
-                                                        onclick="restoreMaterial(this)"
-                                                        style="text-decoration: none">
-                                                    [[*{listMaterialInactive.codeMaterial}]]
-                                                </button>
-                                            </td>
+                <div class="tab-pane fade" id="tab2" role="tabpanel"
+                     aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách chất liệu ngừng hoạt động</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 114px">Mã chất liệu</th>
+                                                <th style="width: 151px">Tên chất liệu</th>
+                                                <th style="width: 100px">Người tạo</th>
+                                                <th style="width: 100px">Người cập nhật</th>
+                                                <th style="width: 100px">Ngày tạo</th>
+                                                <th style="width: 100px">Ngày cập nhật</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 452px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listMaterialInactive, stat : ${listMaterialInactive}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 114px">
+                                                    <button type="button" th:data-id="${listMaterialInactive.id}"
+                                                            class="btn btn-red"
+                                                            onclick="restoreMaterial(this)"
+                                                            style="text-decoration: none">
+                                                        [[*{listMaterialInactive.codeMaterial}]]
+                                                    </button>
+                                                </td>
 
-                                            <td style="width: 151px; word-break: break-all"
-                                                th:text="${listMaterialInactive.nameMaterial}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listMaterialInactive.nameUserCreate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listMaterialInactive.nameUserUpdate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listMaterialInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listMaterialInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 84px" th:if="${listMaterialInactive.status == 0}">
-                                                <label class="badge badge-danger">Ngừng hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listMaterialInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách chất liệu ngừng hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                                <td style="width: 151px; word-break: break-all"
+                                                    th:text="${listMaterialInactive.nameMaterial}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listMaterialInactive.nameUserCreate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listMaterialInactive.nameUserUpdate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listMaterialInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listMaterialInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 84px" th:if="${listMaterialInactive.status == 0}">
+                                                    <label class="badge badge-danger">Ngừng hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listMaterialInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách chất liệu ngừng hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -193,7 +195,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 
 public interface AuthenticationService {
 
-    String getAllRole(Model model,
+    String getAllAuthentication(Model model,
                       HttpSession session);
 
     String detailAuthentication(Model model,

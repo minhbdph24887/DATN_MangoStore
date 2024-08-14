@@ -33,7 +33,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String indexMaterial(Model model,
                                 HttpSession session,
                                 String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ chất liệu");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -75,7 +75,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String detailMaterial(Model model,
                                  HttpSession session,
                                  Long idMaterial) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật chất liệu");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

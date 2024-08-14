@@ -38,7 +38,7 @@ public class RankServiceImpl implements RankService {
     public String indexRank(Model model,
                             HttpSession session,
                             String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ rank");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -86,7 +86,7 @@ public class RankServiceImpl implements RankService {
     public String detailRank(Model model,
                              HttpSession session,
                              Long idRank) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật rank");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

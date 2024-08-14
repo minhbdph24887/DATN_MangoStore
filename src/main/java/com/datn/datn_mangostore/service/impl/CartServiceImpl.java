@@ -60,7 +60,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public String indexCart(Model model,
                             HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Giỏ hàng");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -153,7 +153,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public String viewCheckOut(Model model,
                                HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Thanh toán");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

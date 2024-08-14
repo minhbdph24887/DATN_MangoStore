@@ -33,7 +33,7 @@ public class OriginServiceImpl implements OriginService {
     public String indexOrigin(Model model,
                               HttpSession session,
                               String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ nhà sản xuất");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -75,7 +75,7 @@ public class OriginServiceImpl implements OriginService {
     public String detailOrigin(Model model,
                                HttpSession session,
                                Long idOrigin) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật nhà sản xuất");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

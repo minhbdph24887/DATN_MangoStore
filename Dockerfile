@@ -1,5 +1,5 @@
 FROM openjdk:21
-ARG FILE_JAR=gradle/wrapper/gradle-wrapper.jar
-ADD ${FILE_JAR} api-service.jar
-ENTRYPOINT ["java", "-jar", "api-service.jar"]
-EXPOSE 8080
+VOLUME /tmp
+ARG JAR_FILE
+COPY ${JAR_FILE} datn-mangostore-app.jar
+ENTRYPOINT ["java", "-jar", "/datn-mangostore-app.jar"]

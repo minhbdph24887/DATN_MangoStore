@@ -37,7 +37,7 @@ public class VoucherShopServiceImpl implements VoucherShopService {
     @Override
     public String indexVoucherShop(Model model,
                                    HttpSession session) {
-        Account detailAccount = gender.checkMenuClient(model, session);
+        Account detailAccount = gender.checkMenuClient(model, session, "Mango Store | Phiếu giảm giá tại cửa hàng");
         assert detailAccount != null;
         List<Voucher> getAllVoucher = voucherRepository.getAllVoucherOnline();
         model.addAttribute("listVoucher", getAllVoucher);

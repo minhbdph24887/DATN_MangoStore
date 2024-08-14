@@ -1,65 +1,62 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="checkUpdateAuthenticationPage">
-
-    <div>
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/authentication}">Trang chủ xác thực</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Xác thực</li>
-        </ul>
-    </div>
-    <div class="row">
-        <div class="col-lg-5 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Thông tin tài khoản xác thực: </h4>
-                    <div class="table-responsive">
-                        <div class="form-group">
-                            Thông tin tài khoản: <span style="color: red;">[[${detailAuthentication.getAccount().getFullName()}]]</span>
-                        </div>
-                        <div class="form-group">
-                            Quyền tài khoản: <span
-                                style="color: red">[[${detailAuthentication.getRole().getName()}]]</span>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="checkUpdateAuthenticationPage">
+        <div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/authentication}">Trang chủ xác thực</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Cập nhật xác thực</li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Thông tin tài khoản xác thực: </h4>
+                        <div class="table-responsive">
+                            <div class="form-group">
+                                Thông tin tài khoản: <span style="color: red;">[[${detailAuthentication.getAccount().getFullName()}]]</span>
+                            </div>
+                            <div class="form-group">
+                                Quyền tài khoản: <span
+                                    style="color: red">[[${detailAuthentication.getRole().getName()}]]</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-7 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Cập nhật xác thực</h4>
-                    <form id="formUpdateAuthentication" th:action="@{/mangostore/admin/authentication/update}"
-                          th:object="${detailAuthentication}" method="post">
-                        <input type="hidden" th:field="*{id}" th:value="${detailAuthentication.id}"
-                               id="idAuthentication">
-                        <div class="form-group">
-                            <label class="form-label">Tên tài khoản:</label>
-                            <div class="form-control" th:text="${detailAuthentication.account.fullName}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Tên quyền:</label>
-                            <select name="role" class="form-control" id="roleValue">
-                                <option th:each="listRole : ${listRole}"
-                                        th:value="${listRole.id}"
-                                        th:text="${listRole.name}"
-                                        th:selected="${detailAuthentication.role.id == listRole.id}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="text-right mt-3">
-                            <input type="hidden" th:value="${detailAuthentication.getAccount().getId()}" id="idAccount">
-                            <button type="button" onclick="checkUpdateAuthentication()" class="btn btn-primary">Lưu
-                                lại
-                            </button>&nbsp;
-                        </div>
-                    </form>
+            <div class="col-lg-7 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Cập nhật xác thực</h4>
+                        <form id="formUpdateAuthentication" th:action="@{/mangostore/admin/authentication/update}"
+                              th:object="${detailAuthentication}" method="post">
+                            <input type="hidden" th:field="*{id}" th:value="${detailAuthentication.id}"
+                                   id="idAuthentication">
+                            <div class="form-group">
+                                <label class="form-label">Tên tài khoản:</label>
+                                <div class="form-control" th:text="${detailAuthentication.account.fullName}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tên quyền:</label>
+                                <select name="role" class="form-control" id="roleValue">
+                                    <option th:each="listRole : ${listRole}"
+                                            th:value="${listRole.id}"
+                                            th:text="${listRole.name}"
+                                            th:selected="${detailAuthentication.role.id == listRole.id}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="text-right mt-3">
+                                <input type="hidden" th:value="${detailAuthentication.getAccount().getId()}"
+                                       id="idAccount">
+                                <button type="button" onclick="checkUpdateAuthentication()" class="btn btn-primary">Lưu
+                                    lại
+                                </button>&nbsp;
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

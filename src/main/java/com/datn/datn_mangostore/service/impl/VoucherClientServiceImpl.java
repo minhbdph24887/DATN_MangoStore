@@ -25,7 +25,7 @@ public class VoucherClientServiceImpl implements VoucherClientService {
     @Override
     public String indexVoucherClient(Model model,
                                      HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ phiếu giảm giá của khách hàng");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -39,7 +39,7 @@ public class VoucherClientServiceImpl implements VoucherClientService {
     public String detailVoucherClient(Model model,
                                       HttpSession session,
                                       Long idVoucherClient) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Phiếu giảm giá của khách hàng");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

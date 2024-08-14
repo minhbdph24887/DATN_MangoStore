@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" th:href="@{|/images/layout/favicon.png|}"/>
-    <title>Admin</title>
     <link rel="stylesheet" th:href="@{|/css/admin/feather.css|}">
     <link rel="stylesheet" th:href="@{|/css/admin/materialdesignicons.min.css|}">
     <link rel="stylesheet" th:href="@{|/css/admin/themify-icons.css|}">
@@ -31,6 +30,8 @@
     <link rel="stylesheet" th:href="@{|/css/admin/ImagesActive.css|}">
     <link rel="stylesheet" th:href="@{|/css/admin/Select2.css|}">
     <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css}" rel="stylesheet"/>
+
+    <title th:text="${titleWebsite}"></title>
 </head>
 
 <body class="with-welcome-text">

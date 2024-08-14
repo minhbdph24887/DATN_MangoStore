@@ -33,7 +33,7 @@ public class ColorServiceImpl implements ColorService {
     public String indexColor(Model model,
                              HttpSession session,
                              String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ màu sắc");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -74,7 +74,7 @@ public class ColorServiceImpl implements ColorService {
     public String detailColor(Model model,
                               HttpSession session,
                               Long idColor) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật màu sắc");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

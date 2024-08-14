@@ -33,7 +33,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public String getAllRoleByStatus1(Model model,
                                       HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ quyền");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -62,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
     public String detailRole(Model model,
                              HttpSession session,
                              Long idRole) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật quyền");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

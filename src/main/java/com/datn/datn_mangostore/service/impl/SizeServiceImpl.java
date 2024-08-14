@@ -34,7 +34,7 @@ public class SizeServiceImpl implements SizeService {
     public String indexSize(Model model,
                             HttpSession session,
                             String keyword) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ kích cỡ");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -75,7 +75,7 @@ public class SizeServiceImpl implements SizeService {
     public String detailSize(Model model,
                              HttpSession session,
                              Long idSize) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật kích cỡ");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

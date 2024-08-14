@@ -169,7 +169,7 @@ public class ProfileController {
     @GetMapping(value = "authentication")
     public String viewAuthentication(Model model,
                                      HttpSession session) {
-        return authenticationService.getAllRole(model, session);
+        return authenticationService.getAllAuthentication(model, session);
     }
 
     @GetMapping(value = "authentication/detail/{id}")

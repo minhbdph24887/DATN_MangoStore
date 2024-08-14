@@ -1,14 +1,10 @@
-version: '4.32.0'
+version: '3.8'
+
 services:
-  api-services:
-    container_name: api-container
-    build:
-      context: ./
-      dockerfile: Dockerfile
+  app:
+    image: datn-mangostore-app:latest
+    build: .
     ports:
-      - '6624:8080'
-    networks:
-      - backend
-networks:
-  backend:
-    driver: bridge
+      - "127.0.0.1:8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev

@@ -1,301 +1,306 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="showImage AddAccount restoreClientPage ">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Danh sách khách hàng hoạt động</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Danh sách khách hàng ngừng hoạt động</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách khách hàng hoạt động</h4>
-                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                    data-target="#myModal">Thêm khách hàng
-                            </button>
-                            <div class="modal fade" id="myModal" role="dialog" style="padding-left: 34px">
-                                <div class="modal-dialog" style="max-width: 80%; margin-left: 187px;">
-                                    <div class="modal-content" style="height: 70vh;">
-                                        <div class="modal-header" style="padding-bottom: 6px">
-                                            <h4 class="modal-title">Thêm khách hàng</h4>
-                                        </div>
-                                        <form id="formAddAccount" th:action="@{/mangostore/admin/list-client/add}"
-                                              th:object="${addClient}"
-                                              method="post">
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-md-7 d-flex align-items-stretch">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Họ tên:</label>
-                                                                    <input type="text"
-                                                                           class="form-control"
-                                                                           name="fullName" id="fullNameInput"
-                                                                           placeholder="Mời nhập họ tên khách hàng">
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="showImage AddAccount restoreClientPage ">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                           href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Danh sách khách hàng hoạt động</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                           aria-controls="tab2" role="tab"
+                           aria-selected="false">Danh sách khách hàng ngừng hoạt động</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách khách hàng hoạt động</h4>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                        data-target="#myModal">Thêm khách hàng
+                                </button>
+                                <div class="modal fade" id="myModal" role="dialog" style="padding-left: 34px">
+                                    <div class="modal-dialog" style="max-width: 80%; margin-left: 187px;">
+                                        <div class="modal-content" style="height: 70vh;">
+                                            <div class="modal-header" style="padding-bottom: 6px">
+                                                <h4 class="modal-title">Thêm khách hàng</h4>
+                                            </div>
+                                            <form id="formAddAccount" th:action="@{/mangostore/admin/list-client/add}"
+                                                  th:object="${addClient}"
+                                                  method="post">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-7 d-flex align-items-stretch">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Họ tên:</label>
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               name="fullName" id="fullNameInput"
+                                                                               placeholder="Mời nhập họ tên khách hàng">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Số điện thoại:</label>
-                                                                    <input type="text"
-                                                                           class="form-control"
-                                                                           name="numberPhone"
-                                                                           id="numberPhoneInput"
-                                                                           placeholder="Mời nhập số điện thoại khách hàng">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Số điện thoại:</label>
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               name="numberPhone"
+                                                                               id="numberPhoneInput"
+                                                                               placeholder="Mời nhập số điện thoại khách hàng">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Email:</label>
-                                                                    <input type="email"
-                                                                           class="form-control"
-                                                                           name="email"
-                                                                           id="emailInput"
-                                                                           placeholder="Mời nhập email khách hàng">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Email:</label>
+                                                                        <input type="email"
+                                                                               class="form-control"
+                                                                               name="email"
+                                                                               id="emailInput"
+                                                                               placeholder="Mời nhập email khách hàng">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-7">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Ngày sinh:</label>
-                                                                    <input type="date"
-                                                                           class="form-control"
-                                                                           name="birthday"
-                                                                           id="birthdaytInput">
+                                                                <div class="col-md-7">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Ngày sinh:</label>
+                                                                        <input type="date"
+                                                                               class="form-control"
+                                                                               name="birthday"
+                                                                               id="birthdaytInput">
 
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Giới tính:</label>
-                                                                    <div class="form-control">
-                                                                        <label>
-                                                                            <input type="radio"
-                                                                                   name="gender"
-                                                                                   value="true"
-                                                                                   th:text="Nam"
-                                                                                   checked>
-                                                                        </label>&nbsp;
-                                                                        <label>
-                                                                            <input type="radio"
-                                                                                   name="gender"
-                                                                                   value="false"
-                                                                                   th:text="Nữ">
-                                                                        </label>
+                                                                <div class="col-md-5">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Giới tính:</label>
+                                                                        <div class="form-control">
+                                                                            <label>
+                                                                                <input type="radio"
+                                                                                       name="gender"
+                                                                                       value="true"
+                                                                                       th:text="Nam"
+                                                                                       checked>
+                                                                            </label>&nbsp;
+                                                                            <label>
+                                                                                <input type="radio"
+                                                                                       name="gender"
+                                                                                       value="false"
+                                                                                       th:text="Nữ">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Mật khẩu:</label>
+                                                                        <input type="password"
+                                                                               class="form-control"
+                                                                               name="encryptionPassword"
+                                                                               id="encryptionPassword"
+                                                                               placeholder="Mời nhập mật khẩu"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"> Nhập lại mật
+                                                                            khẩu:</label>
+                                                                        <input type="password"
+                                                                               class="form-control"
+                                                                               name="encryptionPassword"
+                                                                               id="EnterPassword"
+                                                                               placeholder="Mời nhập lại mật khẩu"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12">
+                                                        </div>
+                                                        <div class="col-md-5 d-flex align-items-stretch">
+                                                            <div class="info-wrap bg-primary w-100 p-lg-5 p-4">
                                                                 <div class="form-group">
-                                                                    <label class="form-label">Mật khẩu:</label>
-                                                                    <input type="password"
-                                                                           class="form-control"
-                                                                           name="encryptionPassword"
-                                                                           id="encryptionPassword"
-                                                                           placeholder="Mời nhập mật khẩu"/>
+                                                                    <img id="previewImage"
+                                                                         style="width: 200px; height: 200px; object-fit: cover;"
+                                                                         alt=""
+                                                                         src=""/>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="form-label"> Nhập lại mật khẩu:</label>
-                                                                    <input type="password"
-                                                                           class="form-control"
-                                                                           name="encryptionPassword"
-                                                                           id="EnterPassword"
-                                                                           placeholder="Mời nhập lại mật khẩu"/>
+                                                                    <div class="media-body ml-4">
+                                                                        <label class="btn btn-outline-primary">
+                                                                            Tải ảnh mới lên
+                                                                            <input type="file"
+                                                                                   class="account-settings-fileinput"
+                                                                                   id="imageInput"
+                                                                                   name="images"
+                                                                                   accept="images/profile/*">
+                                                                        </label> &nbsp;
+                                                                        <button type="button"
+                                                                                class="btn btn-default md-btn-flat">
+                                                                            Làm mới
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-5 d-flex align-items-stretch">
-                                                        <div class="info-wrap bg-primary w-100 p-lg-5 p-4">
-                                                            <div class="form-group">
-                                                                <img id="previewImage"
-                                                                     style="width: 200px; height: 200px; object-fit: cover;"
-                                                                     alt=""
-                                                                     src=""/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="media-body ml-4">
-                                                                    <label class="btn btn-outline-primary">
-                                                                        Tải ảnh mới lên
-                                                                        <input type="file"
-                                                                               class="account-settings-fileinput"
-                                                                               id="imageInput"
-                                                                               name="images"
-                                                                               accept="images/profile/*">
-                                                                    </label> &nbsp;
-                                                                    <button type="button"
-                                                                            class="btn btn-default md-btn-flat">
-                                                                        Làm mới
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <input type="button"
+                                                                   value="Lưu lại" onclick="addAccount()"
+                                                                   class="btn btn-primary">
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">
+                                                                Đóng lại
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <input type="button"
-                                                               value="Lưu lại" onclick="addAccount()"
-                                                               class="btn btn-primary">
-                                                        <button type="button" class="btn btn-default"
-                                                                data-dismiss="modal">
-                                                            Đóng lại
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 117px">Họ tên</th>
-                                            <th style="width: 139px">Số điện thoại</th>
-                                            <th style="width: 172px">Email</th>
-                                            <th style="width: 100px">Ngày sinh</th>
-                                            <th style="width: 100px">Giới tính</th>
-                                            <th style="width: 100px">Ảnh</th>
-                                            <th style="width: 100px">Địa chỉ</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 400px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listClient, stat : ${listClient}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 117px">
-                                                <a th:href="@{|/mangostore/admin/client/detail/${listClient.id}|}"
-                                                   th:text="${listClient.fullName}" style="text-decoration: none"></a>
-                                            </td>
-                                            <td style="width: 139px" th:text="${listClient.numberPhone}"></td>
-                                            <td style="width: 172px" th:text="${listClient.email}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listClient.birthday, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 100px" th:if="${listClient.gender != null}"
-                                                th:text="${listClient.gender == true ? 'Nam' : 'Nu'}"></td>
-                                            <td style="width: 100px" th:unless="${listClient.gender != null}"></td>
-                                            <td style="width: 100px" th:if="${listClient.Images  != null}">
-                                                <img th:src="@{|/images/profile/${listClient.Images }|}" alt="Images"
-                                                     style="width: 92px; height: 90px">
-                                            </td>
-                                            <td style="width: 100px" th:unless="${listClient.Images  != null}"></td>
-                                            <th:block th:if="${listClient.addressClient == null}">
-                                                <td style="width: 100px">Không có địa chỉ</td>
-                                            </th:block>
-                                            <th:block th:unless="${listClient.addressClient == null}">
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 117px">Họ tên</th>
+                                                <th style="width: 139px">Số điện thoại</th>
+                                                <th style="width: 172px">Email</th>
+                                                <th style="width: 100px">Ngày sinh</th>
+                                                <th style="width: 100px">Giới tính</th>
+                                                <th style="width: 100px">Ảnh</th>
+                                                <th style="width: 100px">Địa chỉ</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 400px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listClient, stat : ${listClient}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 117px">
+                                                    <a th:href="@{|/mangostore/admin/client/detail/${listClient.id}|}"
+                                                       th:text="${listClient.fullName}"
+                                                       style="text-decoration: none"></a>
+                                                </td>
+                                                <td style="width: 139px" th:text="${listClient.numberPhone}"></td>
+                                                <td style="width: 172px" th:text="${listClient.email}"></td>
                                                 <td style="width: 100px"
-                                                    th:text="${listClient.addressClient.province}"></td>
-                                            </th:block>
-                                            <td style="width: 84px" th:if="${listClient.status == 1}">
-                                                <label class="badge badge-success">Đang hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listClient.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách khách hàng đang hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                                    th:text="${#temporals.format(listClient.birthday, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 100px" th:if="${listClient.gender != null}"
+                                                    th:text="${listClient.gender == true ? 'Nam' : 'Nu'}"></td>
+                                                <td style="width: 100px" th:unless="${listClient.gender != null}"></td>
+                                                <td style="width: 100px" th:if="${listClient.Images  != null}">
+                                                    <img th:src="@{|/images/profile/${listClient.Images }|}"
+                                                         alt="Images"
+                                                         style="width: 92px; height: 90px">
+                                                </td>
+                                                <td style="width: 100px" th:unless="${listClient.Images  != null}"></td>
+                                                <th:block th:if="${listClient.addressClient == null}">
+                                                    <td style="width: 100px">Không có địa chỉ</td>
+                                                </th:block>
+                                                <th:block th:unless="${listClient.addressClient == null}">
+                                                    <td style="width: 100px"
+                                                        th:text="${listClient.addressClient.province}"></td>
+                                                </th:block>
+                                                <td style="width: 84px" th:if="${listClient.status == 1}">
+                                                    <label class="badge badge-success">Đang hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listClient.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách khách hàng đang hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sach khách hàng ngừng hoạt động</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 50px">#</th>
-                                            <th style="width: 110px">Họ tên</th>
-                                            <th style="width: 90px">Số điện thoại</th>
-                                            <th style="width: 172px">Email</th>
-                                            <th style="width: 100px">Ngày sinh</th>
-                                            <th style="width: 100px">Giới tính</th>
-                                            <th style="width: 100px">Ảnh</th>
-                                            <th style="width: 100px">Địa chỉ</th>
-                                            <th style="width: 100px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 452px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listClientInactive, stat : ${listClientInactive}">
-                                            <td style="width: 50px" th:text="${stat.count}"></td>
-                                            <td style="width: 110px">
-                                                <button class="btn btn-outline-info" type="button"
-                                                        th:data-id="${listClientInactive.id}"
-                                                        onclick="restoreClient(this)"
-                                                        style="text-decoration: none">
-                                                    [[*{listClientInactive.fullName}]]
-                                                </button>
-                                            </td>
-                                            <td style="width: 90px" th:text="${listClientInactive.numberPhone}"></td>
-                                            <td style="width: 172px" th:text="${listClientInactive.email}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listClientInactive.birthday, 'dd/MM/yyyy')}"></td>
-                                            <td style="width: 100px" th:if="${listClientInactive.gender != null}"
-                                                th:text="${listClientInactive.gender == true ? 'Nam' : 'Nữ'}"></td>
-                                            <td style="width: 100px"
-                                                th:unless="${listClientInactive.gender != null}"></td>
-                                            <td style="width: 100px" th:if="${listClientInactive.images != null}">
-                                                <img th:src="@{|/images/profile/${listClientInactive.images}|}"
-                                                     alt="image" style="width: 117px; height: 112px">
-                                            </td>
-                                            <td style="width: 100px"
-                                                th:unless="${listClientInactive.images != null}"></td>
-                                            <th:block th:if="${listClientInactive.addressClient == null}">
-                                                <td style="width: 100px">Không có địa chỉ</td>
-                                            </th:block>
-                                            <th:block th:unless="${listClientInactive.addressClient == null}">
+                <div class="tab-pane fade" id="tab2" role="tabpanel"
+                     aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sach khách hàng ngừng hoạt động</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 50px">#</th>
+                                                <th style="width: 110px">Họ tên</th>
+                                                <th style="width: 90px">Số điện thoại</th>
+                                                <th style="width: 172px">Email</th>
+                                                <th style="width: 100px">Ngày sinh</th>
+                                                <th style="width: 100px">Giới tính</th>
+                                                <th style="width: 100px">Ảnh</th>
+                                                <th style="width: 100px">Địa chỉ</th>
+                                                <th style="width: 100px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 452px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listClientInactive, stat : ${listClientInactive}">
+                                                <td style="width: 50px" th:text="${stat.count}"></td>
+                                                <td style="width: 110px">
+                                                    <button class="btn btn-outline-info" type="button"
+                                                            th:data-id="${listClientInactive.id}"
+                                                            onclick="restoreClient(this)"
+                                                            style="text-decoration: none">
+                                                        [[*{listClientInactive.fullName}]]
+                                                    </button>
+                                                </td>
+                                                <td style="width: 90px"
+                                                    th:text="${listClientInactive.numberPhone}"></td>
+                                                <td style="width: 172px" th:text="${listClientInactive.email}"></td>
                                                 <td style="width: 100px"
-                                                    th:text="${listClientInactive.addressClient.province}"></td>
-                                            </th:block>
-                                            <td style="width: 100px" th:if="${listClientInactive.status == 0}">
-                                                <label class="badge badge-danger">Ngừng hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listClientInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách khách hàng ngừng hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                                    th:text="${#temporals.format(listClientInactive.birthday, 'dd/MM/yyyy')}"></td>
+                                                <td style="width: 100px" th:if="${listClientInactive.gender != null}"
+                                                    th:text="${listClientInactive.gender == true ? 'Nam' : 'Nữ'}"></td>
+                                                <td style="width: 100px"
+                                                    th:unless="${listClientInactive.gender != null}"></td>
+                                                <td style="width: 100px" th:if="${listClientInactive.images != null}">
+                                                    <img th:src="@{|/images/profile/${listClientInactive.images}|}"
+                                                         alt="image" style="width: 117px; height: 112px">
+                                                </td>
+                                                <td style="width: 100px"
+                                                    th:unless="${listClientInactive.images != null}"></td>
+                                                <th:block th:if="${listClientInactive.addressClient == null}">
+                                                    <td style="width: 100px">Không có địa chỉ</td>
+                                                </th:block>
+                                                <th:block th:unless="${listClientInactive.addressClient == null}">
+                                                    <td style="width: 100px"
+                                                        th:text="${listClientInactive.addressClient.province}"></td>
+                                                </th:block>
+                                                <td style="width: 100px" th:if="${listClientInactive.status == 0}">
+                                                    <label class="badge badge-danger">Ngừng hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listClientInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách khách hàng ngừng hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -303,7 +308,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

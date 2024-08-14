@@ -1,183 +1,182 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="restoreProductPage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Sản phẩm đang hoạt động</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Sản phẩm ngừng hoạt động</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Trang chủ sản phẩm</li>
-                    </ul>
-                </div>
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách sản phẩm đang hoạt động</h4>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <a type="button" class="btn btn-info btn-lg"
-                                       th:href="@{/mangostore/admin/product/create}">Thêm sản phẩm
-                                    </a>
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="restoreProductPage">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                           href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Sản phẩm đang hoạt động</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                           aria-controls="tab2" role="tab"
+                           aria-selected="false">Sản phẩm ngừng hoạt động</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ sản phẩm</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách sản phẩm đang hoạt động</h4>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <a type="button" class="btn btn-info btn-lg"
+                                           th:href="@{/mangostore/admin/product/create}">Thêm sản phẩm
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-7 form-group" style="margin-left: 100px;">
+                                        <form action="/mangostore/admin/product" method="get">
+                                            <input type="text" name="keyword" class="form-control" th:value="${keyword}"
+                                                   placeholder="Tìm theo tên sản phẩm"/>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-sm-7 form-group" style="margin-left: 100px;">
-                                    <form action="/mangostore/admin/product" method="get">
-                                        <input type="text" name="keyword" class="form-control" th:value="${keyword}"
-                                               placeholder="Tìm theo tên sản phẩm"/>
-                                    </form>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 89px">Mã sản phẩm</th>
+                                                <th style="width: 130px">Tên sản phẩm</th>
+                                                <th style="width: 120px;">Ảnh sản phẩm</th>
+                                                <th style="width: 100px">Người tạo</th>
+                                                <th style="width: 100px">Người cập nhật</th>
+                                                <th style="width: 100px">Ngày tạo</th>
+                                                <th style="width: 100px">Ngày cập nhật</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 333px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listProduct, stat : ${listProduct}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 89px">
+                                                    <a th:href="@{|/mangostore/admin/product/detail/${listProduct.id}|}"
+                                                       th:text="${listProduct.codeProduct}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td style="width: 130px; word-break: break-all"
+                                                    th:text="${listProduct.nameProduct}"></td>
+                                                <td style="width: 120px;">
+                                                    <div th:if="${listProduct.images != null and listProduct.images.imagesFile != null}">
+                                                        <img th:src="@{|/images/product/${listProduct.images.imagesFile}|}"
+                                                             alt="image" style="width: 116px; height: 132px">
+                                                    </div>
+
+                                                </td>
+                                                <td style="width: 100px" th:text="${listProduct.nameUserCreate}"></td>
+                                                <td style="width: 100px" th:text="${listProduct.nameUserUpdate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listProduct.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listProduct.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 84px" th:if="${listProduct.status == 1}">
+                                                    <label class="badge badge-success">Đang hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listProduct.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách sản phẩm đang hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 89px">Mã sản phẩm</th>
-                                            <th style="width: 130px">Tên sản phẩm</th>
-                                            <th style="width: 120px;">Ảnh sản phẩm</th>
-                                            <th style="width: 100px">Người tạo</th>
-                                            <th style="width: 100px">Người cập nhật</th>
-                                            <th style="width: 100px">Ngày tạo</th>
-                                            <th style="width: 100px">Ngày cập nhật</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 333px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listProduct, stat : ${listProduct}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 89px">
-                                                <a th:href="@{|/mangostore/admin/product/detail/${listProduct.id}|}"
-                                                   th:text="${listProduct.codeProduct}"
-                                                   style="text-decoration: none">
-                                                </a>
-                                            </td>
-                                            <td style="width: 130px; word-break: break-all"
-                                                th:text="${listProduct.nameProduct}"></td>
-                                            <td style="width: 120px;">
-                                                <div th:if="${listProduct.images != null and listProduct.images.imagesFile != null}">
-                                                    <img th:src="@{|/images/product/${listProduct.images.imagesFile}|}"
-                                                         alt="image" style="width: 116px; height: 132px">
-                                                </div>
+                        </div>
+                    </div>
+                </div>
 
-                                            </td>
-                                            <td style="width: 100px" th:text="${listProduct.nameUserCreate}"></td>
-                                            <td style="width: 100px" th:text="${listProduct.nameUserUpdate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listProduct.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listProduct.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 84px" th:if="${listProduct.status == 1}">
-                                                <label class="badge badge-success">Đang hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listProduct.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách sản phẩm đang hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                <div class="tab-pane fade" id="tab2" role="tabpanel"
+                     aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách sản phẩm ngừng hoạt động</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px">#</th>
+                                                <th style="width: 114px">Mã sản phẩm</th>
+                                                <th style="width: 122px">Ảnh sản phẩm</th>
+                                                <th style="width: 151px">Tên sản phẩm</th>
+                                                <th style="width: 100px">Người tạo</th>
+                                                <th style="width: 100px">Người cập nhật</th>
+                                                <th style="width: 100px">Ngày tạo</th>
+                                                <th style="width: 100px">Ngày cập nhật</th>
+                                                <th style="width: 84px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 452px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listProductInactive, stat : ${listProductInactive}">
+                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 114px">
+                                                    <button type="button" th:data-id="${listProductInactive.id}"
+                                                            class="btn btn-red"
+                                                            onclick="restoreProduct(this)"
+                                                            style="text-decoration: none">
+                                                        [[*{listProductInactive.codeProduct}]]
+                                                    </button>
+                                                </td>
+
+                                                <td style="width: 120px;">
+                                                    <div th:if="${listProductInactive.images != null and listProductInactive.images.imagesFile != null}">
+                                                        <img th:src="@{|/images/product/${listProductInactive.images.imagesFile}|}"
+                                                             alt="image" style="width: 116px; height: 132px">
+                                                    </div>
+
+                                                </td>
+                                                <td style="width: 151px;word-break: break-all"
+                                                    th:text="${listProductInactive.nameProduct}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listProductInactive.nameUserCreate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${listProductInactive.nameUserUpdate}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listProductInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 100px"
+                                                    th:text="${#temporals.format(listProductInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
+                                                <td style="width: 84px" th:if="${listProductInactive.status == 0}">
+                                                    <label class="badge badge-danger">Ngừng hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listProductInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách sản phẩm ngừng hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách sản phẩm ngừng hoạt động</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 114px">Mã sản phẩm</th>
-                                            <th style="width: 122px">Ảnh sản phẩm</th>
-                                            <th style="width: 151px">Tên sản phẩm</th>
-                                            <th style="width: 100px">Người tạo</th>
-                                            <th style="width: 100px">Người cập nhật</th>
-                                            <th style="width: 100px">Ngày tạo</th>
-                                            <th style="width: 100px">Ngày cập nhật</th>
-                                            <th style="width: 84px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 452px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listProductInactive, stat : ${listProductInactive}">
-                                            <td style="width: 30px" th:text="${stat.count}"></td>
-                                            <td style="width: 114px">
-                                                <button type="button" th:data-id="${listProductInactive.id}"
-                                                        class="btn btn-red"
-                                                        onclick="restoreProduct(this)"
-                                                        style="text-decoration: none">
-                                                    [[*{listProductInactive.codeProduct}]]
-                                                </button>
-                                            </td>
-
-                                            <td style="width: 120px;">
-                                                <div th:if="${listProductInactive.images != null and listProductInactive.images.imagesFile != null}">
-                                                    <img th:src="@{|/images/product/${listProductInactive.images.imagesFile}|}"
-                                                         alt="image" style="width: 116px; height: 132px">
-                                                </div>
-
-                                            </td>
-                                            <td style="width: 151px;word-break: break-all"
-                                                th:text="${listProductInactive.nameProduct}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listProductInactive.nameUserCreate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${listProductInactive.nameUserUpdate}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listProductInactive.dateCreate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 100px"
-                                                th:text="${#temporals.format(listProductInactive.dateUpdate, 'dd/MM/yyyy : HH:mm:ss')}"></td>
-                                            <td style="width: 84px" th:if="${listProductInactive.status == 0}">
-                                                <label class="badge badge-danger">Ngừng hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listProductInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách sản phẩm ngừng hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

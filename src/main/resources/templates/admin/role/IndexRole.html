@@ -1,165 +1,166 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-<body>
-<main class="AddRole restoreRolePage">
-    <div class="home-tab">
-        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
-                       href="#tab1" role="tab"
-                       aria-controls="tab1" aria-selected="true">Quyền đang hoạt đông</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
-                       aria-controls="tab2" role="tab"
-                       aria-selected="false">Quyền ngừng hoạt động</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content tab-content-basic">
-            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách quyền đang hoạt động</h4>
-                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                    data-target="#myModal">Thêm quyền
-                            </button>
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <form id="formRole" th:action="@{/mangostore/admin/role/add}"
-                                                  th:object="${addRole}"
-                                                  method="post">
-                                                <h3 class="mb-4">Thêm quyền</h3>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Mã quyền:</label>
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   name="name"
-                                                                   id="CodeRoleInput"
-                                                                   placeholder="Mời nhập mã quyền">
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="AddRole restoreRolePage">
+        <div class="home-tab">
+            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
+                           href="#tab1" role="tab"
+                           aria-controls="tab1" aria-selected="true">Quyền đang hoạt đông</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
+                           aria-controls="tab2" role="tab"
+                           aria-selected="false">Quyền ngừng hoạt động</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content tab-content-basic">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách quyền đang hoạt động</h4>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                        data-target="#myModal">Thêm quyền
+                                </button>
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form id="formRole" th:action="@{/mangostore/admin/role/add}"
+                                                      th:object="${addRole}"
+                                                      method="post">
+                                                    <h3 class="mb-4">Thêm quyền</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Mã quyền:</label>
+                                                                <input type="text"
+                                                                       class="form-control"
+                                                                       name="name"
+                                                                       id="CodeRoleInput"
+                                                                       placeholder="Mời nhập mã quyền">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Tên quyền:</label>
+                                                                <input type="text"
+                                                                       class="form-control"
+                                                                       name="note"
+                                                                       id="NameInput"
+                                                                       placeholder="Mời nhập tên quyền">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Đóng lại
+                                                                </button>
+                                                                <input type="button"
+                                                                       value="Lưu lại"
+                                                                       onclick="addRole()"
+                                                                       class="btn btn-primary">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Tên quyền:</label>
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   name="note"
-                                                                   id="NameInput"
-                                                                   placeholder="Mời nhập tên quyền">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Đóng lại
-                                                            </button>
-                                                            <input type="button"
-                                                                   value="Lưu lại"
-                                                                   onclick="addRole()"
-                                                                   class="btn btn-primary">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 100px">#</th>
-                                            <th style="width: 100px">Mã quyền</th>
-                                            <th style="width: 100px">Tên quyền</th>
-                                            <th style="width: 100px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 400px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listRole, stat : ${listRole}">
-                                            <td style="width: 100px" th:text="${stat.count}"></td>
-                                            <td style="width: 100px">
-                                                <a th:href="@{|/mangostore/admin/role/detail/${listRole.id}|}"
-                                                   th:text="${listRole.name}"
-                                                   style="text-decoration: none">
-                                                </a>
-                                            </td>
-                                            <td style="width: 100px" th:text="${listRole.note}"></td>
-                                            <td style="width: 100px" th:if="${listRole.status == 1}">
-                                                <label class="badge badge-success">Đang hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listRole.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách quyền đang hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 100px">#</th>
+                                                <th style="width: 100px">Mã quyền</th>
+                                                <th style="width: 100px">Tên quyền</th>
+                                                <th style="width: 100px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 400px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listRole, stat : ${listRole}">
+                                                <td style="width: 100px" th:text="${stat.count}"></td>
+                                                <td style="width: 100px">
+                                                    <a th:href="@{|/mangostore/admin/role/detail/${listRole.id}|}"
+                                                       th:text="${listRole.name}"
+                                                       style="text-decoration: none">
+                                                    </a>
+                                                </td>
+                                                <td style="width: 100px" th:text="${listRole.note}"></td>
+                                                <td style="width: 100px" th:if="${listRole.status == 1}">
+                                                    <label class="badge badge-success">Đang hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listRole.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách quyền đang hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="tab-pane fade" id="tab2" role="tabpanel"
-                 aria-labelledby="tab2">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Danh sách quyền ngừng hoạt động</h4>
-                            <div class="table-responsive">
-                                <div class="header">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 100px">#</th>
-                                            <th style="width: 100px">Mã quyền</th>
-                                            <th style="width: 100px">Tên quyền</th>
-                                            <th style="width: 100px">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="content" style="height: 452px">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr th:each="listRoleInactive, stat : ${listRoleInactive}">
-                                            <td style="width: 100px" th:text="${stat.count}"></td>
-                                            <td style="width: 100px">
-                                                <button class="btn btn-outline-info" type="button"
-                                                        th:data-id="${listRoleInactive.id}"
-                                                        onclick="restoreRole(this)"
-                                                        style="text-decoration: none">
-                                                    [[*{listRoleInactive.name}]]
-                                                </button>
-                                            </td>
-                                            <td style="width: 100px" th:text="${listRoleInactive.note}"></td>
-                                            <td style="width: 100px" th:if="${listRoleInactive.status == 0}">
-                                                <label class="badge badge-danger">Ngừng hoạt động</label>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${listRoleInactive.isEmpty()}">
-                                            <td colspan="9" style="text-align: center; color: red; font-size: larger;">
-                                                Danh sách quyền ngừng hoạt động trống
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                <div class="tab-pane fade" id="tab2" role="tabpanel"
+                     aria-labelledby="tab2">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách quyền ngừng hoạt động</h4>
+                                <div class="table-responsive">
+                                    <div class="header">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 100px">#</th>
+                                                <th style="width: 100px">Mã quyền</th>
+                                                <th style="width: 100px">Tên quyền</th>
+                                                <th style="width: 100px">Trạng thái</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="content" style="height: 452px">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            <tr th:each="listRoleInactive, stat : ${listRoleInactive}">
+                                                <td style="width: 100px" th:text="${stat.count}"></td>
+                                                <td style="width: 100px">
+                                                    <button class="btn btn-outline-info" type="button"
+                                                            th:data-id="${listRoleInactive.id}"
+                                                            onclick="restoreRole(this)"
+                                                            style="text-decoration: none">
+                                                        [[*{listRoleInactive.name}]]
+                                                    </button>
+                                                </td>
+                                                <td style="width: 100px" th:text="${listRoleInactive.note}"></td>
+                                                <td style="width: 100px" th:if="${listRoleInactive.status == 0}">
+                                                    <label class="badge badge-danger">Ngừng hoạt động</label>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${listRoleInactive.isEmpty()}">
+                                                <td colspan="9"
+                                                    style="text-align: center; color: red; font-size: larger;">
+                                                    Danh sách quyền ngừng hoạt động trống
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +168,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+    </main>
+</div>

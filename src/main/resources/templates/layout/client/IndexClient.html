@@ -22,7 +22,7 @@
     <link rel="stylesheet" th:href="@{|/css/client/ProductDetailClient.css|}">
     <link rel="stylesheet" th:href="@{|/css/client/CheckOut.css|}">
     <link rel="stylesheet" th:href="@{|/css/client/OrderProgressBar.css|}">
-    <title>Mango Store</title>
+    <title th:text="${titleWebsite}"></title>
 </head>
 <body style="font-family: 'Poppins', sans-serif;">
 <div th:replace="/layout/client/MenuClient.html"></div>

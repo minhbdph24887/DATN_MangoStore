@@ -1,169 +1,171 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
-      th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
-<body>
-<main class="showImagePage">
-    <div class="container" style="height: auto">
-        <a th:href="@{/mangostore/product}">Quay lại khách hàng sản phẩm</a>
-        <br>
-        <div class="cardProduct">
-            <div class="container-fluid">
-                <div class="wrapper row" style="height: auto">
-                    <div class="preview col-md-6">
-                        <div class="preview-pic tab-content">
-                            <th:block th:each="listImagesByProduct, iterStat : ${listImagesByProduct}">
-                                <div th:class="${iterStat.first ? 'tab-pane active' : 'tab-pane'}"
-                                     th:id="${'pic-' + listImagesByProduct.id}">
-                                    <img class="imgProduct" width="400" height="460"
-                                         th:src="@{|/images/product/${listImagesByProduct.imagesFile}|}"/>
-                                </div>
-                            </th:block>
-                        </div>
-                        <ul class="preview-thumbnail nav nav-tabs" style="margin-bottom: 25px;">
-                            <th:block th:each="listImagesByProduct, iterStat : ${listImagesByProduct}">
-                                <li class="nav-item">
-                                    <a th:class="${iterStat.first ? 'nav-link active' : 'nav-link'}"
-                                       th:data-bs-target="${'#pic-' + listImagesByProduct.id}" data-bs-toggle="tab">
-                                        <img class="imgProduct" width="200" height="100"
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/client/IndexClient :: dynamic(~{:: main})}">
+    <main class="showImagePage">
+        <div class="container" style="height: auto">
+            <a th:href="@{/mangostore/product}">Quay lại khách hàng sản phẩm</a>
+            <br>
+            <div class="cardProduct">
+                <div class="container-fluid">
+                    <div class="wrapper row" style="height: auto">
+                        <div class="preview col-md-6">
+                            <div class="preview-pic tab-content">
+                                <th:block th:each="listImagesByProduct, iterStat : ${listImagesByProduct}">
+                                    <div th:class="${iterStat.first ? 'tab-pane active' : 'tab-pane'}"
+                                         th:id="${'pic-' + listImagesByProduct.id}">
+                                        <img class="imgProduct" width="400" height="460"
                                              th:src="@{|/images/product/${listImagesByProduct.imagesFile}|}"/>
-                                    </a>
-                                </li>
-                            </th:block>
-                        </ul>
-                    </div>
-
-                    <div class="details col-md-6">
-                        <h3 class="product-title">[[*{detailProductClient.getProduct().getNameProduct()}]]</h3>
-                        <div class="rating">
-                            <div class="stars">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
+                                    </div>
+                                </th:block>
                             </div>
-                            <span class="review-no">41 đánh giá</span>
-                        </div>
-                        <p class="product-description">[[*{detailProductClient.getDescribe()}]]</p>
-                        <h4 id="showPrice" class="price"
-                            th:with="priceRange=${priceRangeMap[detailProductClient.product.id]}"
-                            style="color: red;margin-top: 14px;">
-                            <span th:if="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
-                            <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
-                        </h4>
-                        <p class="vote">
-                            <strong>91%</strong> số người mua thích sản phẩm này!
-                            <strong>(87 bình chọn)</strong>
-                        </p>
-
-                        <input type="hidden" id="idProduct" th:value="${detailProductClient.product.id}">
-                        <input type="hidden" id="idProductDetail" th:value="${detailProductClient.id}">
-                        <div class="option-group" id="color-options">
-                            <label>Màu sắc</label>
-                            <th:block th:each="listColor : ${listColor}">
-                                <div class="option mb-2" th:data-value="${listColor.id}">[[*{listColor.nameColor}]]</div>
-                            </th:block>
+                            <ul class="preview-thumbnail nav nav-tabs" style="margin-bottom: 25px;">
+                                <th:block th:each="listImagesByProduct, iterStat : ${listImagesByProduct}">
+                                    <li class="nav-item">
+                                        <a th:class="${iterStat.first ? 'nav-link active' : 'nav-link'}"
+                                           th:data-bs-target="${'#pic-' + listImagesByProduct.id}" data-bs-toggle="tab">
+                                            <img class="imgProduct" width="200" height="100"
+                                                 th:src="@{|/images/product/${listImagesByProduct.imagesFile}|}"/>
+                                        </a>
+                                    </li>
+                                </th:block>
+                            </ul>
                         </div>
 
-                        <div class="option-group" id="size-options">
-                            <label>Kích cỡ</label>
-                            <th:block th:each="listSize : ${listSize}">
-                                <div class="option mb-2" th:data-value="${listSize.id}" style="width: 50px;">
-                                    [[*{listSize.nameSize}]]
+                        <div class="details col-md-6">
+                            <h3 class="product-title">[[*{detailProductClient.getProduct().getNameProduct()}]]</h3>
+                            <div class="rating">
+                                <div class="stars">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
                                 </div>
-                            </th:block>
-                        </div>
+                                <span class="review-no">41 đánh giá</span>
+                            </div>
+                            <p class="product-description">[[*{detailProductClient.getDescribe()}]]</p>
+                            <h4 id="showPrice" class="price"
+                                th:with="priceRange=${priceRangeMap[detailProductClient.product.id]}"
+                                style="color: red;margin-top: 14px;">
+                                <span th:if="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
+                                <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
+                            </h4>
+                            <p class="vote">
+                                <strong>91%</strong> số người mua thích sản phẩm này!
+                                <strong>(87 bình chọn)</strong>
+                            </p>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="form-label">Số lượng: </label>
-                                <div class="container py-1">
-                                    <div class="row align-items-center">
-                                        <div style="width: 170px;">
-                                            <div class="quantity-selector input-group">
-                                                <button class="btn btn-outline-primary" type="button" id="button-minus"
-                                                        style="height: 38px"><span style="margin-bottom: 1px">-</span>
-                                                </button>
-                                                <input type="number" class="form-control" value="1" min="1"
-                                                       aria-label="Số lượng" readonly
-                                                       style="height: 38px; max-width: 100px;"/>
-                                                <button class="btn btn-outline-primary" type="button" id="button-plus"
-                                                        style="height: 38px">+
-                                                </button>
+                            <input type="hidden" id="idProduct" th:value="${detailProductClient.product.id}">
+                            <input type="hidden" id="idProductDetail" th:value="${detailProductClient.id}">
+                            <div class="option-group" id="color-options">
+                                <label>Màu sắc</label>
+                                <th:block th:each="listColor : ${listColor}">
+                                    <div class="option mb-2" th:data-value="${listColor.id}">
+                                        [[*{listColor.nameColor}]]
+                                    </div>
+                                </th:block>
+                            </div>
+
+                            <div class="option-group" id="size-options">
+                                <label>Kích cỡ</label>
+                                <th:block th:each="listSize : ${listSize}">
+                                    <div class="option mb-2" th:data-value="${listSize.id}" style="width: 50px;">
+                                        [[*{listSize.nameSize}]]
+                                    </div>
+                                </th:block>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="form-label">Số lượng: </label>
+                                    <div class="container py-1">
+                                        <div class="row align-items-center">
+                                            <div style="width: 170px;">
+                                                <div class="quantity-selector input-group">
+                                                    <button class="btn btn-outline-primary" type="button"
+                                                            id="button-minus"
+                                                            style="height: 38px"><span
+                                                            style="margin-bottom: 1px">-</span>
+                                                    </button>
+                                                    <input type="number" class="form-control" value="1" min="1"
+                                                           aria-label="Số lượng" readonly
+                                                           style="height: 38px; max-width: 100px;"/>
+                                                    <button class="btn btn-outline-primary" type="button"
+                                                            id="button-plus"
+                                                            style="height: 38px">+
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-8" style="margin-bottom: 18px;">
-                                            <span id="showQuantity"></span>
+                                            <div class="col-md-8" style="margin-bottom: 18px;">
+                                                <span id="showQuantity"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="action">
-                            <input type="hidden" id="checkLogin"
-                                   th:value="${profile != null ? 'profile' : 'null'}">
-                            <button id="checkButtonAddToCart" class="add-to-cart btn btn-default"
-                                    onclick="AddToCart()" type="button">
-                                Thêm vào giỏ hàng
-                            </button>
-                            <button id="checkButtonFavourite" class="like btn btn-default"
-                                    onclick="AddToFavourite()" type="button">
-                                <span class="fa fa-heart"></span>
-                            </button>
-                            <button type="button" class="add-to-cart btn btn-default" data-bs-toggle="modal"
-                                    data-bs-target="#similarProduct">
-                                Sản phẩm tương tự
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="similarProduct">
-        <div class="modal-dialog" style="max-width: 100%; margin: 30px;">
-            <div class="modal-content" style="height: 95vh;">
-                <div class="modal-header">
-                    <h4 class="modal-title">Danh sách sản phẩm tương tự</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="row">
-                    <div class="content col-md-12" style="height: 809px;">
-                        <div style="max-width: 100%;">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div th:each="listProductDetailByCategory : ${listProductDetailByCategory}"
-                                         class="mb-4 me-4"
-                                         style="flex: 0 0 21%; max-width: 12%;">
-                                        <div class="card"
-                                             style="width: 228px; height: 320px; margin: 0.05rem 0.05rem 0.05rem 50px;">
-                                            <div>
-                                                <a th:href="@{/mangostore/product/detail/{id} (id= ${listProductDetailByCategory.id})}">
-                                                    <img th:src="@{|/images/product/${listProductDetailByCategory.product.images.imagesFile}|}"
-                                                         alt=""
-                                                         style="width: 208px; margin-top: 4px; margin-left: 8px;">
-                                                </a>
-                                            </div>
-                                            <div style="margin-top: 6px; margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                [[*{listProductDetailByCategory.getProduct().getNameProduct()}]]
-                                            </div>
-                                            <div th:with="priceRange=${priceRangeMap[listProductDetailByCategory.product.id]}"
-                                                 style="color: red; margin-top: 14px; margin-left: 20px;">
-                                                <span th:if="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
-                                                <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="action">
+                                <input type="hidden" id="checkLogin"
+                                       th:value="${profile != null ? 'profile' : 'null'}">
+                                <button id="checkButtonAddToCart" class="add-to-cart btn btn-default"
+                                        onclick="AddToCart()" type="button">
+                                    Thêm vào giỏ hàng
+                                </button>
+                                <button id="checkButtonFavourite" class="like btn btn-default"
+                                        onclick="AddToFavourite()" type="button">
+                                    <span class="fa fa-heart"></span>
+                                </button>
+                                <button type="button" class="add-to-cart btn btn-default" data-bs-toggle="modal"
+                                        data-bs-target="#similarProduct">
+                                    Sản phẩm tương tự
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
-</body>
-</html>
+
+        <div class="modal fade" id="similarProduct">
+            <div class="modal-dialog" style="max-width: 100%; margin: 30px;">
+                <div class="modal-content" style="height: 93vh;">
+                    <div class="modal-header mb-3">
+                        <h4 class="modal-title">Danh sách sản phẩm tương tự</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="row">
+                        <div class="content col-md-12" style="height: 809px;">
+                            <div style="max-width: 100%;">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div th:each="listProductDetailByCategory : ${listProductDetailByCategory}"
+                                             class="mb-4 me-4"
+                                             style="flex: 0 0 21%; max-width: 12%;">
+                                            <div class="card"
+                                                 style="width: 228px; height: 320px; margin: 0.05rem 0.05rem 0.05rem 50px;">
+                                                <div>
+                                                    <a th:href="@{/mangostore/product/detail/{id} (id= ${listProductDetailByCategory.id})}">
+                                                        <img th:src="@{|/images/product/${listProductDetailByCategory.product.images.imagesFile}|}"
+                                                             alt=""
+                                                             style="width: 208px; margin-top: 4px; margin-left: 8px;">
+                                                    </a>
+                                                </div>
+                                                <div style="margin-top: 6px; margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    [[*{listProductDetailByCategory.getProduct().getNameProduct()}]]
+                                                </div>
+                                                <div th:with="priceRange=${priceRangeMap[listProductDetailByCategory.product.id]}"
+                                                     style="color: red; margin-top: 14px; margin-left: 15px;">
+                                                    <span th:if="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
+                                                    <span th:unless="${priceRange.priceMin.equals(priceRange.priceMax)}">[[${#numbers.formatDecimal(priceRange.priceMin, 0, 'COMMA', 0, 'POINT')} + ' - ' +${#numbers.formatDecimal(priceRange.priceMax, 0, 'COMMA', 0, 'POINT')} + ' VND']]</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

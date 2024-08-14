@@ -130,9 +130,9 @@ if (checkVoucher) {
                 const id = checkInputVoucherList.value;
                 const minimumPrice = parseFloat(document.getElementById('minimumPrice' + id).value.replace(/,/g, ''));
                 if (isNaN(totalInvoiceAmount)) {
-                    dangerAlert('Vui lòng chọn sản phẩm để sử dụng voucher');
+                    dangerAlert('Vui lòng chọn sản phẩm để sử dụng phiếu giảm giá');
                 } else if (totalInvoiceAmount < minimumPrice) {
-                    dangerAlert('Voucher này không thể được sử dụng với hóa đơn này');
+                    dangerAlert('Phiếu giảm giá này không thể được sử dụng với hóa đơn này');
                 } else {
                     const data = {
                         idInvoice: idInvoice,
@@ -142,14 +142,14 @@ if (checkVoucher) {
                     addVoucherAPI(url, data);
                 }
             } else {
-                dangerAlert('Vui lòng chọn Voucher');
+                dangerAlert('Vui lòng chọn phiếu giảm giá');
             }
         } else {
             const voucherPattern = /^[A-Z0-9]{10}$/;
             if (!voucherPattern.test(codeVoucher)) {
-                dangerAlert('Mã Voucher không hợp lệ');
+                dangerAlert('Mã phiếu giảm giá không hợp lệ');
             } else if (isNaN(totalInvoiceAmount)) {
-                dangerAlert('Vui lòng thêm sản phẩm để sử dụng voucher');
+                dangerAlert('Vui lòng thêm sản phẩm để sử dụng phiếu giảm giá');
             } else {
                 const idCustomer = document.getElementById('idCustomer').value;
                 const data = {
@@ -177,17 +177,17 @@ if (checkVoucher) {
                     if (e.responseText === "1") {
                         dangerAlert('Hóa đơn không tồn tại');
                     } else if (e.responseText === "2") {
-                        dangerAlert('Voucher không tồn tại');
+                        dangerAlert('Phiếu giảm giá không tồn tại');
                     } else if (e.responseText === "3") {
-                        dangerAlert('Voucher này đã hết vui lòng chọn voucher khác');
+                        dangerAlert('Phiếu giảm này này đã hết vui lòng chọn phiếu giảm giá khác');
                     } else if (e.responseText === "4") {
                         dangerAlert('Vui lòng thêm thông tin vào hóa đơn');
                     } else if (e.responseText === "5") {
-                        dangerAlert('Voucher không tồn tại');
+                        dangerAlert('Phiếu giảm giá không tồn tại');
                     } else if (e.responseText === "6") {
-                        dangerAlert('Voucher này không thể sử dụng với hóa đơn này');
+                        dangerAlert('Phiếu giảm giá này không thể sử dụng với hóa đơn này');
                     } else if (e.responseText === "7") {
-                        dangerAlert('Mức rank của bạn không thể sử dụng voucher này');
+                        dangerAlert('Mức rank của bạn không thể sử dụng phiếu giảm giá này');
                     }
                     console.clear();
                 }

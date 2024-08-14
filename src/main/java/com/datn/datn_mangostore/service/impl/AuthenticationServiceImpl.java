@@ -31,9 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String getAllRole(Model model,
-                             HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+    public String getAllAuthentication(Model model,
+                                       HttpSession session) {
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ xác thực");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -47,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String detailAuthentication(Model model,
                                        HttpSession session,
                                        Long idAuthentication) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật xác thực");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {

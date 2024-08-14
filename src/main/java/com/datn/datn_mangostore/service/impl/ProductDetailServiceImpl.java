@@ -100,7 +100,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                                      String categoryId,
                                      String sortBy,
                                      Pageable pageable) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -139,7 +139,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public String viewCreateProductDetail(Model model,
                                           HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Tạo sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
@@ -282,7 +282,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public String editProductDetail(Long idProductDetail,
                                     Model model,
                                     HttpSession session) {
-        Account detailAccount = gender.checkMenuAdmin(model, session);
+        Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Cập nhật sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
         } else {
