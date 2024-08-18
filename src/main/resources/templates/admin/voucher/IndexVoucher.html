@@ -7,7 +7,7 @@
                     <li class="nav-item">
                         <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
                            href="#tab1" role="tab"
-                           aria-controls="tab1" aria-selected="true">Phiếu giảm giá còn sử dụng</a>
+                           aria-controls="tab1" aria-selected="true">Phiếu giảm giá còn lượt sử dụng</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
@@ -299,8 +299,14 @@
                                                                class="quantityOld"
                                                                th:value="${listVoucherInactive.quantity}" readonly>
                                                     </th:block>
-                                                    <button type="submit" th:text="Save" class="btn btn-info"
-                                                            onclick="restoreVoucher(this)"></button>
+                                                    <th:block th:if="${listVoucherInactive.voucherStatus == 0}">
+                                                        <button type="submit" th:text="Save" class="btn btn-info"
+                                                                onclick="restoreVoucher(this)" disabled></button>
+                                                    </th:block>
+                                                    <th:block th:unless="${listVoucherInactive.voucherStatus == 0}">
+                                                        <button type="submit" th:text="Save" class="btn btn-info"
+                                                                onclick="restoreVoucher(this)"></button>
+                                                    </th:block>
                                                 </td>
                                                 <td style="width: 105px"
                                                     th:text="${#numbers.formatDecimal(listVoucherInactive.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
