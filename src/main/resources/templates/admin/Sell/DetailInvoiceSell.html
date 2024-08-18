@@ -44,8 +44,11 @@
                                             <option value="add">
                                                 <i class="bi bi-cloud-plus"></i>Thêm khách hàng
                                             </option>
-                                            <option th:each="listAccount : ${listAccount}" th:value="${listAccount.id}"
-                                                    th:text="${listAccount.fullName +  ' - '  + listAccount.numberPhone}"></option>
+                                            <option th:each="listAccount : ${listAccount}" th:value="${listAccount.id}">
+                                                <span th:if="${listAccount.numberPhone != null}" th:text="${listAccount.fullName + ' - ' + listAccount.numberPhone}"></span>
+                                                <span th:unless="${listAccount.numberPhone != null}" th:text="${listAccount.fullName + ' - không có sdt'}"></span>
+                                            </option>
+
                                         </select>
                                         <button class="btn btn-success"
                                                 style="padding: 5px 10px;font-size: 12px;line-height: 1.5;"
