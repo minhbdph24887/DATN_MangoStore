@@ -65,7 +65,7 @@ function restoreVoucher(button) {
         contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
-            successAlert('Khôi Phục Voucher Thành Công').then(() => {
+            successAlert('Khôi Phục Mã Giảm Giá Thành Công').then(() => {
                 window.open("http://localhost:8080/mangostore/admin/voucher", "_self")
             });
         },
