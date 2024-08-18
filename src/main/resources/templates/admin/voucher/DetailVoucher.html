@@ -6,7 +6,8 @@
                 <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                     <div>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher}">Trang chủ phiếu giảm giá</a>
+                            <li class="breadcrumb-item"><a th:href="@{/mangostore/admin/voucher}">Trang chủ phiếu giảm
+                                giá</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Cập nhật phiếu giảm giá</li>
                         </ul>
@@ -96,11 +97,11 @@
                                             <div class="form-group">
                                                 <label class="form-label">Hình thức phiếu giảm giá</label>
                                                 <select name="voucherFrom" class="form-select">
-                                                    <option value="offline" th:text="offline"
+                                                    <option value="offline" th:text="Offline"
                                                             th:selected="${detailVoucher.voucherFrom == 'offline'}"></option>
-                                                    <option value="online" th:text="online"
+                                                    <option value="online" th:text="Online"
                                                             th:selected="${detailVoucher.voucherFrom == 'online'}"></option>
-                                                    <option value="all" th:text="all"
+                                                    <option value="all" th:text="All"
                                                             th:selected="${detailVoucher.voucherFrom == 'all'}"></option>
                                                 </select>
                                             </div>

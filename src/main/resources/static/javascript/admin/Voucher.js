@@ -124,7 +124,7 @@ if (updateVoucher) {
                 contentType: 'application/json',
                 success: function (response) {
                     const formVoucher = document.getElementById('formVoucher');
-                    confirmAlertForm('Bạn có muốn thêm hay không', 'Thêm thành công', formVoucher);
+                    confirmAlertForm('Bạn có muốn cập nhật hay không', 'Cập nhật thành công', formVoucher);
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
