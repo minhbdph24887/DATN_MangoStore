@@ -225,8 +225,33 @@ if (createProductDetailPage) {
 const updateProductDetailPage = document.querySelector(".updateProductDetailPage");
 if (updateProductDetailPage) {
     function updateProductDetail() {
-        const formUpdate = document.getElementById('formUpdate');
-        confirmAlertForm('Bạn có muốn cập nhật ?', 'Cập nhật thành công', formUpdate);
+        const describe = document.getElementById('describeInput').value;
+        const quantity = document.getElementById('quantityInput').value;
+        const importPrice = document.getElementById('importPriceInput').value;
+        const price = document.getElementById('priceInput').value;
+
+        if (describe === '') {
+            dangerAlert('Mô tả sản phẩm không được để trống');
+        } else if (quantity <= 0) {
+            dangerAlert('Số lượng sản phẩm không thể nhỏ hơn hoặc bằng 0');
+        } else if (importPrice.trim() === '') {
+            dangerAlert('Giá nhập không được để trống');
+        } else if (isNaN(importPrice)) {
+            dangerAlert('Giá nhập phải là số hợp lệ');
+        } else if (importPrice <= 0) {
+            dangerAlert('Giá nhập không thể nhỏ hơn hoặc bằng 0');
+        } else if (price.trim() === '') {
+            dangerAlert('Giá bán không được để trống');
+        } else if (isNaN(price)) {
+            dangerAlert('Giá bán phải là số hợp lệ');
+        } else if (price <= 0) {
+            dangerAlert('Giá bán không thể nhỏ hơn hoặc bằng 0');
+        } else if (importPrice > price) {
+            dangerAlert('Giá nhập không thể lớn hơn giá bán');
+        } else {
+            const formUpdate = document.getElementById('formUpdate');
+            confirmAlertForm('Bạn có muốn cập nhật ?', 'Cập nhật thành công', formUpdate);
+        }
     }
 }
 

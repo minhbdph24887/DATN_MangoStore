@@ -49,6 +49,7 @@ const formatMoneyImportPriceProductDetail = document.querySelector(".formatMoney
 if (formatMoneyImportPriceProductDetail) {
     function formatToCurrencyPDImport(value) {
         if (value.trim() === '') return '';
+        if (isNaN(value)) return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }
@@ -69,6 +70,7 @@ const formatMoneyPriceProductDetail = document.querySelector(".formatMoneyPriceP
 if (formatMoneyPriceProductDetail) {
     function formatToCurrencyPDOut(value) {
         if (value.trim() === '') return '';
+        if (isNaN(value)) return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }
@@ -98,6 +100,7 @@ if (formatMoneyFrom) {
 
     function formatToCurrencyAllVD(value) {
         if (value.trim() === '') return '';
+        if (isNaN(value)) return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }
@@ -132,6 +135,8 @@ if (formEditProductDetail) {
     }
 
     function formatToCurrencyPDD(value) {
+        if (value.trim() === '') return '';
+        if (isNaN(value)) return '';
         const numberValue = parseInt(value.replace(/[\D.]+/g, ''));
         return numberValue.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).slice(0, -2);
     }

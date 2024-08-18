@@ -112,14 +112,25 @@
             </li>
             <li class="nav-item dropdown d-none d-lg-block user-dropdown">
                 <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="img-xs rounded-circle" th:if="${profile.getImages() != null}"
-                         th:src="@{|/images/profile/${profile.getImages()}|}" alt="Profile image"
-                         style="width: 36px; height: 36px; border-radius: 100%;">
+                    <th:block th:if="${profile.getImages() != null}">
+                        <img class="img-xs rounded-circle" th:if="${profile.getImages() != null}"
+                             th:src="@{|/images/profile/${profile.getImages()}|}" alt="Profile image"
+                             style="width: 36px; height: 36px; border-radius: 100%;">
+                    </th:block>
+                    <th:block th:unless="${profile.getImages() != null}">
+                        <i class="bi bi-person-circle img-xs rounded-circle"
+                           style="width: 36px; height: 36px; border-radius: 100%;"></i>
+                    </th:block>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                     <div class="dropdown-header text-center">
-                        <img class="img-md rounded-circle" th:src="@{|/images/profile/${profile.getImages()}|}"
-                             alt="Profile image">
+                        <th:block th:if="${profile.getImages() != null}">
+                            <img class="img-md rounded-circle" th:src="@{|/images/profile/${profile.getImages()}|}"
+                                 alt="Profile image">
+                        </th:block>
+                        <th:block th:unless="${profile.getImages() != null}">
+                            <i class="bi bi-person-circle img-md rounded-circle"></i>
+                        </th:block>
                         <p class="mb-1 mt-3 font-weight-semibold">[[${profile.getFullName()}]]</p>
                         <p class="fw-light text-muted mb-0">[[${profile.getEmail()}]]</p>
                     </div>

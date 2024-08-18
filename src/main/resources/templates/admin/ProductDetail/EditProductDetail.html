@@ -126,27 +126,33 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="form-label">Mô tả</label>
-                                                                <textarea name="describe" class="form-control"
+                                                                <label for="describeInput" class="form-label">Mô
+                                                                    tả</label>
+                                                                <textarea id="describeInput" name="describe"
+                                                                          class="form-control"
                                                                           th:field="*{describe}"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="form-label">Số lượng</label>
-                                                                <input type="number" class="form-control"
+                                                                <label for="quantityInput" class="form-label">Số
+                                                                    lượng</label>
+                                                                <input id="quantityInput" type="number"
+                                                                       class="form-control"
                                                                        th:field="*{quantity}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="form-label">Giá nhập</label>
-                                                                <div class="d-flex">
+                                                                <label for="importPriceInput" class="form-label">Giá
+                                                                    nhập</label>
+                                                                <div class="input-group">
                                                                     <input type="text" id="importPriceInput"
                                                                            oninput="onInputImportPrice(this.value)"
                                                                            class="form-control"
-                                                                           th:value="${editProductDetail.importPrice}"/>
-                                                                    <span style="margin-left: 0.5rem">VND</span>
+                                                                           th:value="${editProductDetail.importPrice}"
+                                                                           placeholder="Mời nhập giá nhập sản phẩm"/>
+                                                                    <span class="input-group-text">VND</span>
                                                                     <input type="hidden" name="importPrice"
                                                                            th:field="*{importPrice}"
                                                                            id="outputImportPrice">
@@ -155,13 +161,15 @@
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="form-label">Giá bán</label>
-                                                                <div class="d-flex">
+                                                                <label for="priceInput" class="form-label">Giá
+                                                                    bán</label>
+                                                                <div class="input-group">
                                                                     <input type="text" id="priceInput"
                                                                            oninput="onInputPrice(this.value)"
                                                                            class="form-control"
-                                                                           th:value="${editProductDetail.price}"/>
-                                                                    <span style="margin-left: 0.5rem">VND</span>
+                                                                           th:value="${editProductDetail.price}"
+                                                                           placeholder="Mời nhập giá bán sản phẩm"/>
+                                                                    <span class="input-group-text">VND</span>
                                                                     <input type="hidden" name="price"
                                                                            th:field="*{price}"
                                                                            id="outputPrice">

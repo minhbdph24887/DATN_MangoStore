@@ -48,3 +48,7 @@
 .combobox-dropdown option:hover {
     background-color: #f1f1f1;
 }
+
+.select2-container--default .select2-selection--multiple {
+    padding: 5px 0;
+}
