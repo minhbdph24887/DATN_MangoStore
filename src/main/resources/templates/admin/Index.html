@@ -10,11 +10,11 @@
             <p style="width: 112px; margin: 6px;">Tìm kiếm theo quý:</p>
             <select class="form-select me-2" id="fitterByPrecious" onchange="updateUrl()"
                     style="width: 238px; height: 33px; margin-top: -2px;">
-                <option value="default" disabled selected>Vui Lòng Lọc Theo Qúy</option>
-                <option value="quyI">Qúy I</option>
-                <option value="quyII">Qúy II</option>
-                <option value="quyIII">Qúy III</option>
-                <option value="quyIV">Qúy IV</option>
+                <option value="default" disabled selected>Vui Lòng Lọc Theo Quý</option>
+                <option value="quyI">Quý I</option>
+                <option value="quyII">Quy II</option>
+                <option value="quyIII">Quý III</option>
+                <option value="quyIV">Quý IV</option>
             </select>
             <a type="button" class="btn btn-primary" th:href="@{/mangostore/admin/home}"
                style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Làm mới</a>
@@ -151,7 +151,7 @@
             <div class="col-md-6 stretch-card grid-margin" style="height: 505px;">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Danh Sách Voucher Đang Diễn Ra Sắp Hết Voucher</h4>
+                        <h4 class="card-title">Danh sách phiếu giảm giá sắp hết lượt dùng</h4>
                         <div class="contentCheckOut" style="height: 700px;">
                             <th:block th:each="listVoucherByQuantity : ${listVoucherByQuantity}">
                                 <table>
