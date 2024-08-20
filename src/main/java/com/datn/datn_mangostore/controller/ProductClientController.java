@@ -25,13 +25,19 @@ public class ProductClientController {
                                          @Param("keyword") String keyword,
                                          @Param("sortDirection") String sortDirection,
                                          @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
-        return productClientService.indexProductClient(model, session, keyword, sortDirection, pageNo);
+        return productClientService.indexProductClient(model,
+                session,
+                keyword,
+                sortDirection,
+                pageNo);
     }
 
     @GetMapping(value = "product/detail/{id}")
     public String productDetailClient(@PathVariable("id") Long idProductDetail,
                                       Model model,
                                       HttpSession session) {
-        return productClientService.detailProductClient(idProductDetail, model, session);
+        return productClientService.detailProductClient(idProductDetail,
+                model,
+                session);
     }
 }

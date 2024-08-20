@@ -10,8 +10,13 @@ public interface AdminService {
     String indexAdmin(Model model,
                       HttpSession session,
                       Integer years,
-                      String precious);
+                      String precious,
+                      String startDate,
+                      String endDate);
 
-    List<MonthlyRevenueResponse> getMonthlyRevenue(Integer year,
-                                                   String quarter);
+    List<MonthlyRevenueResponse> getMonthlyRevenue(HttpSession session,
+                                                   Integer year,
+                                                   String quarter,
+                                                   String startDate,
+                                                   String endDate);
 }

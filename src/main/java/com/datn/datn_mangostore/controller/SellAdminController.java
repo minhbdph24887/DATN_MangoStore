@@ -22,20 +22,24 @@ public class SellAdminController {
     @GetMapping(value = "sell")
     public String indexSellOffline(Model model,
                                    HttpSession session) {
-        return sellService.indexSellAdmin(model, session);
+        return sellService.indexSellAdmin(model,
+                session);
     }
 
     @GetMapping(value = "sell/edit")
     public String editInvoice(@RequestParam("id") Long idInvoice,
                               Model model,
                               HttpSession session) {
-        return sellService.editInvoice(idInvoice, model, session);
+        return sellService.editInvoice(idInvoice,
+                model,
+                session);
     }
 
     @PostMapping(value = "sell/update-point")
     public String updateInvoicePoint(@RequestParam("id") Long idInvoice,
                                      @RequestParam("point") Integer pointClient) {
-        return sellService.updatePoint(idInvoice, pointClient);
+        return sellService.updatePoint(idInvoice,
+                pointClient);
     }
 
     @PostMapping(value = "sell/delete")
@@ -52,6 +56,8 @@ public class SellAdminController {
     public String bankingVnPay(@RequestParam("id") Long idInvoice,
                                HttpServletRequest request,
                                HttpSession session) {
-        return sellService.paymentVnPay(idInvoice, request, session);
+        return sellService.paymentVnPay(idInvoice,
+                request,
+                session);
     }
 }

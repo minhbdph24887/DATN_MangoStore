@@ -18,7 +18,8 @@ public class CheckOutRestController {
     @PostMapping(value = "voucher-invoice/add")
     public ResponseEntity<String> addVoucherByCodeVoucher(@RequestBody CodeVoucherRequest request,
                                                           HttpSession session) {
-        return cartService.addVoucherByCodeVoucher(request, session);
+        return cartService.addVoucherByCodeVoucher(request,
+                session);
     }
 
     @GetMapping(value = "cart/update-status")

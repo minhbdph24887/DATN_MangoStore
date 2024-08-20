@@ -203,7 +203,7 @@
                                                         <td style="width: 100px"
                                                             th:text="${#temporals.format(listManager.birthday, 'dd/MM/yyyy')}"></td>
                                                         <td style="width: 100px" th:if="${listManager.gender != null}"
-                                                            th:text="${listManager.gender == true ? 'Nam' : 'Nu'}"></td>
+                                                            th:text="${listManager.gender == true ? 'Nam' : 'Nữ'}"></td>
                                                         <td style="width: 100px"
                                                             th:unless="${listManager.gender != null}"></td>
                                                         <td style="width: 100px" th:if="${listManager.Images  != null}">
@@ -357,7 +357,7 @@
                                                             th:text="${#temporals.format(listManagerInactive.birthday, 'dd/MM/yyyy')}"></td>
                                                         <td style="width: 100px"
                                                             th:if="${listManagerInactive.gender != null}"
-                                                            th:text="${listManagerInactive.gender == true ? 'Nam' : 'Nu'}"></td>
+                                                            th:text="${listManagerInactive.gender == true ? 'Nam' : 'Nữ'}"></td>
                                                         <td style="width: 100px"
                                                             th:unless="${listManagerInactive.gender != null}"></td>
                                                         <td style="width: 100px"

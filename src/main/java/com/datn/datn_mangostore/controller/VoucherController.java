@@ -35,27 +35,34 @@ public class VoucherController {
     public String indexRank(Model model,
                             HttpSession session,
                             @Param("keyword") String keyword) {
-        return rankService.indexRank(model, session, keyword);
+        return rankService.indexRank(model,
+                session,
+                keyword);
     }
 
     @PostMapping(value = "rank/add")
     public String addRank(@Valid Rank addRank,
                           BindingResult result,
                           HttpSession session) {
-        return rankService.addRank(addRank, result, session);
+        return rankService.addRank(addRank,
+                result,
+                session);
     }
 
     @GetMapping(value = "rank/detail/{id}")
     public String detailRank(Model model,
                              HttpSession session,
                              @PathVariable("id") Long idRank) {
-        return rankService.detailRank(model, session, idRank);
+        return rankService.detailRank(model,
+                session,
+                idRank);
     }
 
     @PostMapping(value = "rank/update")
     public String updateRank(@Valid Rank rank,
                              HttpSession session) {
-        return rankService.updateRank(session, rank);
+        return rankService.updateRank(session,
+                rank);
     }
 
     @GetMapping(value = "rank/delete/{id}")
@@ -73,28 +80,35 @@ public class VoucherController {
     public String indexVoucher(Model model,
                                HttpSession session,
                                @Param("voucherActive") String voucherActive) {
-        return voucherService.indexVoucher(model, session, voucherActive);
+        return voucherService.indexVoucher(model,
+                session,
+                voucherActive);
     }
 
     @PostMapping(value = "voucher/add")
     public String addVoucher(@Valid Voucher addVoucher,
                              BindingResult result,
                              HttpSession session) {
-        return voucherService.addVoucher(addVoucher, result, session);
+        return voucherService.addVoucher(addVoucher,
+                result,
+                session);
     }
 
     @GetMapping(value = "voucher/detail/{id}")
     public String detailVoucher(Model model,
                                 HttpSession session,
                                 @PathVariable("id") Long idVoucher) {
-        return voucherService.detailVoucher(model, session, idVoucher);
+        return voucherService.detailVoucher(model,
+                session,
+                idVoucher);
     }
 
 
     @PostMapping(value = "voucher/update/{id}")
     public String updateVoucher(@Valid Voucher voucher,
                                 HttpSession session) {
-        return voucherService.updateVoucher(session, voucher);
+        return voucherService.updateVoucher(session,
+                voucher);
     }
 
     @GetMapping(value = "voucher/delete/{id}")
@@ -106,13 +120,16 @@ public class VoucherController {
     @GetMapping(value = "voucher-client")
     public String detailVoucherClient(Model model,
                                       HttpSession session) {
-        return voucherClientService.indexVoucherClient(model, session);
+        return voucherClientService.indexVoucherClient(model,
+                session);
     }
 
     @GetMapping(value = "voucher-client/detail/{id}")
     public String detailVoucherClient(Model model,
                                       HttpSession session,
                                       @PathVariable("id") Long idVoucher) {
-        return voucherClientService.detailVoucherClient(model, session, idVoucher);
+        return voucherClientService.detailVoucherClient(model,
+                session,
+                idVoucher);
     }
 }

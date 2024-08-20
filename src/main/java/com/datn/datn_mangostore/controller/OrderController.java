@@ -22,27 +22,33 @@ public class OrderController {
     @GetMapping(value = "order/show")
     public String orderShow(Model model,
                             HttpSession session) {
-        return orderService.orderShow(model, session);
+        return orderService.orderShow(model,
+                session);
     }
 
     @GetMapping(value = "confirm-invoice")
     public String confirmInvoice(@RequestParam("id") Long idInvoice,
                                  HttpSession session) {
-        return orderService.confirmInvoice(idInvoice, session);
+        return orderService.confirmInvoice(idInvoice,
+                session);
     }
 
     @GetMapping(value = "order/list")
     public String listInvoice(Model model,
                               HttpSession session,
                               @Param("findByCode") String findByCode) {
-        return orderService.listInvoice(model, session, findByCode);
+        return orderService.listInvoice(model,
+                session,
+                findByCode);
     }
 
     @GetMapping(value = "order/detail/{id}")
     public String detailOrderAdmin(@PathVariable("id") Long idInvoice,
                                    Model model,
                                    HttpSession session) {
-        return orderService.detailOrderAdmin(idInvoice, model, session);
+        return orderService.detailOrderAdmin(idInvoice,
+                model,
+                session);
     }
 
     @GetMapping(value = "order/update-invoice-status/{idInvoice}")
@@ -54,13 +60,17 @@ public class OrderController {
     public String orderAllForManager(Model model,
                                      HttpSession session,
                                      @Param("findByCode") String findByCode) {
-        return orderService.orderAllForManager(model, session, findByCode);
+        return orderService.orderAllForManager(model,
+                session,
+                findByCode);
     }
 
     @GetMapping(value = "order-all/detail/{id}")
     public String orderAllDetailForManager(Model model,
                                            HttpSession session,
                                            @PathVariable("id") Long idInvoice) {
-        return orderService.orderAllDetailForManager(model, session, idInvoice);
+        return orderService.orderAllDetailForManager(model,
+                session,
+                idInvoice);
     }
 }

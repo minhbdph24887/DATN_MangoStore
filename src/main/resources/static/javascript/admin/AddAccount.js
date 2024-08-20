@@ -112,7 +112,7 @@ if (updateAccountPage) {
                 contentType: 'application/json',
                 success: function () {
                     const formUpdate = document.getElementById("formUpdate");
-                    confirmAlertForm('Bạn có muốn sửa không', 'Sửa thành công', formUpdate);
+                    confirmAlertForm('Bạn có muốn cập nhật không', 'Cập nhật thành công', formUpdate);
                 },
                 error: function (e) {
                     console.clear();

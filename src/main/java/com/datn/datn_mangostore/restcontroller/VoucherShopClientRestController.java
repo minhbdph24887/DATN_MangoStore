@@ -20,6 +20,7 @@ public class VoucherShopClientRestController {
     @PostMapping(value = "add-client")
     public boolean addVoucherClient(@RequestBody VoucherShopClientRequest request,
                                     HttpSession session) {
-        return voucherShopService.addVoucherClient(request, session);
+        return voucherShopService.addVoucherClient(request,
+                session);
     }
 }

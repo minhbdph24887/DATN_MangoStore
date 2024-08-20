@@ -46,8 +46,6 @@ public class Gender {
     private final JavaMailSender mailSender;
     private final InvoiceRepository invoiceRepository;
     private final ProductDetailRepository productDetailRepository;
-    private final SizeRepository sizeRepository;
-    private final ColorRepository colorRepository;
     private final ShoppingCartDetailRepository shoppingCartDetailRepository;
     private final ShoppingCartRepository shoppingCartRepository;
     private final RankRepository rankRepository;
@@ -59,8 +57,6 @@ public class Gender {
                   JavaMailSender mailSender,
                   InvoiceRepository invoiceRepository,
                   ProductDetailRepository productDetailRepository,
-                  SizeRepository sizeRepository,
-                  ColorRepository colorRepository,
                   ShoppingCartDetailRepository shoppingCartDetailRepository,
                   ShoppingCartRepository shoppingCartRepository,
                   RankRepository rankRepository,
@@ -71,8 +67,6 @@ public class Gender {
         this.mailSender = mailSender;
         this.invoiceRepository = invoiceRepository;
         this.productDetailRepository = productDetailRepository;
-        this.sizeRepository = sizeRepository;
-        this.colorRepository = colorRepository;
         this.shoppingCartDetailRepository = shoppingCartDetailRepository;
         this.shoppingCartRepository = shoppingCartRepository;
         this.rankRepository = rankRepository;
@@ -252,26 +246,6 @@ public class Gender {
             priceRangeMap.put(idProduct, priceRange);
         }
         return priceRangeMap;
-    }
-
-    public Map<String, Integer> countProductsBySize() {
-        List<Size> sizes = sizeRepository.findAll();
-        Map<String, Integer> productDetailCountBySize = new HashMap<>();
-        for (Size size : sizes) {
-            Integer count = productDetailRepository.countProductDetailBySize(size.getId());
-            productDetailCountBySize.put(size.getNameSize(), count);
-        }
-        return productDetailCountBySize;
-    }
-
-    public Map<String, Integer> countProductsByColor() {
-        List<Color> colors = colorRepository.findAll();
-        Map<String, Integer> productDetailCountByColor = new HashMap<>();
-        for (Color color : colors) {
-            Integer count = productDetailRepository.countProductDetailByColor(color.getId());
-            productDetailCountByColor.put(color.getNameColor(), count);
-        }
-        return productDetailCountByColor;
     }
 
     public void updateTotalShoppingCart(ShoppingCart shoppingCart) {
@@ -482,5 +456,11 @@ public class Gender {
             }
             return detailAccount;
         }
+    }
+
+    public Role findRoleByAccount(HttpSession session) {
+        String email = (String) session.getAttribute("loginEmail");
+        assert email != null;
+        return roleRepository.getRoleByEmail(email);
     }
 }

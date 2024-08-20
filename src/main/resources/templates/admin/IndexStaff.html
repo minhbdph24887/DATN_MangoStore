@@ -1,0 +1,61 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+     th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
+    <main class="chartStaffPage fitterByDatePage">
+        <div class="d-flex">
+            <p style="width: 120px; margin: 8px;">Tìm kiếm theo ngày: </p>
+            <input type="date" name="startDate" id="startDate" class="form-control" style="width: 150px;">
+            <p style="width: 25px; margin: 8px;"> Đến </p>
+            <input type="date" name="endDate" id="endDate" class="form-control me-2" style="width: 150px;">
+            <a type="button" class="btn btn-primary ms-2" th:href="@{/mangostore/admin/home}" style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Làm mới</a>
+        </div>
+        <div class="row">
+            <div class="col-md-4 stretch-card grid-margin" style="height: 210px;">
+                <div class="card bg-gradient-danger card-img-holder text-white">
+                    <div class="card-body">
+                        <img th:src="@{|/images/layout/circle.svg|}"
+                             style="position: absolute; top: 0; right: 0; height: 100%;" alt="circle-image"/>
+                        <h4 class="font-weight-normal mb-3">Tổng hóa đơn đã hoàn thành
+                            <i class="bi bi-clipboard-data"></i>
+                        </h4>
+                        <h2 class="mb-5" th:text="${totalInvoiceCompleted}"></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin" style="height: 210px;">
+                <div class="card bg-gradient-info card-img-holder text-white">
+                    <div class="card-body">
+                        <img th:src="@{|/images/layout/circle.svg|}"
+                             style="position: absolute; top: 0; right: 0; height: 100%;" alt="circle-image"/>
+                        <h4 class="font-weight-normal mb-3">Tổng số tiền của toàn bộ hóa đơn
+                            <i class="bi bi-clipboard-data"></i>
+                        </h4>
+                        <h2 class="mb-5"
+                            th:text="${#numbers.formatDecimal(totalPaymentOfAllInvoices, 0, 'COMMA', 0, 'POINT') + ' VND'}"></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin" style="height: 210px;">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img th:src="@{|/images/layout/circle.svg|}"
+                             style="position: absolute; top: 0; right: 0; height: 100%;" alt="circle-image"/>
+                        <h4 class="font-weight-normal mb-3">Tổng số hóa đơn bị hủy
+                            <i class="bi bi-clipboard-data"></i>
+                        </h4>
+                        <h2 class="mb-5" th:text="${totalInvoiceCancel}"></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7 stretch-card grid-margin" style="height: 505px;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Biểu đồ doanh thu hàng ngày</h4>
+                        <canvas id="monthly-revenue-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

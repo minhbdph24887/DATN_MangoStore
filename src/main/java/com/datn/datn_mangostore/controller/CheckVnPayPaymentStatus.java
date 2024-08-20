@@ -19,6 +19,7 @@ public class CheckVnPayPaymentStatus {
     @GetMapping(value = "/mangostore/banking/success")
     public String bankingSuccess(HttpServletRequest request,
                                  HttpSession session) throws IOException {
-        return service.bankingSuccess(request, session);
+        return service.bankingSuccess(request,
+                session);
     }
 }

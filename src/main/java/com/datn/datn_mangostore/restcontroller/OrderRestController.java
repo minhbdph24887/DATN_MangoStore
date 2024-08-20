@@ -24,6 +24,7 @@ public class OrderRestController {
     @PostMapping(value = "check-confirm-invoice")
     public ResponseEntity<String> checkConfirmInvoiceForAdmin(@RequestBody IdOrderRequest request,
                                                               HttpSession session) {
-        return orderService.checkConfirmInvoice(request, session);
+        return orderService.checkConfirmInvoice(request,
+                session);
     }
 }

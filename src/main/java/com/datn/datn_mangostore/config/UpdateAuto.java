@@ -23,7 +23,8 @@ public class UpdateAuto {
                       ProductDetailRepository productDetailRepository,
                       InvoiceRepository invoiceRepository,
                       VoucherClientRepository voucherClientRepository,
-                      AccountRepository accountRepository, RankRepository rankRepository) {
+                      AccountRepository accountRepository,
+                      RankRepository rankRepository) {
         this.voucherRepository = voucherRepository;
         this.productDetailRepository = productDetailRepository;
         this.invoiceRepository = invoiceRepository;

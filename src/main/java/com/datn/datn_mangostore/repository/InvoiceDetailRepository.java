@@ -77,5 +77,7 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, Lo
             "    c.name_color,\n" +
             "    img.images_file\n" +
             "order by total_quantity desc;", nativeQuery = true)
-    List<Object[]> findTopSellingProductsByYearAndQuarter(@Param("year") Integer year, @Param("startMonth") int startMonth, @Param("endMonth") int endMonth);
+    List<Object[]> findTopSellingProductsByYearAndQuarter(@Param("year") Integer year,
+                                                          @Param("startMonth") int startMonth,
+                                                          @Param("endMonth") int endMonth);
 }

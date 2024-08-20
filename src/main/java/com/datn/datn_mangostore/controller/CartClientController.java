@@ -24,7 +24,8 @@ public class CartClientController {
     @GetMapping(value = "cart")
     public String indexCart(Model model,
                             HttpSession session) {
-        return cartService.indexCart(model, session);
+        return cartService.indexCart(model,
+                session);
     }
 
     @PostMapping(value = "cart/reduce")
@@ -45,19 +46,22 @@ public class CartClientController {
     @GetMapping(value = "cart/checkout")
     public String viewCheckOut(Model model,
                                HttpSession session) {
-        return cartService.viewCheckOut(model, session);
+        return cartService.viewCheckOut(model,
+                session);
     }
 
     @PostMapping(value = "cart/address-client/create")
     public String addAddressForClient(@Valid AddressClient newAddressClient,
                                       HttpSession session) {
-        return cartService.addAddressClientForClient(newAddressClient, session);
+        return cartService.addAddressClientForClient(newAddressClient,
+                session);
     }
 
     @PostMapping(value = "cart/client-address/update-status")
     public String updateStatusDefaultClientAddress(@RequestParam("id") Long id,
                                                    HttpSession session) {
-        return cartService.updateStatusClientAddress(id, session);
+        return cartService.updateStatusClientAddress(id,
+                session);
     }
 
     @PostMapping(value = "cart/address-client/update")
@@ -73,13 +77,16 @@ public class CartClientController {
     @PostMapping(value = "cart/client-voucher/add")
     public String addVoucherToInvoice(@RequestParam("idVoucher") Long id,
                                       HttpSession session) {
-        return cartService.addVoucherToInvoice(id, session);
+        return cartService.addVoucherToInvoice(id,
+                session);
     }
 
     @GetMapping(value = "cart/banking-status")
     public String viewBankingStatus(@RequestParam("id") Long idInvoice,
                                     HttpServletRequest request,
                                     HttpSession session) {
-        return cartService.bankingVnPay(idInvoice, request, session);
+        return cartService.bankingVnPay(idInvoice,
+                request,
+                session);
     }
 }

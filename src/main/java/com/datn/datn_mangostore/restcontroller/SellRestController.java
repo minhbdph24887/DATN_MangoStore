@@ -28,7 +28,8 @@ public class SellRestController {
     @PostMapping(value = "sell/add-client")
     public ResponseEntity<String> addNumberClientAPI(@RequestBody IdInvoiceRequest request,
                                                      HttpSession session) {
-        return sellService.addNumberClientAPI(request, session);
+        return sellService.addNumberClientAPI(request,
+                session);
     }
 
     @PostMapping(value = "sell/add-new-client")
@@ -49,7 +50,8 @@ public class SellRestController {
     @PostMapping(value = "sell/add-product")
     public ResponseEntity<String> addProductForSellAPI(@RequestBody IdProductRequest request,
                                                        HttpSession session) {
-        return sellService.addProductForSellAPI(request, session);
+        return sellService.addProductForSellAPI(request,
+                session);
     }
 
     @PostMapping(value = "sell/reduce")

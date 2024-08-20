@@ -21,7 +21,9 @@ public class InvoiceResponse {
     private String nameCustomer;
     private List<InvoiceDetailResponse> invoiceDetails;
 
-    public InvoiceResponse(Invoice invoice, Account account, List<InvoiceDetail> invoiceDetails) {
+    public InvoiceResponse(Invoice invoice,
+                           Account account,
+                           List<InvoiceDetail> invoiceDetails) {
         this.id = invoice.getId();
         this.codeInvoice = invoice.getCodeInvoice();
         this.nameInvoice = invoice.getNameInvoice();

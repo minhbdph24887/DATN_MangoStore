@@ -36,6 +36,7 @@ public class LoginRestController {
     @PostMapping(value = "check-forgot-password")
     public ResponseEntity<String> checkForgotPassword(@RequestBody LoginRequest request,
                                                       HttpSession session) {
-        return loginService.checkForgotPassword(request, session);
+        return loginService.checkForgotPassword(request,
+                session);
     }
 }

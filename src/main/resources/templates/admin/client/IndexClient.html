@@ -196,7 +196,7 @@
                                                 <td style="width: 100px"
                                                     th:text="${#temporals.format(listClient.birthday, 'dd/MM/yyyy')}"></td>
                                                 <td style="width: 100px" th:if="${listClient.gender != null}"
-                                                    th:text="${listClient.gender == true ? 'Nam' : 'Nu'}"></td>
+                                                    th:text="${listClient.gender == true ? 'Nam' : 'Nữ'}"></td>
                                                 <td style="width: 100px" th:unless="${listClient.gender != null}"></td>
                                                 <td style="width: 100px" th:if="${listClient.Images  != null}">
                                                     <img th:src="@{|/images/profile/${listClient.Images }|}"

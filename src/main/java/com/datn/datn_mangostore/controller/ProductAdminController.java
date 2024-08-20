@@ -44,13 +44,16 @@ public class ProductAdminController {
     public String indexProductAdmin(Model model,
                                     HttpSession session,
                                     @Param("keyword") String keyword) {
-        return productService.indexProductAdmin(model, session, keyword);
+        return productService.indexProductAdmin(model,
+                session,
+                keyword);
     }
 
     @GetMapping(value = "product/create")
     public String createProductAdmin(Model model,
                                      HttpSession session) {
-        return productService.createProductAdmin(model, session);
+        return productService.createProductAdmin(model,
+                session);
     }
 
 
@@ -79,7 +82,16 @@ public class ProductAdminController {
                                      @RequestParam(name = "page", defaultValue = "0") int page,
                                      @RequestParam(name = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return productDetailService.indexProductDetail(model, session, keyword, materialId, sizeId, colorId, originId, categoryId, sortBy, pageable);
+        return productDetailService.indexProductDetail(model,
+                session,
+                keyword,
+                materialId,
+                sizeId,
+                colorId,
+                originId,
+                categoryId,
+                sortBy,
+                pageable);
     }
 
 
@@ -87,27 +99,34 @@ public class ProductAdminController {
     public String detailProduct(Model model,
                                 HttpSession session,
                                 @PathVariable("id") Long idProduct) {
-        return productService.detailProduct(model, session, idProduct);
+        return productService.detailProduct(model,
+                session,
+                idProduct);
     }
 
     @GetMapping(value = "product-detail/create")
     public String viewCreateProductDetail(Model model,
                                           HttpSession session) {
-        return productDetailService.viewCreateProductDetail(model, session);
+        return productDetailService.viewCreateProductDetail(model,
+                session);
     }
 
     @GetMapping(value = "product-detail/edit/{id}")
     public String editProductDetail(@PathVariable("id") Long idProductDetail,
                                     Model model,
                                     HttpSession session) {
-        return productDetailService.editProductDetail(idProductDetail, model, session);
+        return productDetailService.editProductDetail(idProductDetail,
+                model,
+                session);
     }
 
     @PostMapping(value = "product-detail/update")
     public String updateProductDetail(@Valid ProductDetail editProductDetail,
                                       BindingResult result,
                                       HttpSession session) {
-        return productDetailService.updateProductDetail(editProductDetail, result, session);
+        return productDetailService.updateProductDetail(editProductDetail,
+                result,
+                session);
     }
 
     @GetMapping(value = "product-detail/delete/{id}")
@@ -125,28 +144,36 @@ public class ProductAdminController {
     public String indexCategory(Model model,
                                 HttpSession session,
                                 @Param("keyword") String keyword) {
-        return categoryService.indexCategory(model, session, keyword);
+        return categoryService.indexCategory(model,
+                session,
+                keyword);
     }
 
     @PostMapping(value = "category/add")
     public String addCategory(@Valid Category addCategory,
                               BindingResult result,
                               HttpSession session) {
-        return categoryService.addCategory(addCategory, result, session);
+        return categoryService.addCategory(addCategory,
+                result,
+                session);
     }
 
     @GetMapping(value = "category/detail/{id}")
     public String detailCategory(Model model,
                                  HttpSession session,
                                  @PathVariable("id") Long idCategory) {
-        return categoryService.detailCategory(model, session, idCategory);
+        return categoryService.detailCategory(model,
+                session,
+                idCategory);
     }
 
     @PostMapping(value = "category/update")
     public String updateCategory(@Valid Category category,
                                  BindingResult result,
                                  HttpSession session) {
-        return categoryService.updateCategory(result, session, category);
+        return categoryService.updateCategory(result,
+                session,
+                category);
     }
 
     @GetMapping(value = "category/delete/{id}")
@@ -163,28 +190,36 @@ public class ProductAdminController {
     public String indexMaterial(Model model,
                                 HttpSession session,
                                 @Param("keyword") String keyword) {
-        return materialService.indexMaterial(model, session, keyword);
+        return materialService.indexMaterial(model,
+                session,
+                keyword);
     }
 
     @PostMapping(value = "material/add")
     public String addMaterial(@Valid Material addMaterial,
                               BindingResult result,
                               HttpSession session) {
-        return materialService.addMaterial(addMaterial, result, session);
+        return materialService.addMaterial(addMaterial,
+                result,
+                session);
     }
 
     @GetMapping(value = "material/detail/{id}")
     public String detailMaterial(Model model,
                                  HttpSession session,
                                  @PathVariable("id") Long idMaterial) {
-        return materialService.detailMaterial(model, session, idMaterial);
+        return materialService.detailMaterial(model,
+                session,
+                idMaterial);
     }
 
     @PostMapping(value = "material/update")
     public String updateMaterial(@Valid Material material,
                                  BindingResult result,
                                  HttpSession session) {
-        return materialService.updateMaterial(result, session, material);
+        return materialService.updateMaterial(result,
+                session,
+                material);
     }
 
     @GetMapping(value = "material/delete/{id}")
@@ -202,28 +237,36 @@ public class ProductAdminController {
     public String indexOrigin(Model model,
                               HttpSession session,
                               @Param("keyword") String keyword) {
-        return originService.indexOrigin(model, session, keyword);
+        return originService.indexOrigin(model,
+                session,
+                keyword);
     }
 
     @PostMapping(value = "origin/add")
     public String addOrigin(@Valid Origin addOrigin,
                             BindingResult result,
                             HttpSession session) {
-        return originService.addOrigin(addOrigin, result, session);
+        return originService.addOrigin(addOrigin,
+                result,
+                session);
     }
 
     @GetMapping(value = "origin/detail/{id}")
     public String detailOrigin(Model model,
                                HttpSession session,
                                @PathVariable("id") Long idOrigin) {
-        return originService.detailOrigin(model, session, idOrigin);
+        return originService.detailOrigin(model,
+                session,
+                idOrigin);
     }
 
     @PostMapping(value = "origin/update")
     public String updateOrigin(@Valid Origin origin,
                                BindingResult result,
                                HttpSession session) {
-        return originService.updateOrigin(result, session, origin);
+        return originService.updateOrigin(result,
+                session,
+                origin);
     }
 
     @GetMapping(value = "origin/delete/{id}")
@@ -241,28 +284,36 @@ public class ProductAdminController {
     public String indexSize(Model model,
                             HttpSession session,
                             @Param("keyword") String keyword) {
-        return sizeService.indexSize(model, session, keyword);
+        return sizeService.indexSize(model,
+                session,
+                keyword);
     }
 
     @PostMapping(value = "size/add")
     public String addSize(@Valid Size addSize,
                           BindingResult result,
                           HttpSession session) {
-        return sizeService.addSize(addSize, result, session);
+        return sizeService.addSize(addSize,
+                result,
+                session);
     }
 
     @GetMapping(value = "size/detail/{id}")
     public String detailSize(Model model,
                              HttpSession session,
                              @PathVariable("id") Long idSize) {
-        return sizeService.detailSize(model, session, idSize);
+        return sizeService.detailSize(model,
+                session,
+                idSize);
     }
 
     @PostMapping(value = "size/update")
     public String updateSize(@Valid Size size,
                              BindingResult result,
                              HttpSession session) {
-        return sizeService.updateSize(result, session, size);
+        return sizeService.updateSize(result,
+                session,
+                size);
     }
 
     @GetMapping(value = "size/delete/{id}")
@@ -279,28 +330,36 @@ public class ProductAdminController {
     public String indexColor(Model model,
                              HttpSession session,
                              @Param("keyword") String keyword) {
-        return colorService.indexColor(model, session, keyword);
+        return colorService.indexColor(model,
+                session,
+                keyword);
     }
 
     @PostMapping(value = "color/add")
     public String addColor(@Valid Color addColor,
                            BindingResult result,
                            HttpSession session) {
-        return colorService.addColor(addColor, result, session);
+        return colorService.addColor(addColor,
+                result,
+                session);
     }
 
     @GetMapping(value = "color/detail/{id}")
     public String detailColor(Model model,
                               HttpSession session,
                               @PathVariable("id") Long idColor) {
-        return colorService.detailColor(model, session, idColor);
+        return colorService.detailColor(model,
+                session,
+                idColor);
     }
 
     @PostMapping(value = "color/update")
     public String updateColor(@Valid Color color,
                               BindingResult result,
                               HttpSession session) {
-        return colorService.updateColor(result, session, color);
+        return colorService.updateColor(result,
+                session,
+                color);
     }
 
     @GetMapping(value = "color/delete/{id}")

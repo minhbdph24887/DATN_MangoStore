@@ -49,9 +49,7 @@ public class CheckNameProductAttributesRestController {
     @GetMapping("/colorsExistUpdate/{name}")
     public ResponseEntity<Integer> checkColorExistence2(
             @PathVariable String name,
-            @RequestParam(required = false) String codeColor
-    ) {
-
+            @RequestParam(required = false) String codeColor) {
         try {
             Integer result = colorService.findByColorUpdateExit(name, codeColor);
             if (result == 1) {
@@ -88,8 +86,7 @@ public class CheckNameProductAttributesRestController {
     @GetMapping("/materialsExistUpdate/{name}")
     public ResponseEntity<Integer> checkMaterialExistence2(
             @PathVariable String name,
-            @RequestParam(required = false) String codeMaterial
-    ) {
+            @RequestParam(required = false) String codeMaterial) {
         try {
             Integer result = materialService.findByMaterialUpdateExit(name, codeMaterial);
             if (result == 1) {
@@ -125,8 +122,7 @@ public class CheckNameProductAttributesRestController {
     @GetMapping("/sizesExistUpdate/{name}")
     public ResponseEntity<Integer> checkSizeExistence2(
             @PathVariable String name,
-            @RequestParam(required = false) String codeSize
-    ) {
+            @RequestParam(required = false) String codeSize) {
         try {
             Integer result = sizeService.findBySizeUpdateExit(name, codeSize);
             if (result == 1) {
@@ -162,8 +158,7 @@ public class CheckNameProductAttributesRestController {
     @GetMapping("/categoriesExistUpdate/{name}")
     public ResponseEntity<Integer> checkCategoryExistence2(
             @PathVariable String name,
-            @RequestParam(required = false) String codeCategory
-    ) {
+            @RequestParam(required = false) String codeCategory) {
         try {
             Integer result = categoryService.findByCategoryUpdateExit(name, codeCategory);
             if (result == 1) {
@@ -199,8 +194,7 @@ public class CheckNameProductAttributesRestController {
     @GetMapping("/originsExistUpdate/{name}")
     public ResponseEntity<Integer> checkOriginExistence2(
             @PathVariable String name,
-            @RequestParam(required = false) String codeOrigin
-    ) {
+            @RequestParam(required = false) String codeOrigin) {
         try {
             Integer result = originService.findByOriginUpdateExit(name, codeOrigin);
             if (result == 1) {
@@ -236,8 +230,7 @@ public class CheckNameProductAttributesRestController {
     @GetMapping("/productsExistUpdate/{name}")
     public ResponseEntity<Integer> checkProductExistence2(
             @PathVariable String name,
-            @RequestParam(required = false) String codeProduct
-    ) {
+            @RequestParam(required = false) String codeProduct) {
         try {
             Integer result = productService.findByProductUpdateExit(name, codeProduct);
             if (result == 1) {
@@ -253,6 +246,4 @@ public class CheckNameProductAttributesRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
 }

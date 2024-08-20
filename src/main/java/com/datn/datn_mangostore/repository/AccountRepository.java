@@ -64,9 +64,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(value = "select a.* from accounts a join authentication b on a.id = b.id_account join roles r on b.id_role = r.id where r.id= :idRole", nativeQuery = true)
     List<Account> getAllAccountByRole(@Param("idRole") Long idRole);
 
-    @Query(value = "select case when count(*) > 0 then 1 else 0 end from accounts where email = :email", nativeQuery = true)
-    int existsByEmail(@Param("email") String email);
-
     @Query(value = "select * from accounts where number_phone= :numberPhoneClient", nativeQuery = true)
     Account findAccountByNumberPhone(@Param("numberPhoneClient") String numberPhoneClient);
 }

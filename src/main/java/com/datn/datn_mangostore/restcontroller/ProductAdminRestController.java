@@ -34,20 +34,24 @@ public class ProductAdminRestController {
     @PostMapping(value = "product/add")
     public boolean addProduct(@RequestBody AddProductRequest request,
                               HttpSession session) {
-        return productService.addProductAPI(request, session);
+        return productService.addProductAPI(request,
+                session);
     }
 
     @PostMapping(value = "product-detail/add")
     public Map<String, List<String>> saveProductDetailAPI(@RequestBody CreateProductRequest request,
                                                           HttpSession session,
                                                           HttpServletResponse response) throws IOException {
-        return productDetailService.saveProductDetailAPI(request, session, response);
+        return productDetailService.saveProductDetailAPI(request,
+                session,
+                response);
     }
 
     @PostMapping(value = "product/update")
     public boolean updateProduct(@RequestBody UpdateProductRequest request,
                                  HttpSession session) {
-        return productService.updateProductAPI(request, session);
+        return productService.updateProductAPI(request,
+                session);
     }
 
     @GetMapping(value = "image")

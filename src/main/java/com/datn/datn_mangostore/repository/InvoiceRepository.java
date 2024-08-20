@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -82,4 +84,27 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     @Query(value = "select * from invoice where invoice_status in (2, 3, 4, 5) and code_invoice like %:codeInvoice%", nativeQuery = true)
     List<Invoice> searchOrder(@Param("codeInvoice") String findByCode);
+
+    @Query(value = "select count(*) from invoice where invoice_status = :statusInvoice and cast(invoice_payment_date as date) between :startDate and :endDate", nativeQuery = true)
+    Integer countByInvoiceStatusAndDateRange(@Param("statusInvoice") Integer statusInvoice,
+                                             @Param("startDate") LocalDate startDate,
+                                             @Param("endDate") LocalDate endDate);
+
+    @Query(value = "select count(*) from invoice where invoice_status = :statusInvoice and cast(invoice_payment_date as date) = :date", nativeQuery = true)
+    Integer countByInvoiceStatusAndDate(@Param("statusInvoice") Integer statusInvoice,
+                                        @Param("date") LocalDate date);
+
+    @Query(value = "select sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) between :start and :end", nativeQuery = true)
+    Integer sumTotalPaymentByDateRange(@Param("start") LocalDate start,
+                                       @Param("end") LocalDate end);
+
+    @Query(value = "select sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) = :today", nativeQuery = true)
+    Integer sumTotalPaymentByDate(@Param("today") LocalDate today);
+
+    @Query(value = "select day(i.invoice_payment_date), sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) between :start and :end group by day(i.invoice_payment_date)", nativeQuery = true)
+    List<Object[]> findDailyRevenueByDateRange(@Param("start") LocalDate start,
+                                               @Param("end") LocalDate end);
+
+    @Query(value = "select day(i.invoice_payment_date), sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) = :date group by day(i.invoice_payment_date)", nativeQuery = true)
+    List<Object[]> findDailyRevenueByDate(@Param("date") LocalDate date);
 }

@@ -19,44 +19,50 @@ public class ClientController {
 
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
-        ;
     }
 
     @GetMapping(value = "home")
     public String indexClient(Model model,
                               HttpSession session) {
-        return clientService.indexClient(model, session);
+        return clientService.indexClient(model,
+                session);
     }
 
     @GetMapping(value = "profile")
     public String viewProfileClient(Model model,
                                     HttpSession session) {
-        return clientService.indexProfile(model, session);
+        return clientService.indexProfile(model,
+                session);
     }
 
     @PostMapping(value = "profile/update")
     public String updateProfileClient(@Valid Account profile,
                                       @RequestParam("imageFile") MultipartFile imageFile,
                                       HttpSession session) {
-        return clientService.updateProfile(profile, imageFile, session);
+        return clientService.updateProfile(profile,
+                imageFile,
+                session);
     }
 
     @GetMapping(value = "change-password")
     public String viewChangePassword(Model model,
                                      HttpSession session) {
-        return clientService.changePassword(model, session);
+        return clientService.changePassword(model,
+                session);
     }
 
     @PostMapping(value = "change-password/update")
     public String changePassword(@Valid Account profile,
                                  HttpSession session) {
-        return clientService.updateChangePassword(profile, session);
+        return clientService.updateChangePassword(profile,
+                session);
     }
 
     @GetMapping(value = "voucher-wallet")
     public String viewVoucherClient(HttpSession session,
                                     Model model) {
-        return clientService.indexVoucherClient(model, session);
+        return clientService.indexVoucherClient(model,
+                session);
     }
 
     @GetMapping(value = "purchase")
@@ -65,7 +71,11 @@ public class ClientController {
                                @RequestParam(name = "status", defaultValue = "all") String status,
                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
-        return clientService.indexViewPurchase(model, session, status, pageNo, pageSize);
+        return clientService.indexViewPurchase(model,
+                session,
+                status,
+                pageNo,
+                pageSize);
     }
 
     @GetMapping(value = "purchase/remove")

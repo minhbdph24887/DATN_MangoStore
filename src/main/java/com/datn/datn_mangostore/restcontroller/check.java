@@ -36,7 +36,6 @@ public class check {
             @PathVariable String name,
             @RequestParam(required = false) String codeColor
     ) {
-
         try {
             Integer result = colorService.findByColorUpdateExit(name, codeColor);
             if (result == 1) {

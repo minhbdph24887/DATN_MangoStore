@@ -34,13 +34,15 @@ public class ProfileController {
     @GetMapping(value = "list-staff")
     public String viewStaff(Model model,
                             HttpSession session) {
-        return profileService.getAllStaffByStatus1(model, session);
+        return profileService.getAllStaffByStatus1(model,
+                session);
     }
 
     @GetMapping(value = "list-client")
     public String viewUser(Model model,
                            HttpSession session) {
-        return profileService.getAllAccountByClient(model, session);
+        return profileService.getAllAccountByClient(model,
+                session);
     }
 
     @GetMapping(value = "list-staff/restore/{id}")
@@ -57,53 +59,52 @@ public class ProfileController {
     public String detailStaff(Model model,
                               HttpSession session,
                               @PathVariable("id") Long idAccount) {
-        return profileService.detailStaff(model, session, idAccount);
+        return profileService.detailStaff(model,
+                session,
+                idAccount);
     }
 
     @GetMapping(value = "list-staff/detail-view")
     public String detailViewStaff(Model model,
                                   HttpSession session) {
-        return profileService.detailViewStaff(model, session);
+        return profileService.detailViewStaff(model,
+                session);
     }
 
     @GetMapping(value = "client/detail/{id}")
     public String detailClient(Model model,
                                HttpSession session,
                                @PathVariable("id") Long idAccount) {
-        return profileService.detailclient(model, session, idAccount);
+        return profileService.detailclient(model,
+                session,
+                idAccount);
     }
 
 
     @PostMapping(value = "list-staff/update")
     public String updateStaff(@Valid Account account,
                               @RequestParam("newPassword") String newPassword,
-                              @RequestParam("rePassword") String rePassword,
                               @RequestParam("imageFile") MultipartFile imageFile,
-                              @RequestParam("id") Long idAccount,
                               BindingResult result,
                               HttpSession session) {
-        if (!Objects.equals(newPassword, rePassword)) {
-            return "redirect:/mangostore/admin/list-staff/detail/" + idAccount;
-        } else {
-            return profileService.updateStaff(result, newPassword, imageFile, account, session);
-        }
-
+        return profileService.updateStaff(result,
+                newPassword,
+                imageFile,
+                account,
+                session);
     }
 
     @PostMapping(value = "list-client/update")
     public String updateClient(@Valid Account account,
                                @RequestParam("newPassword") String newPassword,
-                               @RequestParam("rePassword") String rePassword,
                                @RequestParam("imageFile") MultipartFile imageFile,
-                               @RequestParam("id") Long idAccount,
                                BindingResult result,
                                HttpSession session) {
-        if (!Objects.equals(newPassword, rePassword)) {
-            return "redirect:/mangostore/admin/list-client/detail/" + idAccount;
-        } else {
-            return profileService.updateClient(result, newPassword, imageFile, account, session);
-        }
-
+        return profileService.updateClient(result,
+                newPassword,
+                imageFile,
+                account,
+                session);
     }
 
 
@@ -120,20 +121,23 @@ public class ProfileController {
     @PostMapping(value = "list-client/add")
     public String addAccountClient(@Valid Account addClient,
                                    BindingResult result) {
-        return profileService.addAccountClient(result, addClient);
+        return profileService.addAccountClient(result,
+                addClient);
     }
 
     @PostMapping(value = "add-staff")
     public String addAccountAdmin(@Valid Account addProfile,
                                   BindingResult result) {
-        return profileService.addAccountStaff(result, addProfile);
+        return profileService.addAccountStaff(result,
+                addProfile);
     }
 
 
     @GetMapping(value = "role")
     public String viewRole(Model model,
                            HttpSession session) {
-        return roleService.getAllRoleByStatus1(model, session);
+        return roleService.getAllRoleByStatus1(model,
+                session);
     }
 
     @GetMapping(value = "role/restore/{id}")
@@ -145,14 +149,18 @@ public class ProfileController {
     public String detailRole(Model model,
                              HttpSession session,
                              @PathVariable("id") Long idRole) {
-        return roleService.detailRole(model, session, idRole);
+        return roleService.detailRole(model,
+                session,
+                idRole);
     }
 
     @PostMapping(value = "role/update")
     public String updateRole(@Valid Role role,
                              @RequestParam("id") Long idRole,
                              BindingResult result) {
-        return roleService.updateRole(result, idRole, role);
+        return roleService.updateRole(result,
+                idRole,
+                role);
     }
 
     @GetMapping(value = "role/delete/{id}")
@@ -163,25 +171,30 @@ public class ProfileController {
     @PostMapping(value = "role/add")
     public String addRole(@Valid Role addRole,
                           BindingResult result) {
-        return roleService.addRole(result, addRole);
+        return roleService.addRole(result,
+                addRole);
     }
 
     @GetMapping(value = "authentication")
     public String viewAuthentication(Model model,
                                      HttpSession session) {
-        return authenticationService.getAllAuthentication(model, session);
+        return authenticationService.getAllAuthentication(model,
+                session);
     }
 
     @GetMapping(value = "authentication/detail/{id}")
     public String detailAuthentication(Model model,
                                        HttpSession session,
                                        @PathVariable("id") Long idAuthentication) {
-        return authenticationService.detailAuthentication(model, session, idAuthentication);
+        return authenticationService.detailAuthentication(model,
+                session,
+                idAuthentication);
     }
 
     @PostMapping(value = "authentication/update")
     public String updateAuthentication(Authentication updateAuthentication,
                                        @RequestParam("role") Role roleSelect) {
-        return authenticationService.updateAuthentication(updateAuthentication, roleSelect);
+        return authenticationService.updateAuthentication(updateAuthentication,
+                roleSelect);
     }
 }

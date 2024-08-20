@@ -19,6 +19,7 @@ public class VoucherShopController {
     @GetMapping(value = "voucher/shop")
     public String indexVoucherShop(Model model,
                                    HttpSession session) {
-        return voucherShopService.indexVoucherShop(model, session);
+        return voucherShopService.indexVoucherShop(model,
+                session);
     }
 }

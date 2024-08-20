@@ -26,14 +26,28 @@ public class AdminController {
     public String indexAdmin(Model model,
                              HttpSession session,
                              @RequestParam(value = "fillerByYears", required = false) Integer years,
-                             @RequestParam(value = "fitterByPrecious", required = false) String precious) {
-        return adminService.indexAdmin(model, session, years, precious);
+                             @RequestParam(value = "fitterByPrecious", required = false) String precious,
+                             @RequestParam(value = "startDate", required = false) String startDate,
+                             @RequestParam(value = "endDate", required = false) String endDate) {
+        return adminService.indexAdmin(model,
+                session,
+                years,
+                precious,
+                startDate,
+                endDate);
     }
 
     @GetMapping(value = "monthly-revenue")
     @ResponseBody
-    public List<MonthlyRevenueResponse> getMonthlyRevenue(@Param("year") Integer year,
-                                                          @Param("quarter") String quarter) {
-        return adminService.getMonthlyRevenue(year, quarter);
+    public List<MonthlyRevenueResponse> getMonthlyRevenue(HttpSession session,
+                                                          @Param("year") Integer year,
+                                                          @Param("quarter") String quarter,
+                                                          @RequestParam(value = "startDate", required = false) String startDate,
+                                                          @RequestParam(value = "endDate", required = false) String endDate) {
+        return adminService.getMonthlyRevenue(session,
+                year,
+                quarter,
+                startDate,
+                endDate);
     }
 }

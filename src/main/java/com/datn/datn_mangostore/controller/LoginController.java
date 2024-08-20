@@ -31,7 +31,9 @@ public class LoginController {
     public String loginSuccess(@RequestParam("email") String email,
                                @RequestParam("password") String password,
                                HttpSession session) throws IOException {
-        return loginService.loginAccount(email, password, session);
+        return loginService.loginAccount(email,
+                password,
+                session);
     }
 
     @GetMapping(value = "forgot")
@@ -50,7 +52,8 @@ public class LoginController {
     @PostMapping(value = "forgot/password")
     public String authenticationPassword(@RequestParam("codeForgot") String codeForgot,
                                          HttpSession session) {
-        return loginService.authenticationCode(codeForgot, session);
+        return loginService.authenticationCode(codeForgot,
+                session);
     }
 
     @GetMapping(value = "password/refresh")
@@ -69,7 +72,9 @@ public class LoginController {
     public String refreshPasswordSuccess(@RequestParam("passwordRefresh") String passwordRefresh,
                                          HttpSession session) {
         String email = (String) session.getAttribute("loginEmailForgot");
-        return loginService.refreshPassword(email, passwordRefresh, session);
+        return loginService.refreshPassword(email,
+                passwordRefresh,
+                session);
     }
 
     @GetMapping(value = "signup")
@@ -82,7 +87,9 @@ public class LoginController {
     public String signUpAccountSuccess(@RequestParam("fullName") String fullName,
                                        @RequestParam("email") String email,
                                        @RequestParam("passwordRefresh") String passwordRefresh) {
-        return loginService.signUpAccount(fullName, email, passwordRefresh);
+        return loginService.signUpAccount(fullName,
+                email,
+                passwordRefresh);
     }
 
     @GetMapping(value = "clear")
