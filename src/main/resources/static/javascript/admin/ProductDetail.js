@@ -13,8 +13,6 @@ if(searchProduct) {
             originId: getSelectValue('select[name="origin"]'),
             categoryId: getSelectValue('select[name="category"]'),
             sortBy: getSelectValue('select[name="sortByPrice"]'),
-            page: 0,
-            size: 100000000000000000
         };
 
         fetchData(formData);
@@ -61,7 +59,6 @@ if(searchProduct) {
         $('#previousPage').toggleClass('disabled', currentPage === 0);
         $('#nextPage').toggleClass('disabled', currentPage >= totalPages - 1);
         $('#lastPage').toggleClass('disabled', currentPage >= totalPages - 1);
-        // document.getElementById('currentPageDisplay').innerHTML = 'Current Page: ' + (currentPage + 1);
     }
 
     function refreshData() {
@@ -98,8 +95,6 @@ if(searchProduct) {
             originId: getSelectValue('select[name="origin"]'),
             categoryId: getSelectValue('select[name="category"]'),
             sortBy: "asc",
-            page: pageNumber,
-            size: 10
         };
 
         document.getElementById('currentPageDisplay').innerHTML = 'Current Page: ' + (pageNumber + 1);

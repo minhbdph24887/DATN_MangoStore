@@ -78,10 +78,7 @@ public class ProductAdminController {
                                      @RequestParam(name = "colorId", required = false) String colorId,
                                      @RequestParam(name = "originId", required = false) String originId,
                                      @RequestParam(name = "categoryId", required = false) String categoryId,
-                                     @RequestParam(name = "sortBy", required = false) String sortBy,
-                                     @RequestParam(name = "page", defaultValue = "0") int page,
-                                     @RequestParam(name = "size", defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+                                     @RequestParam(name = "sortBy", required = false) String sortBy) {
         return productDetailService.indexProductDetail(model,
                 session,
                 keyword,
@@ -90,8 +87,7 @@ public class ProductAdminController {
                 colorId,
                 originId,
                 categoryId,
-                sortBy,
-                pageable);
+                sortBy);
     }
 
 

@@ -56,14 +56,13 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         this.productDetailRepository = productDetailRepository;
     }
 
-    public Page<ProductDetail> searchAndFilter(String keyword,
+    public List<ProductDetail> searchAndFilter(String keyword,
                                                String materialId,
                                                String sizeId,
                                                String colorId,
                                                String originId,
                                                String categoryId,
-                                               String sortBy,
-                                               Pageable pageable) {
+                                               String sortBy) {
         Specification<ProductDetail> spec = Specification.where(ProductDetailSpecifications.hasKeyword(keyword))
                 .and(ProductDetailSpecifications.hasMaterialId(materialId))
                 .and(ProductDetailSpecifications.hasSizeId(sizeId))
@@ -73,20 +72,23 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                 .and(ProductDetailSpecifications.isActive());
 
         if (sortBy != null && !sortBy.isEmpty()) {
+            Sort sort;
             switch (sortBy) {
                 case "asc":
-                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").ascending());
+                    sort = Sort.by("price").ascending();
                     break;
                 case "desc":
-                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending());
+                    sort = Sort.by("price").descending();
                     break;
                 default:
-                    break;
+                    sort = Sort.unsorted();
             }
+            return productDetailRepository.findAll(spec, sort);
+        } else {
+            return productDetailRepository.findAll(spec);
         }
-
-        return productDetailRepository.findAll(spec, pageable);
     }
+
 
 
     @Override
@@ -98,8 +100,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                                      String colorId,
                                      String originId,
                                      String categoryId,
-                                     String sortBy,
-                                     Pageable pageable) {
+                                     String sortBy) {
         Account detailAccount = gender.checkMenuAdmin(model, session, "Admin | Trang chủ sản phẩm");
         if (detailAccount == null) {
             return "redirect:/mangostore/home";
@@ -107,13 +108,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             List<ProductDetail> itemsProductDetailInactive = productDetailRepository.getAllProductDetailByStatus0();
             model.addAttribute("listProductDetailInactive", itemsProductDetailInactive);
 
-            Page<ProductDetail> productDetailsPage = searchAndFilter(keyword, materialId, sizeId, colorId, originId, categoryId, sortBy, pageable);
-            List<ProductDetail> itemsProductDetail = productDetailsPage.getContent();
+            List<ProductDetail> itemsProductDetail = searchAndFilter(keyword, materialId, sizeId, colorId, originId, categoryId, sortBy);
 
             model.addAttribute("listProductDetail", itemsProductDetail);
             model.addAttribute("keyword", keyword);
-
-            model.addAttribute("currentPage", pageable.getPageNumber());
 
             List<Material> materials = materialRepository.findAll();
             List<Size> sizes = sizeRepository.findAll();
@@ -126,11 +124,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             model.addAttribute("colors", colors);
             model.addAttribute("origins", origins);
             model.addAttribute("categories", categories);
-
-            model.addAttribute("currentPage", productDetailsPage.getNumber());
-            model.addAttribute("totalPages", productDetailsPage.getTotalPages());
-            model.addAttribute("totalItems", productDetailsPage.getTotalElements());
-
             return "admin/ProductDetail/IndexProductDetail";
         }
     }

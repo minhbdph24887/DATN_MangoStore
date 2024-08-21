@@ -48,8 +48,7 @@ public interface ProductDetailService {
                               String colorId,
                               String originId,
                               String categoryId,
-                              String sortBy,
-                              Pageable pageable);
+                              String sortBy);
 
     boolean restoreProductDetailAPI(RestoreProductDetailRequest request);
 

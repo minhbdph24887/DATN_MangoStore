@@ -105,7 +105,7 @@
                                         <table class="table table-striped">
                                             <thead>
                                             <tr>
-                                                <th style="width: 30px">#</th>
+                                                <th style="width: 50px">#</th>
                                                 <th style="width: 120px">Ảnh sản phẩm</th>
                                                 <th style="width: 172px">Tên sản phẩm</th>
                                                 <th style="width: 172px">Giá bán</th>
@@ -120,7 +120,7 @@
                                             </thead>
                                             <tbody>
                                             <tr th:each="listProductDetail, stat : ${listProductDetail}">
-                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 50px" th:text="${stat.count}"></td>
                                                 <td style="width: 120px">
                                                     <img th:src="@{|/images/product/${listProductDetail.product.images.imagesFile}|}"
                                                          alt="image" style="width: 116px; height: 132px">
@@ -176,7 +176,7 @@
                                         <table class="table table-striped">
                                             <thead>
                                             <tr>
-                                                <th style="width: 30px">#</th>
+                                                <th style="width: 50px">#</th>
                                                 <th style="width: 120px">Ảnh sản phẩm</th>
                                                 <th style="width: 115px">Tên sản phẩm</th>
                                                 <th style="width: 70px">Chất liệu</th>
@@ -192,7 +192,7 @@
                                         <table class="table table-hover">
                                             <tbody>
                                             <tr th:each="productDetail, stat : ${listProductDetailInactive}">
-                                                <td style="width: 30px" th:text="${stat.count}"></td>
+                                                <td style="width: 50px" th:text="${stat.count}"></td>
                                                 <td style="width: 120px"><img
                                                         th:src="@{|/images/product/${productDetail.product.images.imagesFile}|}"
                                                         alt="image" style="width: 116px; height: 132px">

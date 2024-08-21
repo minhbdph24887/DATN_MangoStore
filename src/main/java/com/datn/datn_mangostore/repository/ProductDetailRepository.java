@@ -30,7 +30,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
     Page<ProductDetail> searchProductDetailByNameProduct(Pageable pageable,
                                                          @Param("searchProduct") String searchProduct);
 
-    @Query(value = "select pd.id, pd.id_product, pd.id_material, pd.id_size, pd.id_color, pd.id_origin, pd.id_category, pd.describe, pd.quantity," +
+    @Query(value = "select pd.id, pd.id_product, pd.id_material, pd.id_size, pd.id_ color, pd.id_origin, pd.id_category, pd.describe, pd.quantity," +
             " pd.import_price, pd.price, pd.name_user_create, pd.name_user_update, pd.date_create, pd.date_update, pd.product_status, pd.status" +
             " from product_detail pd" +
             " inner join (select id_product, max(id) as MaxId from product_detail group by id_product) temp" +

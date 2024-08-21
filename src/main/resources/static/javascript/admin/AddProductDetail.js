@@ -42,7 +42,7 @@ if (createProductDetailPage) {
                     const importPriceInput = document.createElement("input");
                     importPriceInput.type = "text";
                     importPriceInput.id = "importPriceInput" + i + j;
-                    importPriceInput.placeholder = "Please Enter Import Price";
+                    importPriceInput.placeholder = "Vui lòng nhập giá nhập sản phẩm";
                     importPriceInput.className = "form-control";
                     importPriceInput.oninput = function () {
                         onInputImportPriceProductDetail(this.value, this.id);
@@ -58,7 +58,7 @@ if (createProductDetailPage) {
                     const priceInput = document.createElement("input");
                     priceInput.type = "text";
                     priceInput.id = "priceInput" + i + j;
-                    priceInput.placeholder = "Please Enter Price";
+                    priceInput.placeholder = "Vui lòng nhập giá bán sản phẩm";
                     priceInput.className = "form-control";
                     priceInput.oninput = function () {
                         onInputPricePDOut(this.value, this.id);
