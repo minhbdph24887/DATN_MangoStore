@@ -45,8 +45,10 @@
                                                 <i class="bi bi-cloud-plus"></i>Thêm khách hàng
                                             </option>
                                             <option th:each="listAccount : ${listAccount}" th:value="${listAccount.id}">
-                                                <span th:if="${listAccount.numberPhone != null}" th:text="${listAccount.fullName + ' - ' + listAccount.numberPhone}"></span>
-                                                <span th:unless="${listAccount.numberPhone != null}" th:text="${listAccount.fullName + ' - không có sdt'}"></span>
+                                                <span th:if="${listAccount.numberPhone != null}"
+                                                      th:text="${listAccount.fullName + ' - ' + listAccount.numberPhone}"></span>
+                                                <span th:unless="${listAccount.numberPhone != null}"
+                                                      th:text="${listAccount.fullName + ' - không có sdt'}"></span>
                                             </option>
 
                                         </select>
@@ -531,7 +533,7 @@
                                         <input type="hidden" name="id" id="idInvoice" th:value="${detailInvoice.id}">
                                         <input type="hidden" id="totalPayment" th:value="${detailInvoice.totalPayment}">
                                         <input type="text" class="form-control"
-                                               placeholder="Enter Return Client Money"
+                                               placeholder="Nhập số tiền khách trả"
                                                id="currencyInput"
                                                oninput="onInput(this.value)">
                                         <input type="hidden" name="returnClientMoney" id="output"/>

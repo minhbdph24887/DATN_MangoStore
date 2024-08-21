@@ -40,7 +40,7 @@ if (checkNumberPhone) {
                     if (e.responseText === '1') {
                         dangerAlert('Bạn không thể tạo hóa đơn với tư cách là khách hàng')
                     } else {
-                        errorAlert('An error occurred');
+                        errorAlert('Lỗi');
                     }
                 }
             });

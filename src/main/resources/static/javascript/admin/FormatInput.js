@@ -29,7 +29,7 @@ if (checkInfoMoneyPage) {
 
         } else {
             saveButton.disabled = true;
-            messageElement.innerText = 'The amount the customer paid is not enough for the invoice amount';
+            messageElement.innerText = 'Số tiền khách hàng thanh toán không đủ cho số tiền trên hóa đơn';
             outputElement.value = '';
             convertElement.value = '';
         }
@@ -64,7 +64,7 @@ if (checkInfoMoneyPage) {
                 window.open("http://localhost:8080/mangostore/admin/sell", "_self");
             },
             error: function (e) {
-                dangerAlert("Thanh Toan That Bai");
+                dangerAlert("Thanh Toán Thất Bại");
             }
         });
     }
