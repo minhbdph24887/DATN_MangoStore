@@ -19,7 +19,7 @@ function confirmAndSubmitColor(event) {
         .then(function (data) {
             if (data === 2) {
                 Swal.fire({
-                    title: "Bạn có muốn cập nhật?",
+                    title: "Bạn muốn lưu những gì đã thay đổi?",
                     showDenyButton: true,
                     showCancelButton: true,
                     confirmButtonText: "Có",
