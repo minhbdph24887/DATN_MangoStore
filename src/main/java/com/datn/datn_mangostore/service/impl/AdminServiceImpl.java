@@ -6,10 +6,7 @@ import com.datn.datn_mangostore.bean.Role;
 import com.datn.datn_mangostore.bean.Voucher;
 import com.datn.datn_mangostore.config.Gender;
 import com.datn.datn_mangostore.reponse.MonthlyRevenueResponse;
-import com.datn.datn_mangostore.repository.InvoiceDetailRepository;
-import com.datn.datn_mangostore.repository.InvoiceRepository;
-import com.datn.datn_mangostore.repository.ProductDetailRepository;
-import com.datn.datn_mangostore.repository.VoucherRepository;
+import com.datn.datn_mangostore.repository.*;
 import com.datn.datn_mangostore.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -23,17 +20,20 @@ import java.util.*;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+    private final AccountRepository accountRepository;
     private final InvoiceRepository invoiceRepository;
     private final InvoiceDetailRepository invoiceDetailRepository;
     private final ProductDetailRepository productDetailRepository;
     private final VoucherRepository voucherRepository;
     private final Gender gender;
 
-    public AdminServiceImpl(InvoiceRepository invoiceRepository,
+    public AdminServiceImpl(AccountRepository accountRepository,
+                            InvoiceRepository invoiceRepository,
                             InvoiceDetailRepository invoiceDetailRepository,
                             ProductDetailRepository productDetailRepository,
                             VoucherRepository voucherRepository,
                             Gender gender) {
+        this.accountRepository = accountRepository;
         this.invoiceRepository = invoiceRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
         this.productDetailRepository = productDetailRepository;
@@ -58,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
                 Long totalPaymentOfAllInvoices;
                 Integer totalInvoiceCancel;
                 List<Object[]> results;
-                if (years != null && precious != null) {
+                if (years != null && precious != null && startDate == null && endDate == null) {
                     int startMonth = 1;
                     int endMonth = switch (precious) {
                         case "quyI" -> {
@@ -82,17 +82,25 @@ public class AdminServiceImpl implements AdminService {
                     totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByYearAndQuarter(years, startMonth, endMonth);
                     totalInvoiceCancel = invoiceRepository.countByInvoiceStatusCancelAndQuarter(years, startMonth, endMonth);
                     results = invoiceDetailRepository.findTopSellingProductsByYearAndQuarter(years, startMonth, endMonth);
-                } else if (years != null) {
+                } else if (years != null && precious == null && startDate == null && endDate == null) {
                     totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndYear(5, years);
                     totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByYear(years);
-                    totalInvoiceCancel = invoiceRepository.countByInvoiceStatusCancel();
+                    totalInvoiceCancel = invoiceRepository.countByInvoiceStatusCancel(years);
                     results = invoiceDetailRepository.findTopSellingProductsByYear(years);
+                } else if (startDate != null && endDate != null && years == null && precious == null) {
+                    LocalDate start = LocalDate.parse(startDate);
+                    LocalDate end = LocalDate.parse(endDate);
+
+                    totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndDateRange(5, start, end);
+                    totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByDateRange(start, end);
+                    totalInvoiceCancel = invoiceRepository.countByInvoiceStatusAndDateRange(6, start, end);
+                    results = invoiceDetailRepository.findTopSellingProductWithStartAndEndDate(start, end);
                 } else {
-                    Integer yearNow = Year.now().getValue();
-                    totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndYear(5, yearNow);
-                    totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByYear(yearNow);
-                    totalInvoiceCancel = invoiceRepository.countByInvoiceStatusCancel();
-                    results = invoiceDetailRepository.findTopSellingProductsByYear(yearNow);
+                    LocalDate today = LocalDate.now();
+                    totalInvoiceComplete = invoiceRepository.countByInvoiceStatusAndDate(5, today);
+                    totalPaymentOfAllInvoices = invoiceRepository.sumTotalPaymentByDate(today);
+                    totalInvoiceCancel = invoiceRepository.countByInvoiceStatusAndDate(6, today);
+                    results = invoiceDetailRepository.findTopSellingProductsToday(today);
                 }
 
                 model.addAttribute("totalInvoiceCompleted", totalInvoiceComplete);
@@ -120,21 +128,21 @@ public class AdminServiceImpl implements AdminService {
                 return "admin/Index";
             } else {
                 Integer totalInvoiceCompleteForStaff;
-                Integer totalPaymentOfAllInvoicesForStaff;
+                Long totalPaymentOfAllInvoicesForStaff;
                 Integer totalInvoiceCancelForStaff;
 
                 if (startDate != null && endDate != null) {
                     LocalDate start = LocalDate.parse(startDate);
                     LocalDate end = LocalDate.parse(endDate);
 
-                    totalInvoiceCompleteForStaff = invoiceRepository.countByInvoiceStatusAndDateRange(5, start, end);
-                    totalPaymentOfAllInvoicesForStaff = invoiceRepository.sumTotalPaymentByDateRange(start, end);
-                    totalInvoiceCancelForStaff = invoiceRepository.countByInvoiceStatusAndDateRange(6, start, end);
+                    totalInvoiceCompleteForStaff = invoiceRepository.countByInvoiceStatusAndDateRangeByStaff(5, detailAccount.getId(), start, end);
+                    totalPaymentOfAllInvoicesForStaff = invoiceRepository.sumTotalPaymentByDateRangeByStaff(start, detailAccount.getId(), end);
+                    totalInvoiceCancelForStaff = invoiceRepository.countByInvoiceStatusAndDateRangeByStaff(6, detailAccount.getId(), start, end);
                 } else {
                     LocalDate today = LocalDate.now();
-                    totalInvoiceCompleteForStaff = invoiceRepository.countByInvoiceStatusAndDate(5, today);
-                    totalPaymentOfAllInvoicesForStaff = invoiceRepository.sumTotalPaymentByDate(today);
-                    totalInvoiceCancelForStaff = invoiceRepository.countByInvoiceStatusAndDate(6, today);
+                    totalInvoiceCompleteForStaff = invoiceRepository.countByInvoiceStatusAndDateByStaff(5, detailAccount.getId(), today);
+                    totalPaymentOfAllInvoicesForStaff = invoiceRepository.sumTotalPaymentByDateByStaff(detailAccount.getId(), today);
+                    totalInvoiceCancelForStaff = invoiceRepository.countByInvoiceStatusAndDateByStaff(6, detailAccount.getId(), today);
                 }
                 model.addAttribute("totalInvoiceCompleted", totalInvoiceCompleteForStaff);
                 model.addAttribute("totalPaymentOfAllInvoices", totalPaymentOfAllInvoicesForStaff != null ? totalPaymentOfAllInvoicesForStaff : 0);
@@ -154,7 +162,7 @@ public class AdminServiceImpl implements AdminService {
         if (detailRoleByAccount.getName().equals("ADMIN")) {
             List<Object[]> results;
             int queryYear = (year != null) ? year : Year.now().getValue();
-            if (year != null && quarter != null) {
+            if (year != null && quarter != null && startDate == null && endDate == null) {
                 int startMonth;
                 int endMonth = switch (quarter) {
                     case "quyI" -> {
@@ -179,28 +187,45 @@ public class AdminServiceImpl implements AdminService {
                     }
                 };
                 results = invoiceRepository.findQuarterlyRevenueByYear(queryYear, startMonth, endMonth);
-            } else if (year != null) {
+            } else if (year != null && startDate == null && endDate == null) {
                 results = invoiceRepository.findMonthlyRevenueByYear(queryYear);
-            } else {
-                results = invoiceRepository.findMonthlyRevenueByYear(queryYear);
-            }
-            List<MonthlyRevenueResponse> monthlyRevenueList = new ArrayList<>();
-            for (Object[] result : results) {
-                int month = ((Number) result[0]).intValue();
-                Integer totalRevenue = ((Number) result[1]).intValue();
-                MonthlyRevenueResponse dto = new MonthlyRevenueResponse(null, month, totalRevenue);
-                monthlyRevenueList.add(dto);
-            }
-            return monthlyRevenueList;
-        } else {
-            List<Object[]> results;
-            if (startDate != null && endDate != null) {
+            } else if (startDate != null && endDate != null && year == null && quarter == null) {
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
                 results = invoiceRepository.findDailyRevenueByDateRange(start, end);
             } else {
                 LocalDate today = LocalDate.now();
                 results = invoiceRepository.findDailyRevenueByDate(today);
+            }
+            List<MonthlyRevenueResponse> monthlyRevenueList = new ArrayList<>();
+            for (Object[] result : results) {
+                int month = ((Number) result[0]).intValue();
+                int dayOfMonth = (Integer) result[0];
+                Integer totalRevenue = ((Number) result[1]).intValue();
+                MonthlyRevenueResponse dto;
+                if (year != null && quarter != null) {
+                    dto = new MonthlyRevenueResponse(null, month, totalRevenue);
+                } else if (year != null) {
+                    dto = new MonthlyRevenueResponse(null, month, totalRevenue);
+                } else {
+                    LocalDate date = LocalDate.now().withDayOfMonth(dayOfMonth);
+                    dto = new MonthlyRevenueResponse(Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()), 0, totalRevenue);
+                }
+                monthlyRevenueList.add(dto);
+            }
+            return monthlyRevenueList;
+        } else {
+            String email = (String) session.getAttribute("loginEmail");
+            assert email != null;
+            Account detailAccount = accountRepository.detailAccountByEmail(email);
+            List<Object[]> results;
+            if (startDate != null && endDate != null) {
+                LocalDate start = LocalDate.parse(startDate);
+                LocalDate end = LocalDate.parse(endDate);
+                results = invoiceRepository.findDailyRevenueByDateRangeByStaff(detailAccount.getId(), start, end);
+            } else {
+                LocalDate today = LocalDate.now();
+                results = invoiceRepository.findDailyRevenueByDateByStaff(detailAccount.getId(), today);
             }
 
             List<MonthlyRevenueResponse> dailyRevenueList = new ArrayList<>();

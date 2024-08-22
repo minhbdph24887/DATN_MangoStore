@@ -34,17 +34,28 @@ if (sortDatePage) {
         const quarterSelect = document.getElementById('fitterByPrecious').value;
         const currentUrl = new URL(window.location.href);
 
+        currentUrl.searchParams.delete('startDate');
+        currentUrl.searchParams.delete('endDate');
+
         const currentYearParam = currentUrl.searchParams.get('fillerByYears');
         const currentQuarterParam = currentUrl.searchParams.get('fitterByPrecious');
 
         let urlUpdated = false;
 
-        if (yearSelect && yearSelect !== currentYearParam) {
-            currentUrl.searchParams.set('fillerByYears', yearSelect);
-            urlUpdated = true;
+        if (yearSelect && yearSelect !== 'default') {
+            if (yearSelect !== currentYearParam) {
+                currentUrl.searchParams.set('fillerByYears', yearSelect);
+                urlUpdated = true;
+            }
+        } else if (!yearSelect || yearSelect === 'default') {
+            if (quarterSelect && quarterSelect !== 'default') {
+                const currentYear = new Date().getFullYear();
+                currentUrl.searchParams.set('fillerByYears', currentYear);
+                urlUpdated = true;
+            }
         }
 
-        if (quarterSelect !== 'default' && quarterSelect !== currentQuarterParam) {
+        if (quarterSelect && quarterSelect !== 'default' && quarterSelect !== currentQuarterParam) {
             currentUrl.searchParams.set('fitterByPrecious', quarterSelect);
             urlUpdated = true;
         }

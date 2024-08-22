@@ -45,8 +45,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     Integer countByInvoiceStatusAndYear(@Param("statusInvoice") Integer statusInvoice,
                                         @Param("years") Integer years);
 
-    @Query(value = "select count(*) from invoice where invoice_status = 6", nativeQuery = true)
-    Integer countByInvoiceStatusCancel();
+    @Query(value = "select count(*) from invoice where invoice_status = 6 and year(invoice_payment_date)= :years", nativeQuery = true)
+    Integer countByInvoiceStatusCancel(@Param("years") Integer years);
 
     @Query(value = "select sum(invoice.total_payment) from invoice where invoice_status= 5 and year(invoice_payment_date)= :years", nativeQuery = true)
     Long sumTotalPaymentByYear(@Param("years") Integer years);
@@ -90,21 +90,50 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
                                              @Param("startDate") LocalDate startDate,
                                              @Param("endDate") LocalDate endDate);
 
+    @Query(value = "select count(*) from invoice where invoice_status = :statusInvoice and cast(invoice_payment_date as date) between :startDate and :endDate and id_account= :idStaff", nativeQuery = true)
+    Integer countByInvoiceStatusAndDateRangeByStaff(@Param("statusInvoice") Integer statusInvoice,
+                                                    @Param("idStaff") Long idStaff,
+                                                    @Param("startDate") LocalDate startDate,
+                                                    @Param("endDate") LocalDate endDate);
+
     @Query(value = "select count(*) from invoice where invoice_status = :statusInvoice and cast(invoice_payment_date as date) = :date", nativeQuery = true)
     Integer countByInvoiceStatusAndDate(@Param("statusInvoice") Integer statusInvoice,
                                         @Param("date") LocalDate date);
 
+    @Query(value = "select count(*) from invoice where invoice_status = :statusInvoice and cast(invoice_payment_date as date) = :date and id_account= :idStaff", nativeQuery = true)
+    Integer countByInvoiceStatusAndDateByStaff(@Param("statusInvoice") Integer statusInvoice,
+                                               @Param("idStaff") Long idStaff,
+                                               @Param("date") LocalDate date);
+
     @Query(value = "select sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) between :start and :end", nativeQuery = true)
-    Integer sumTotalPaymentByDateRange(@Param("start") LocalDate start,
-                                       @Param("end") LocalDate end);
+    Long sumTotalPaymentByDateRange(@Param("start") LocalDate start,
+                                    @Param("end") LocalDate end);
+
+    @Query(value = "select sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) between :start and :end and id_account= :idStaff", nativeQuery = true)
+    Long sumTotalPaymentByDateRangeByStaff(@Param("start") LocalDate start,
+                                           @Param("idStaff") Long idStaff,
+                                           @Param("end") LocalDate end);
 
     @Query(value = "select sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) = :today", nativeQuery = true)
-    Integer sumTotalPaymentByDate(@Param("today") LocalDate today);
+    Long sumTotalPaymentByDate(@Param("today") LocalDate today);
+
+    @Query(value = "select sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) = :today and id_account= :idStaff", nativeQuery = true)
+    Long sumTotalPaymentByDateByStaff(@Param("idStaff") Long idStaff,
+                                      @Param("today") LocalDate today);
 
     @Query(value = "select day(i.invoice_payment_date), sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) between :start and :end group by day(i.invoice_payment_date)", nativeQuery = true)
     List<Object[]> findDailyRevenueByDateRange(@Param("start") LocalDate start,
                                                @Param("end") LocalDate end);
 
+    @Query(value = "select day(i.invoice_payment_date), sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) between :start and :end and id_account= :idStaff group by day(i.invoice_payment_date) ", nativeQuery = true)
+    List<Object[]> findDailyRevenueByDateRangeByStaff(@Param("idStaff") Long idStaff,
+                                                      @Param("start") LocalDate start,
+                                                      @Param("end") LocalDate end);
+
     @Query(value = "select day(i.invoice_payment_date), sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) = :date group by day(i.invoice_payment_date)", nativeQuery = true)
     List<Object[]> findDailyRevenueByDate(@Param("date") LocalDate date);
+
+    @Query(value = "select day(i.invoice_payment_date), sum(i.total_payment) from Invoice i where cast(i.invoice_payment_date as date) = :date and id_account= :idStaff group by day(i.invoice_payment_date)", nativeQuery = true)
+    List<Object[]> findDailyRevenueByDateByStaff(@Param("idStaff") Long idStaff,
+                                                 @Param("date") LocalDate date);
 }

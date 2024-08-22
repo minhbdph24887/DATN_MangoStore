@@ -1,21 +1,29 @@
 <div xmlns:th="http://www.w3.org/1999/xhtml"
      th:replace="~{/layout/admin/IndexAdmin :: dynamic(~{:: main})}">
-    <main class="chartPage sortDatePage">
+    <main class="chartPage sortDatePage fitterByDatePage">
         <div class="d-flex">
             <p style="width: 130px; margin: 6px;">Tìm kiếm theo năm: </p>
             <div class="me-2">
                 <select id="year" name="fillerByYears" style="width: 200px;" class="form-control"
-                        onchange="updateUrl()"></select>
+                        onchange="updateUrl()">
+                    <option value="default" disabled selected>Vui lòng chọn năm</option>
+                </select>
             </div>
             <p style="width: 112px; margin: 6px;">Tìm kiếm theo quý:</p>
             <select class="form-select me-2" id="fitterByPrecious" onchange="updateUrl()"
                     style="width: 238px; height: 33px; margin-top: -2px;">
-                <option value="default" disabled selected>Vui Lòng Lọc Theo Quý</option>
+                <option value="default" disabled selected>Vui lòng lọc theo quý</option>
                 <option value="quyI">Quý I</option>
                 <option value="quyII">Quy II</option>
                 <option value="quyIII">Quý III</option>
                 <option value="quyIV">Quý IV</option>
             </select>
+            <p style="width: 120px; margin: 8px;">Tìm kiếm theo ngày: </p>
+            <input type="date" name="startDate" id="startDate" class="form-control"
+                   style="width: 150px; height: 33px; margin-top: -2px;">
+            <p style="width: 25px; margin: 8px;"> Đến </p>
+            <input type="date" name="endDate" id="endDate" class="form-control me-2"
+                   style="width: 150px; height: 33px; margin-top: -2px;">
             <a type="button" class="btn btn-primary" th:href="@{/mangostore/admin/home}"
                style="padding: 5px 10px;font-size: 12px;line-height: 1.5;">Làm mới</a>
         </div>
@@ -62,7 +70,7 @@
             <div class="col-md-7 stretch-card grid-margin" style="height: 505px;">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Biểu đồ doanh thu hàng tháng</h4>
+                        <h4 class="card-title">Biểu đồ doanh thu</h4>
                         <canvas id="monthly-revenue-chart"></canvas>
                     </div>
                 </div>
