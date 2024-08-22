@@ -61,9 +61,6 @@ public class AdminServiceImpl implements AdminService {
                 if (years != null && precious != null && startDate == null && endDate == null) {
                     int startMonth = 1;
                     int endMonth = switch (precious) {
-                        case "quyI" -> {
-                            yield 3;
-                        }
                         case "quyII" -> {
                             startMonth = 4;
                             yield 6;
