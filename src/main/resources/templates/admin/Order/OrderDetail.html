@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="form-group" style="display: flex; align-items: center;">
                                         <label class="control-label col-sm-7" style="margin: 0;">Tiền giảm
-                                            voucher:</label>
+                                            qua phiếu giảm giá:</label>
                                         <th:block th:if="${detailInvoice.voucher != null}">
                                             <div class="col-sm-5" style="margin: 0;">
                                                 <p class="form-control-static"
@@ -214,6 +214,21 @@
                                 </th:block>
                                 <th:block th:if="${detailInvoice.invoiceForm == 'offline'}">
                                     <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <p>Tạo hóa đơn</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <p>Cập nhật hóa đơn</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <p>Thanh toán</p>
+                                            </div>
+                                        </li>
                                         <li>
                                             <div class="timeline-panel">
                                                 <p>Thành công</p>
