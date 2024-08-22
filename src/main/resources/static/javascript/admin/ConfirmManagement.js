@@ -6,6 +6,9 @@ function confirmAndSubmitColor(event) {
     if (colorName === '') {
         Swal.fire("Lỗi", "Tên màu không được để trống", "error");
         return false;
+    }else if(isNaN(colorName)){
+        Swal.fire("Lỗi", "Tên màu không được có số", "error");
+        return false;
     }
 
     fetch('/api/mangostore/admin/colorsExistCreat/' + colorName)
@@ -50,6 +53,9 @@ function confirmAndSubmitUpdateColor(event) {
     const codeColor = document.getElementById('codeColor').value.trim();
     if (colorName === '') {
         Swal.fire("Lỗi", "Tên màu không thể trống", "error");
+        return false;
+    }else if(isNaN(colorName)){
+        Swal.fire("Lỗi", "Tên màu không được có số", "error");
         return false;
     }
 
@@ -114,6 +120,9 @@ function confirmAndSubmitOrigin(event) {
     if (originName === '') {
         Swal.fire("Lỗi", "Tên nhà sản xuất không được để trống", "error");
         return false;
+    }else if(isNaN(originName)){
+        Swal.fire("Lỗi", "Tên nhà sản xuất không được có chữ số", "error");
+        return false;
     }
 
     fetch('/api/mangostore/admin/originsExistCreate/' + originName)
@@ -157,6 +166,9 @@ function confirmAndSubmitUpdateOrigin(event) {
     const codeOrigin = document.getElementById('codeOrigin').value.trim();
     if (originName === '') {
         Swal.fire("Lỗi", "Tên nhà sản xuất không được để trống", "error");
+        return false;
+    }else if(isNaN(originName)){
+        Swal.fire("Lỗi", "Tên nhà sản xuất không được có chữ số", "error");
         return false;
     }
 
@@ -328,7 +340,11 @@ function confirmAndSubmitMaterial(event) {
     if (materialName === '') {
         Swal.fire("Lỗi", "Tên chất liệu không được để trống", "error");
         return false;
+    }else if(isNaN(materialName)){
+        Swal.fire("Lỗi", "Tên chất liệu không được có chữ số", "error");
+        return false;
     }
+
 
     fetch('/api/mangostore/admin/materialsExistCreate/' + materialName)
         .then(function (response) {
@@ -373,7 +389,12 @@ function confirmAndSubmitUpdateMaterial(event) {
     if (materialName === '') {
         Swal.fire("Lỗi", "Tên chất liệu không được để trống", "error");
         return false;
+    }else if(isNaN(materialName)){
+        Swal.fire("Lỗi", "Tên chất liệu không được có chữ số", "error");
+        return false;
     }
+
+
     const url = '/api/mangostore/admin/materialsExistUpdate/' + encodeURIComponent(materialName) + '?codeMaterial=' + encodeURIComponent(codeMaterial);
 
     fetch(url)
@@ -436,7 +457,11 @@ function confirmAndSubmitCategory(event) {
     if (categoryName === '') {
         Swal.fire("Lỗi", "Tên danh mục không được để trống", "error");
         return false;
+    }else if(isNaN(categoryName)){
+        Swal.fire("Lỗi", "Tên danh mục không được có chữ số", "error");
+        return false;
     }
+
     fetch('/api/mangostore/admin/categoriesExistCreate/' + categoryName)
         .then(function (response) {
             if (response.ok) {
@@ -479,7 +504,11 @@ function confirmAndSubmitUpdateCategory(event) {
     if (categoryName === '') {
         Swal.fire("Lỗi", "Tên danh mục không được để trống", "error");
         return false;
+    }else if(isNaN(categoryName)){
+        Swal.fire("Lỗi", "Tên danh mục không được có chữ số", "error");
+        return false;
     }
+
     const url = '/api/mangostore/admin/categoriesExistUpdate/' + encodeURIComponent(categoryName) + '?codeCategory=' + encodeURIComponent(codeCategory);
 
     fetch(url)
