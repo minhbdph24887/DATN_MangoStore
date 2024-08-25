@@ -72,23 +72,17 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                 .and(ProductDetailSpecifications.isActive());
 
         if (sortBy != null && !sortBy.isEmpty()) {
-            Sort sort;
-            switch (sortBy) {
-                case "asc":
-                    sort = Sort.by("price").ascending();
-                    break;
-                case "desc":
-                    sort = Sort.by("price").descending();
-                    break;
-                default:
-                    sort = Sort.unsorted();
-            }
+            Sort sort = switch (sortBy) {
+                case "asc" -> Sort.by("price").ascending();
+                case "desc" -> Sort.by("price").descending();
+                default -> Sort.unsorted();
+            };
             return productDetailRepository.findAll(spec, sort);
         } else {
-            return productDetailRepository.findAll(spec);
+            Sort sortById = Sort.by("id").descending();
+            return productDetailRepository.findAll(spec, sortById);
         }
     }
-
 
 
     @Override
@@ -113,11 +107,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             model.addAttribute("listProductDetail", itemsProductDetail);
             model.addAttribute("keyword", keyword);
 
-            List<Material> materials = materialRepository.findAll();
-            List<Size> sizes = sizeRepository.findAll();
-            List<Color> colors = colorRepository.findAll();
-            List<Origin> origins = originRepository.findAll();
-            List<Category> categories = categoryRepository.findAll();
+            List<Material> materials = materialRepository.getAllMaterialByStatus1();
+            List<Size> sizes = sizeRepository.getAllSizeByStatus1();
+            List<Color> colors = colorRepository.getAllColorByStatus1();
+            List<Origin> origins = originRepository.getAllOriginByStatus1();
+            List<Category> categories = categoryRepository.getAllCategoryByStatus1();
 
             model.addAttribute("materials", materials);
             model.addAttribute("sizes", sizes);
@@ -184,7 +178,12 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                 Size size = sizeRepository.findByName(items.getSize());
                 Color color = colorRepository.findByName(items.getColor());
 
-                ProductDetail existingDetail = productDetailExists(request.getIdProduct(), request.getIdMaterial(), size.getId(), color.getId(), request.getIdOrigin(), request.getIdCategory());
+                ProductDetail existingDetail = productDetailExists(request.getIdProduct(),
+                        request.getIdMaterial(),
+                        size.getId(),
+                        color.getId(),
+                        request.getIdOrigin(),
+                        request.getIdCategory());
                 if (existingDetail == null) {
                     ProductDetail productDetail = new ProductDetail();
                     productDetail.setDescribe(request.getDescribe());
@@ -218,7 +217,12 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                                               Long colorId,
                                               Long originId,
                                               Long categoryId) {
-        return productDetailRepository.findExistingProductDetail(productId, materialId, sizeId, colorId, originId, categoryId);
+        return productDetailRepository.findExistingProductDetail(productId,
+                materialId,
+                sizeId,
+                colorId,
+                originId,
+                categoryId);
     }
 
 
