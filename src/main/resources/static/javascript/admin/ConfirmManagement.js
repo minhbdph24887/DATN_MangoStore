@@ -6,7 +6,7 @@ function confirmAndSubmitColor(event) {
     if (colorName === '') {
         Swal.fire("Lỗi", "Tên màu không được để trống", "error");
         return false;
-    }else if(isNaN(colorName)){
+    }else if(/\d/.test(colorName)){
         Swal.fire("Lỗi", "Tên màu không được có số", "error");
         return false;
     }
@@ -54,7 +54,7 @@ function confirmAndSubmitUpdateColor(event) {
     if (colorName === '') {
         Swal.fire("Lỗi", "Tên màu không thể trống", "error");
         return false;
-    }else if(isNaN(colorName)){
+    }else if(/\d/.test(colorName)){
         Swal.fire("Lỗi", "Tên màu không được có số", "error");
         return false;
     }
@@ -120,8 +120,8 @@ function confirmAndSubmitOrigin(event) {
     if (originName === '') {
         Swal.fire("Lỗi", "Tên nhà sản xuất không được để trống", "error");
         return false;
-    }else if(isNaN(originName)){
-        Swal.fire("Lỗi", "Tên nhà sản xuất không được có chữ số", "error");
+    }else if(/\d/.test(originName)){
+        Swal.fire("Lỗi", "Tên nhà sản xuất không được có số", "error");
         return false;
     }
 
@@ -167,8 +167,8 @@ function confirmAndSubmitUpdateOrigin(event) {
     if (originName === '') {
         Swal.fire("Lỗi", "Tên nhà sản xuất không được để trống", "error");
         return false;
-    }else if(isNaN(originName)){
-        Swal.fire("Lỗi", "Tên nhà sản xuất không được có chữ số", "error");
+    }else if(/\d/.test(originName)){
+        Swal.fire("Lỗi", "Tên nhà sản xuất không được có số", "error");
         return false;
     }
 
@@ -340,8 +340,8 @@ function confirmAndSubmitMaterial(event) {
     if (materialName === '') {
         Swal.fire("Lỗi", "Tên chất liệu không được để trống", "error");
         return false;
-    }else if(isNaN(materialName)){
-        Swal.fire("Lỗi", "Tên chất liệu không được có chữ số", "error");
+    }else if(/\d/.test(materialName)){
+        Swal.fire("Lỗi", "Tên chất liệu không được có số", "error");
         return false;
     }
 
@@ -389,8 +389,8 @@ function confirmAndSubmitUpdateMaterial(event) {
     if (materialName === '') {
         Swal.fire("Lỗi", "Tên chất liệu không được để trống", "error");
         return false;
-    }else if(isNaN(materialName)){
-        Swal.fire("Lỗi", "Tên chất liệu không được có chữ số", "error");
+    }else if(/\d/.test(materialName)){
+        Swal.fire("Lỗi", "Tên chất liệu không được có số", "error");
         return false;
     }
 
@@ -457,8 +457,8 @@ function confirmAndSubmitCategory(event) {
     if (categoryName === '') {
         Swal.fire("Lỗi", "Tên danh mục không được để trống", "error");
         return false;
-    }else if(isNaN(categoryName)){
-        Swal.fire("Lỗi", "Tên danh mục không được có chữ số", "error");
+    }else if(/\d/.test(categoryName)){
+        Swal.fire("Lỗi", "Tên danh mục không được có số", "error");
         return false;
     }
 
@@ -504,8 +504,8 @@ function confirmAndSubmitUpdateCategory(event) {
     if (categoryName === '') {
         Swal.fire("Lỗi", "Tên danh mục không được để trống", "error");
         return false;
-    }else if(isNaN(categoryName)){
-        Swal.fire("Lỗi", "Tên danh mục không được có chữ số", "error");
+    }else if(/\d/.test(categoryName)){
+        Swal.fire("Lỗi", "Tên danh mục không được có số", "error");
         return false;
     }
 

@@ -69,7 +69,7 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, Lo
             "        join invoice i on id.id_invoice = i.id \n" +
             "        where \n" +
             "        i.invoice_status = 5 \n" +
-            "        and cast(i.invoice_payment_date as date) = '2024-08-20'\n" +
+            "        and cast(i.invoice_payment_date as date) = :toDay\n" +
             "        group by \n" +
             "        id.id_product_detail, \n" +
             "        p.name_product, \n" +
@@ -77,7 +77,7 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, Lo
             "        c.name_color, \n" +
             "        img.images_file \n" +
             "        order by total_quantity desc", nativeQuery = true)
-    List<Object[]> findTopSellingProductsToday(@Param("year") LocalDate year);
+    List<Object[]> findTopSellingProductsToday(@Param("toDay") LocalDate toDay);
 
     @Query(value = "select top(3)\n" +
             "        id.id_product_detail,\n" +
