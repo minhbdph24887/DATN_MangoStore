@@ -23,7 +23,6 @@
                                                 <th style="width: 110px">Mã phiếu giảm giá</th>
                                                 <th style="width: 145px">Tên phiếu giảm giá</th>
                                                 <th style="width: 111px">Giá trị giảm</th>
-                                                <th style="width: 104px">Hình thức</th>
                                                 <th style="width: 100px">Người lưu</th>
                                                 <th style="width: 104px">Ngày lưu</th>
                                                 <th style="width: 104px">Ngày bắt đầu</th>
@@ -48,7 +47,6 @@
                                                     th:text="${items.nameVoucher}"></td>
                                                 <td style="width: 111px"
                                                     th:text="${#numbers.formatDecimal(items.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                                <td style="width: 104px" th:text="${items.voucher.voucherFrom}"></td>
                                                 <td style="width: 100px" th:text="${items.account.fullName}"></td>
                                                 <td style="width: 104px"
                                                     th:text="${#temporals.format(items.saveDate, 'dd/MM/yyyy')}"></td>

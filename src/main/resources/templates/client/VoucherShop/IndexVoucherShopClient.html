@@ -21,21 +21,21 @@
                                             </div>
                                         </td>
                                         <td style="width: 235px;">
-                                            <h5 style="font-size: 30px; margin-right: 77px; text-align: center; margin-top: 19px; overflow: hidden; text-overflow: ellipsis;"
+                                            <h5 style="font-size: 30px; margin-right: 77px; text-align: center; margin-top: 19px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
                                                 th:text="${listVoucher.nameVoucher}"></h5>
                                         </td>
-                                        <td style="width: 600px;">
+                                        <td style="width: 325px;">
                                             <div style="margin-right: 285px; text-align: center; margin-top: 3px;">
-                                                <div class="card-body">
+                                                <div class="card-body" style="width: 400px;">
                                                     <p class="card-text"
                                                        th:text="${'Giảm xuống: ' + #numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
-                                                       style="margin-right: 83px; white-space: nowrap;"></p>
+                                                       style="margin-right: 140px; white-space: nowrap;"></p>
                                                     <p class="card-text"
                                                        th:text="${'Đơn hàng tối thiểu: ' + #numbers.formatDecimal(listVoucher.minimumPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                        style="margin-right: 83px; white-space: nowrap;"></p>
                                                     <p class="card-text">
                                                         <small class="text-muted" th:text="${listVoucher.validity}"
-                                                               style="margin-right: 117px;"></small>
+                                                               style="margin-right: 196px;"></small>
                                                     </p>
                                                 </div>
                                             </div>

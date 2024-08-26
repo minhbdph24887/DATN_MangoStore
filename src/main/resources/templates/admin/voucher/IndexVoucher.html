@@ -78,11 +78,10 @@
                                                                         <label class="form-label">Hình thức
                                                                             phiếu giảm giá:</label>
                                                                         <select name="voucherFrom" class="form-select">
-                                                                            <option value="all" th:text="All"></option>
-                                                                            <option value="offline"
-                                                                                    th:text="Offline"></option>
-                                                                            <option value="online"
-                                                                                    th:text="Online"></option>
+                                                                            <option value="all">Tất cả hình thức
+                                                                            </option>
+                                                                            <option value="offline">Tại quầy</option>
+                                                                            <option value="online">Trực tuyến</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -226,7 +225,15 @@
                                                 <td style="width: 104px" th:text="${listVoucher.quantity}"></td>
                                                 <td style="width: 111px"
                                                     th:text="${#numbers.formatDecimal(listVoucher.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                                <td style="width: 104px" th:text="${listVoucher.voucherFrom}"></td>
+                                                <th:block th:if="${listVoucher.voucherFrom == 'all'}">
+                                                    <td style="width: 104px">Tất cả hình thức</td>
+                                                </th:block>
+                                                <th:block th:if="${listVoucher.voucherFrom == 'online'}">
+                                                    <td style="width: 104px">Trực tuyến</td>
+                                                </th:block>
+                                                <th:block th:if="${listVoucher.voucherFrom == 'offline'}">
+                                                    <td style="width: 104px">Tại quầy</td>
+                                                </th:block>
                                                 <td style="width: 100px" th:text="${listVoucher.rank.nameRank}"></td>
                                                 <td style="width: 104px"
                                                     th:text="${#temporals.format(listVoucher.startDay, 'dd/MM/yyyy')}"></td>
@@ -310,8 +317,15 @@
                                                 </td>
                                                 <td style="width: 105px"
                                                     th:text="${#numbers.formatDecimal(listVoucherInactive.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
-                                                <td style="width: 100px"
-                                                    th:text="${listVoucherInactive.voucherFrom}"></td>
+                                                <th:block th:if="${listVoucherInactive.voucherFrom == 'all'}">
+                                                    <td style="width: 100px">Tất cả hình thức</td>
+                                                </th:block>
+                                                <th:block th:if="${listVoucherInactive.voucherFrom == 'online'}">
+                                                    <td style="width: 100px">Trực tuyến</td>
+                                                </th:block>
+                                                <th:block th:if="${listVoucherInactive.voucherFrom == 'offline'}">
+                                                    <td style="width: 100px">Tại quầy</td>
+                                                </th:block>
                                                 <td style="width: 100px"
                                                     th:text="${listVoucherInactive.rank.nameRank}"></td>
                                                 <td style="width: 102px"

@@ -97,12 +97,18 @@
                                             <div class="form-group">
                                                 <label class="form-label">Hình thức phiếu giảm giá</label>
                                                 <select name="voucherFrom" class="form-select">
-                                                    <option value="offline" th:text="Offline"
-                                                            th:selected="${detailVoucher.voucherFrom == 'offline'}"></option>
-                                                    <option value="online" th:text="Online"
-                                                            th:selected="${detailVoucher.voucherFrom == 'online'}"></option>
-                                                    <option value="all" th:text="All"
-                                                            th:selected="${detailVoucher.voucherFrom == 'all'}"></option>
+                                                    <option value="offline"
+                                                            th:selected="${detailVoucher.voucherFrom == 'offline'}">Tại
+                                                        quầy
+                                                    </option>
+                                                    <option value="online"
+                                                            th:selected="${detailVoucher.voucherFrom == 'online'}">Trực
+                                                        tuyến
+                                                    </option>
+                                                    <option value="all"
+                                                            th:selected="${detailVoucher.voucherFrom == 'all'}">Tất cả
+                                                        hình thức
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
