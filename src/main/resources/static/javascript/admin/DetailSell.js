@@ -187,7 +187,7 @@ if (checkVoucher) {
                     } else if (e.responseText === "6") {
                         dangerAlert('Phiếu giảm giá này không thể sử dụng với hóa đơn này');
                     } else if (e.responseText === "7") {
-                        dangerAlert('Mức rank của bạn không thể sử dụng phiếu giảm giá này');
+                        dangerAlert('Mức hạng của bạn không thể sử dụng phiếu giảm giá này');
                     }
                     console.clear();
                 }

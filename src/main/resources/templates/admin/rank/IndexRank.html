@@ -7,12 +7,12 @@
                     <li class="nav-item">
                         <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab"
                            href="#tab1" role="tab"
-                           aria-controls="tab1" aria-selected="true">Rank đang hoạt động</a>
+                           aria-controls="tab1" aria-selected="true">Hạng đang hoạt động</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab2"
                            aria-controls="tab2" role="tab"
-                           aria-selected="false">Rank ngừng hoạt động</a>
+                           aria-selected="false">Hạng ngừng hoạt động</a>
                     </li>
                 </ul>
             </div>
@@ -20,23 +20,23 @@
                 <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                     <div>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">Trang chủ rank</li>
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ hạng</li>
                         </ul>
                     </div>
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Danh sách rank đang hoạt động</h4>
+                                <h4 class="card-title">Danh sách hạng đang hoạt động</h4>
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-                                                data-target="#myModal">Thêm Rank
+                                                data-target="#myModal">Thêm hạng
                                         </button>
                                     </div>
                                     <div class="col-sm-7">
                                         <form>
                                             <input type="text" name="keyword" class="form-control" th:value="${keyword}"
-                                                   placeholder=" Tìm kiếm rank theo tên hoặc mã rank"/>
+                                                   placeholder=" Tìm kiếm hạng theo tên hoặc mã hạng"/>
                                         </form>
                                     </div>
                                 </div>
@@ -46,8 +46,8 @@
                                             <thead>
                                             <tr>
                                                 <th style="width: 30px">#</th>
-                                                <th style="width: 109px">Mã rank</th>
-                                                <th style="width: 117px">Tên rank</th>
+                                                <th style="width: 109px">Mã hạng</th>
+                                                <th style="width: 117px">Tên hạng</th>
                                                 <th style="width: 100px">Điểm tối thiểu</th>
                                                 <th style="width: 100px">Điểm tối đa</th>
                                                 <th style="width: 100px">Người tạo</th>
@@ -89,7 +89,7 @@
                                             <tr th:if="${listRank.isEmpty()}">
                                                 <td colspan="9"
                                                     style="text-align: center; color: red; font-size: larger;">
-                                                    Danh sách rank đang hoạt động trống
+                                                    Danh sách hạng đang hoạt động trống
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -106,15 +106,15 @@
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Danh sách rank ngừng hoạt động</h4>
+                                <h4 class="card-title">Danh sách hạng ngừng hoạt động</h4>
                                 <div class="table-responsive">
                                     <div class="header">
                                         <table class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th style="width: 30px">#</th>
-                                                <th style="width: 109px">Mã rank</th>
-                                                <th style="width: 117px">Tên rank</th>
+                                                <th style="width: 109px">Mã hạng</th>
+                                                <th style="width: 117px">Tên hạng</th>
                                                 <th style="width: 100px">Điểm tối thiểu</th>
                                                 <th style="width: 100px">Điểm tối đa</th>
                                                 <th style="width: 100px">Người tạo</th>
@@ -160,7 +160,7 @@
                                             <tr th:if="${listRankInactive.isEmpty()}">
                                                 <td colspan="9"
                                                     style="text-align: center; color: red; font-size: larger;">
-                                                    Danh sách rank ngừng hoạt động trống
+                                                    Danh sách hạng ngừng hoạt động trống
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -180,17 +180,17 @@
                     <div class="modal-body">
                         <form id="formRank" th:action="@{/mangostore/admin/rank/add}" th:object="${addRank}"
                               method="post">
-                            <h3 class="mb-4">Thêm Rank</h3>
+                            <h3 class="mb-4">Thêm hạng</h3>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Tên rank: </label>
+                                                <label class="form-label">Tên hạng: </label>
                                                 <input type="text"
                                                        class="form-control"
                                                        name="nameRank" id="nameRankInput"
-                                                       placeholder="Mời nhập tên rank">
+                                                       placeholder="Mời nhập tên hạng">
                                             </div>
                                         </div>
                                     </div>

@@ -37,7 +37,7 @@ if (checkAddVoucherPage) {
                         } else if (e.responseText === '3') {
                             dangerAlert('Phiếu giảm giá đã được sử dụng rồi');
                         }else if(e.responseText === '4'){
-                            dangerAlert('Mức rank của bạn hiện tại không thể sử dụng phiếu giảm giá này');
+                            dangerAlert('Mức hạng của bạn hiện tại không thể sử dụng phiếu giảm giá này');
                         } else {
                             errorAlert('Lỗi.');
                         }

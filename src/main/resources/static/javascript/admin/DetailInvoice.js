@@ -8,12 +8,12 @@ if (detailInvoiceDetails) {
                 fetch(`/api/mangostore/admin/invoice/${invoiceId}`)
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('order-id').textContent = "Order ID: " + data.codeInvoice;
+                        document.getElementById('order-id').textContent = "Mã hóa đơn: " + data.codeInvoice;
                         document.getElementById('invoice-payment-date').textContent = data.invoicePaymentDate;
                         document.getElementById('customer-address').textContent = data.customerAddress;
                         document.getElementById('total-payment').textContent = data.totalPayment;
                         document.getElementById("id-invoice").textContent = data.id;
-                        document.getElementById('name-customer').textContent = "Name Customer: " + data.nameCustomer;
+                        document.getElementById('name-customer').textContent = "Tên khách hàng: " + data.nameCustomer;
 
                         const invoiceItems = document.getElementById("invoice-items");
                         invoiceItems.innerHTML = '';

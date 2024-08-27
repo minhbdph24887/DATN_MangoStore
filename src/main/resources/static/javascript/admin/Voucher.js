@@ -3,6 +3,8 @@ if (addVoucherPage) {
     function addVoucherForm() {
         const codeVoucher = document.getElementById('codeVoucherInput').value;
         const nameVoucher = document.getElementById('nameVoucherInput').value;
+        const voucherForm = document.getElementById('voucherForm').value;
+        const rankVoucher = document.getElementById('rankVoucher').value;
         const quantityVoucher = document.getElementById('quantityVoucherInput').value;
         const minimumOrderValue = document.getElementById('minimumOrderValue').value;
         const reducedVoucherValue = document.getElementById('reducedVoucherValue').value;
@@ -21,12 +23,16 @@ if (addVoucherPage) {
             dangerAlert('Không được để trống tên phiếu giảm giá');
         } else if (quantityVoucher === '') {
             dangerAlert('Không được để trống số lượng phiếu giảm giá');
+        }else if(voucherForm === ''){
+            dangerAlert('Mời chọn hình thức phếu giảm giá');
+        }else if(rankVoucher === ''){
+            dangerAlert('Mời chọn hạng');
         } else if (isNaN(quantityVoucher)) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
             dangerAlert('Số lượng không thể nhỏ hơn 0');
         } else if (quantityVoucher > 1000) {
-            dangerAlert('Bạn chỉ được tạo voucher tối đa 1000 lần sử dụng');
+            dangerAlert('Bạn chỉ được tạo phiếu giảm giá tối đa 1000 lần sử dụng');
         } else if (minimumOrderValue === '') {
             dangerAlert('Giá tối thiểu đơn hàng không đươc để trống');
         } else if (reducedVoucherValue === '') {
@@ -76,6 +82,8 @@ if (updateVoucher) {
     function updateVoucherForm() {
         const idVoucher = document.getElementById('idVoucher').value;
         const nameVoucher = document.getElementById('nameVoucherInput').value;
+        const voucherForm = document.getElementById('voucherForm').value;
+        const rankVoucher = document.getElementById('rankVoucher').value;
         const quantityVoucher = document.getElementById('quantityVoucherInput').value;
         const minimumOrderValue = document.getElementById('minimumOrderValue').value;
         const reducedVoucherValue = document.getElementById('reducedVoucherValue').value;
@@ -91,12 +99,16 @@ if (updateVoucher) {
             dangerAlert('Không được để trống tên phiếu giảm giá');
         } else if (quantityVoucher === '') {
             dangerAlert('Không được để trống số lượng phiếu giảm giá');
+        }else if(voucherForm === ''){
+            dangerAlert('Mời chọn hình thức phếu giảm giá');
+        }else if(rankVoucher === ''){
+            dangerAlert('Mời chọn hạng');
         } else if (isNaN(quantityVoucher)) {
             dangerAlert('Bắt buộc phải là số');
         } else if (quantityVoucher <= 0) {
             dangerAlert('Số lượng không thể nhỏ hơn 0');
         } else if (quantityVoucher > 1000) {
-            dangerAlert('Bạn chỉ được cập nhật voucher tối đa 1000 lần sử dụng');
+            dangerAlert('Bạn chỉ được cập nhật phiếu giảm giá tối đa 1000 lần sử dụng');
         } else if (minimumOrderValue === '') {
             dangerAlert('Giá tối thiểu đơn hàng không đươc để trống');
         } else if (reducedVoucherValue === '') {

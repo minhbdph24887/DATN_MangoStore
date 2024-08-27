@@ -25,7 +25,7 @@
                                                     <div class="card-body">
                                                         <h5 class="card-title"
                                                             th:text="${listVoucherClient.nameVoucher}"
-                                                            style="width: 262px;"></h5>
+                                                            style="width: 262px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></h5>
                                                         <p th:text="${'Giảm xuống: ' + #numbers.formatDecimal(listVoucherClient.reducedValue, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                                                            style="white-space: nowrap;"></p>
                                                         <p class="card-text">

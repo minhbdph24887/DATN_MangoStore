@@ -96,7 +96,8 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="form-label">Hình thức phiếu giảm giá</label>
-                                                <select name="voucherFrom" class="form-select">
+                                                <select name="voucherFrom" class="form-select" id="voucherForm">
+                                                    <option value="" disabled selected>Mời chọn hình thức</option>
                                                     <option value="offline"
                                                             th:selected="${detailVoucher.voucherFrom == 'offline'}">Tại
                                                         quầy
@@ -116,7 +117,8 @@
                                             <div class="form-group">
                                                 <label class="form-label">Cấp bậc để sử dụng phiếu giảm giá</label>
                                                 <th:block th:if="${detailVoucher.rank.status == 1}">
-                                                    <select name="rank" class="form-select">
+                                                    <select name="rank" class="form-select" id="rankVoucher">
+                                                        <option value="" disabled selected>Mời chọn hạng</option>
                                                         <option th:each="listRank : ${listRank}"
                                                                 th:value="${listRank.id}"
                                                                 th:text="${listRank.nameRank}"

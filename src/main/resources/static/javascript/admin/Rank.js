@@ -6,7 +6,7 @@ if (updateRank) {
         const minimumScore = document.getElementById('minimumScore').value;
         const maximumScore = document.getElementById('maximumScore').value;
         if (nameRank === '') {
-            dangerAlert('Tên rank không được để trống');
+            dangerAlert('Tên hạng không được để trống');
         } else if (minimumScore <= 0) {
             dangerAlert('Điểm tối thiểu không thể nhỏ hơn hoặc bằng 0');
         } else if (maximumScore <= 0) {
@@ -30,7 +30,7 @@ if (updateRank) {
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Tên Rank Đã Tồn Tại');
+                        dangerAlert('Tên hạng đã tồn tại');
                     } else {
                         errorAlert('Lỗi.');
                     }
@@ -54,7 +54,7 @@ if (addRank) {
         const minimumScore = document.getElementById('minimumScore').value;
         const maximumScore = document.getElementById('maximumScore').value;
         if (nameRank === '') {
-            dangerAlert('Tên rank không được để trống');
+            dangerAlert('Tên hạng không được để trống');
         } else if (minimumScore <= 0) {
             dangerAlert('Điểm tối thiểu không thể nhỏ hơn hoặc bằng 0');
         } else if (maximumScore <= 0) {
@@ -77,7 +77,7 @@ if (addRank) {
                 },
                 error: function (e) {
                     if (e.responseText === "1") {
-                        dangerAlert('Tên Rank đã tồn tại');
+                        dangerAlert('Tên hạng đã tồn tại');
                     } else {
                         errorAlert('Lỗi.');
                     }
